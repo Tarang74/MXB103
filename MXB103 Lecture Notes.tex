@@ -45,5 +45,148 @@
 \tableofcontents
 \newpage
 %
-\section{Section 1}
+\section{Preliminaries}
+\subsection{Errors}
+Errors in calculations are a common problem in numerical analysis.
+We can quantify the magnitude of such an error by two measures.
+\begin{definition}[Absolute and relative error]
+    Let \(\tilde{x}\) be an approximatiotn of \(x\). Then the \textbf{absolute
+        error} is given by
+    \begin{equation*}
+        \text{absolute error} = \abs*{\tilde{x}-x}.
+    \end{equation*}
+    The \textbf{relative error} is given by
+    \begin{equation*}
+        \text{relative error} = \frac{\abs*{\tilde{x}-x}}{\abs*{x}}.
+    \end{equation*}
+\end{definition}
+It is important to realise that the absolute error can be
+misleading when comparing different sizes of errors,
+i.e., it is always small for small values of \(x\) and \(\tilde{x}\).
+\subsection{Floating Point Arithmetic}
+The set of real numbers \(\R\) contains uncountably many elements.
+Computers have a limited number of bits, and can
+therefore only represent a small subset of these elements.
+
+The most common approximation of real arithmetic used in computers is known
+as \textbf{floating point arithmetic}.
+\begin{definition}[Floating point number system]
+    A floating point number system \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
+    is a \textit{finite subset} of the real number system characterised by the parameters:
+    \begin{itemize}
+        \item \(\beta \in \N\): the base
+        \item \(k \in \N\): the number of digits in the significand
+        \item \(m \in \Z\): the minimum exponent
+        \item \(M \in \Z\): the maximum exponent
+    \end{itemize}
+\end{definition}
+\begin{definition}[Floating point numbers]
+    The floating point numbers \(f \in \mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
+    are real numbers expressible in the form
+    \begin{equation*}
+        f = \pm \left( d_1.d_2 d_3 \dots d_k \right)_\beta \times \beta^e
+    \end{equation*}
+    where \(e \in \Z\) is the \textbf{exponent} satisfying \(m \leq e \leq M\).
+    The quantity \(d_1.d_2 d_3 \dots d_k\) is known as the \textbf{significand},
+    where \(d_i\) are base-\(\beta\) digits, with \(d_1 \neq 0\) unless \(f = 0\),
+    to ensure a unique representation of \(f\).
+\end{definition}
+Computers primarily use floating point number systems with base \(\beta = 2\) (binary),
+other common bases include \(\beta = 10\)
+(decimal\footnote{Note that for base-10, we do not need to include the subscript in the significand.})
+and \(\beta = 16\) (hexadecimal).
+
+To illustrate the finiteness of the floating point number system, consider
+the following example:
+\begin{align*}
+    \mathbb{F}\left( 10,\: 3,\: -1,\: 1\right) & = \begin{aligned}[t]
+                                                       \left\{\right. & 0,                                                                                                                \\
+                                                                      & \pm 1.00 \times 10^{-1},\: &  & \pm 1.01 \times 10^{-1},\: &  & \dots,\: &  & \pm 9.99 \times 10^{-1},            \\
+                                                                      & \pm 1.00 \times 10^0,\:    &  & \pm 1.01 \times 10^0,\:    &  & \dots,\: &  & \pm 9.99 \times 10^0,               \\
+                                                                      & \pm 1.00 \times 10^1,\:    &  & \pm 1.01 \times 10^1,\:    &  & \dots,\: &  & \pm 9.99 \times 10^1 \left.\right\}
+                                                   \end{aligned} \\
+                                               & = \begin{aligned}[t]
+                                                       \left\{\right. & 0,                                                                        \\
+                                                                      & \pm 0.100,\: &  & \pm 0.101,\: &  & \dots,\: &  & \pm 0.999,              \\
+                                                                      & \pm 1.00,\:  &  & \pm 1.01,\:  &  & \dots,\: &  & \pm 9.99,               \\
+                                                                      & \pm 10.0,\:  &  & \pm 10.1,\:  &  & \dots,\: &  & \pm 99.9 \left.\right\}
+                                                   \end{aligned}
+\end{align*}
+Note that the numbers in this set are not equally spaced, (smaller spacing for smaller exponents).
+\begin{definition}[Overflow and underflow]
+    Consider the value \(x \in \R\), if \(x\) is too small in magnitude to be
+    represented in \(\mathbb{F}\),
+    an \textbf{underflow} occurs which typically causes the number to be replaced by zero.
+
+    Similarly, if \(x\) is too large in magnitude to be represented in \(\mathbb{F}\),
+    an \textbf{overflow} occurs which typically causes the number to be replaced by infinity.
+\end{definition}
+\begin{corollary}
+    The smallest and largest values (in magnitude) of \(\mathbb{F}\) are given by
+    \begin{align*}
+        \text{smallest} & = \beta^m                                     \\
+        \text{largest}  & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
+    \end{align*}
+    The cardinality of the positive elements in \(\mathbb{F}\), denoted \(\mathbb{F}^+\),
+    is given by
+    \begin{equation*}
+        \abs*{\mathbb{F}^+} = \left( M - m + 1 \right) \left( \beta - 1 \right) \beta^{k - 1}
+    \end{equation*}
+    so that by including negative numbers and zero, the cardinality of \(\mathbb{F}\)
+    is given by
+    \begin{equation*}
+        \abs*{\mathbb{F}} = 2 \abs*{\mathbb{F}^+} + 1.
+    \end{equation*}
+\end{corollary}
+\subsubsection{Representing Real Numbers as Floating Point Numbers}
+If we wish to represent a real number\footnote{\(x\) must satisfy \(\min{\left( \mathbb{F} \right)} \leq x \leq \max{\left( \mathbb{F} \right)}\).}
+\(x\) that is not exactly representable in \(\mathbb{F}\),
+we can \textbf{round} the number to the nearest \textit{representable} number.
+
+The error committed by this process is known as the \textbf{roundoff error}.
+\subsubsection{Converting between Floating Point Number Systems}
+Consider \(fl : \R \to \mathbb{F}\left( \beta,\: k,\: m,\: M \right)\), defined as function which maps
+real numbers \(x\) to the nearest element in
+\(\mathbb{F}\). To determine \(fl\left( x \right)\):
+\begin{enumerate}
+    \item Express \(x\) in base \(\beta\).
+    \item Express \(x\) in scientific form.
+    \item Verify that \(m \leq e \leq M\):
+          \begin{itemize}
+              \item If \(e > M\), then \(x = \infty\).
+              \item If \(e < m\), then \(x = 0\).
+              \item Otherwise, round the significand to \(k\) digits.
+          \end{itemize}
+\end{enumerate}
+The relative error produced by rounding \(x\) to \(fl\left( x \right)\) is bounded
+according to
+\begin{equation*}
+    \frac{\abs*{x - fl\left( x \right)}}{\abs*{x}} \leq \frac{1}{2} \beta^{1 - k}.
+\end{equation*}
+\begin{definition}[Unit roundoff]
+    The \textbf{unit roundoff} or \textbf{machine precision} \(u\) of a floating point number system \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
+    is given by
+    \begin{equation*}
+        u = \frac{1}{2} \beta^{1 - k}.
+    \end{equation*}
+\end{definition}
+\subsubsection{IEEE Floating Point Standard}
+IEEE 754 is the standard for floating point arithmetic used by most modern computers.
+
+It is a binary format, with several variants. The most common variant is \textbf{IEEE double precision},
+which is based on \(\mathbb{F}\left( 2,\: 53,\: -1022,\: 1023 \right)\).
+
+The basic properties of this format are summarised in the following table.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l | c}
+        \toprule
+        Unit roundoff                          & \(u = 1.11 \times 10^{-16}\)               \\
+        Largest representable positive number  & \(1.80 \times 10^{308}\)                   \\
+        Smallest representable positive number & \(2.23 \times 10^{-308}\)                  \\
+        Special values                         & \(\pm 0\), \(\pm \infty\), \lstinline!NaN! \\
+        \bottomrule
+    \end{tabular}
+    % \caption{} % \label{}
+\end{table}
 \end{document}
