@@ -124,18 +124,18 @@ Note that the numbers in this set are not equally spaced, (smaller spacing for s
 \begin{corollary}
     The smallest and largest values (in magnitude) of \(\mathbb{F}\) are given by
     \begin{align*}
-        \text{smallest} & = \beta^m                                     \\
-        \text{largest}  & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
+        \min_{f \in \mathbb{F}} \abs*{f} & = \beta^m                                      \\
+        \max_{f \in \mathbb{F}} \abs*{f} & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
     \end{align*}
-    The cardinality of the positive elements in \(\mathbb{F}\), denoted \(\mathbb{F}^+\),
+    The cardinality of the positive elements in \(\mathbb{F}\),
     is given by
     \begin{equation*}
-        \abs*{\mathbb{F}^+} = \left( M - m + 1 \right) \left( \beta - 1 \right) \beta^{k - 1}
+        \abs*{\left\{ f \in \mathbb{F} : f > 0 \right\}} = \left( M - m + 1 \right) \left( \beta - 1 \right) \beta^{k - 1}
     \end{equation*}
     so that by including negative numbers and zero, the cardinality of \(\mathbb{F}\)
     is given by
     \begin{equation*}
-        \abs*{\mathbb{F}} = 2 \abs*{\mathbb{F}^+} + 1.
+        \abs*{\mathbb{F}} = 2 \abs*{\left\{ f \in \mathbb{F} : f > 0 \right\}} + 1.
     \end{equation*}
 \end{corollary}
 \subsubsection{Representing Real Numbers as Floating Point Numbers}
