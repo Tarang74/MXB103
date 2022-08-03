@@ -189,4 +189,72 @@ The basic properties of this format are summarised in the following table.
     \end{tabular}
     % \caption{} % \label{}
 \end{table}
+\subsection{Catastrophic Cancellation}
+When working with floating point arithmetic, roundoff is a common source of error.
+Certain operations may bring roundoff errors that are too large to be easily corrected.
+
+\textbf{Catastrophic cancellation} or \textbf{cancellation error} is the error that occurs in the floating
+point subtraction of two numbers that are very close to each other, where at least
+one of them is not exactly representable.
+
+As an example, the quadratic formula
+\begin{align*}
+    x_1 = \frac{-b + \sqrt{b^2 - 4 a c}}{2 a} &  & x_2 = \frac{-b - \sqrt{b^2 - 4 a c}}{2 a}
+\end{align*}
+experiences catastrophic cancellation for \(b^2 \gg 4ac\), as \(b^2 - 4ac \approx b^2\) so that
+\(\sqrt{b^2 - 4ac} = \sqrt{b^2} = \abs*{b}\):
+\begin{align*}
+    x_1 = \frac{-b + \abs*{b}}{2 a} &  & x_2 = \frac{-b - \abs*{b}}{2 a}
+\end{align*}
+When \(b > 0\), \(\abs*{b} = b\), so that
+\begin{equation*}
+    x_1 = \frac{-b + b}{2a} = \frac{b - b}{2a}.
+\end{equation*}
+And when \(b < 0\), \(\abs*{b} = -b\), so that
+\begin{equation*}
+    x_2 = \frac{-b - \left( -b \right)}{2a} = \frac{b - b}{2a}.
+\end{equation*}
+This cancellation can be avoided by taking the product of the two roots to determine the exact result
+of the root that suffers from catastrophic cancellation.
+\begin{equation*}
+    x_1 x_2 = \frac{c}{a}.
+\end{equation*}
+\subsection{Taylor Polynomials}
+Suppose we have a function \(f\left( x \right)\) that is \(n\) differentiable at the point
+\(x = x_0\). This function can be approximated by a sum of polynomials that agrees with its first \(n\) derivatives at that point.
+\begin{definition}[Taylor polynomial]
+    The \textbf{Taylor polynomial} of degree \(n\) of \(f\), centred at \(x_0\) is defined by
+    \begin{align*}
+        P_n\left( x \right) & = f\left( x_0 \right) + f'\left( x_0 \right) \left( x - x_0 \right) + \frac{f''\left( x_0 \right)}{2} \left( x - x_0 \right)^2 + \cdots + \frac{f^{\left( n \right)} \left( x_0 \right)}{n!} \left( x - x_0 \right)^n \\
+                            & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
+    \end{align*}
+\end{definition}
+The Taylor polynomial can be used to approximate a function \(f\) for values of \(x\) near \(x_0\), the following
+theorem addresses how accurate the approximation is.
+\begin{definition}[Taylor's theorem]
+    Suppose that \(f\) is \(n + 1\) times differentiable on an interval \(\interval{a}{b}\) containing \(x_0\),
+    and let \(P_n\) be the degree \(n\) Taylor polynomial for \(f\), centred on \(x_0\). Then for all \(x \in \interval{a}{b}\),
+    there exists a value \(x_0 < c < x\) such that
+    \begin{equation*}
+        f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}.
+    \end{equation*}
+    The term
+    \begin{equation*}
+        R_n\left( x \right) = \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}
+    \end{equation*}
+    is called the \textbf{error term} or \textbf{remainder term} for \(P_n\).
+\end{definition}
+To determine the absolute error from the Taylor series polynomial, consider the error term:
+\begin{equation*}
+    \abs*{f\left( x \right) - P_n\left( x \right)} = \abs*{R_n\left( x \right)}.
+\end{equation*}
+The maximum value of \(\abs*{R_n\left( x \right)}\) on the interval \(\interval{a}{b}\) gives the bound on the maximum error incurred when approximating
+\(f\) by \(P_n\) on that interval.
+\subsection{Taylor Series}
+Given an infinitely differentiable function \(f\), we can take the limit \(n \to \infty\) to find Taylor series representation of \(f\), given by:
+\begin{equation*}
+    f\left( x \right) = \sum_{k = 0}^\infty \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
+\end{equation*}
+When we truncate this series at a finite \(n\), the error from the Taylor series is known as \textbf{truncation error}. In this case,
+the remainder term gives us a \textit{bound} on the size of this truncation error.
 \end{document}
