@@ -50,7 +50,7 @@
 Errors in calculations are a common problem in numerical analysis.
 We can quantify the magnitude of such an error by two measures.
 \begin{definition}[Absolute and relative error]
-    Let \(\tilde{x}\) be an approximatiotn of \(x\). Then the \textbf{absolute
+    Let \(\tilde{x}\) be an approximation of \(x\). Then the \textbf{absolute
         error} is given by
     \begin{equation*}
         \text{absolute error} = \abs*{\tilde{x}-x}.
@@ -257,4 +257,58 @@ Given an infinitely differentiable function \(f\), we can take the limit \(n \to
 \end{equation*}
 When we truncate this series at a finite \(n\), the error from the Taylor series is known as \textbf{truncation error}. In this case,
 the remainder term gives us a \textit{bound} on the size of this truncation error.
+\section{Ordinary Differential Equations}
+For certain classes of ordinary differential equations (ODEs), we can obtain analytical closed-form solutions using known techniques.
+However for most cases we will need to use numerical techniques to obtain approximate solutions.
+
+\subsection{Initial Value Problems}
+While solutions with arbitrary constants, such as \(y = C e^{t}\) are acceptable for theoretical analysis,
+we cannot have such variables when determining an approximate solution in the real world.
+Hence we require \textbf{initial conditions} to obtain a definitive solution. An ODE combined
+with an initial condition is called an \textbf{initial value problem} (IVP).
+\subsection{Time Discretisation}
+Consider the initial value problem,
+\begin{align*}
+    \odv{y\left( t \right)}{t} & = f\left( t,\: y\left( t \right) \right), \quad \quad a \leq t \leq b \\
+    y\left( a \right)          & = \alpha
+\end{align*}
+Divide the interval \(\interval{a}{b}\) into \(n\) subintervals, each with width \(h = \left( b - a \right) / n\).
+Then define \(t_i = a + i h\), for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\). If we then compute
+\(y_i = y\left( t_i \right)\) denoted as \(w_i\), then \(w_i \approx y_i\) for all \(i = 0,\: 1,\: \ldots,\: n\).
+\subsection{Euler's Method}
+Euler's method, or the first order Taylor method, uses a Taylor polynomial approximation of \(y\) over each subinterval.
+Assuming \(y\) is twice differentiable,
+\begin{equation*}
+    y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \mathcal{O}\left( h^2 \right).
+\end{equation*}
+The remainder term is not shown in its exact form but rather as \(\mathcal{O}\left( h^2 \right)\), ``Big-O of \(h^2\)'', or ``order \(h^2\)'', meaning that
+the error is proportional to \(h^2\). Using the ODE and substituting \(t_{i + 1} = t_i + h\) gives
+\begin{equation*}
+    y_{i + 1} = y_i + h f\left( t_i,\: y_i \right) + \mathcal{O}\left( h^2 \right).
+\end{equation*}
+By removing the remainder term, we obtain the approximation method known as \textbf{Euler's method}:
+\begin{align*}
+    w_{i + 1}         & = w_i + h f\left( t_i,\: w_i \right) \\
+    w_0 & = \alpha
+\end{align*}
+for \(i = 0,\: 1,\: \ldots,\: n - 1\).
+\subsection{Local and Global Error}
+\textbf{Local error} is defined as the error that the method would incur in \textbf{one step},
+assuming the solution was correct at the previous step.
+The \textbf{global error} is defined as the error in the solution after \(i\) steps (at \(t = t_i\)),
+and is given by:
+\begin{equation*}
+    \abs*{y_i - w_i}.
+\end{equation*}
+It is the accumulation of the local errors from steps \(1,\: 2,\: \ldots,\: i\).
+
+The \textbf{order} of a method refers to the global error of that method. For Euler's
+method, the local error is \(\mathcal{O}\left( h^2 \right)\) while the global error is
+\(\mathcal{O}\left( h \right)\), hence ``\textit{first order} Taylor method''.
+
+In general, if the local error is \(\mathcal{O}\left( h^{p + 1} \right)\), then the global error is
+\(\mathcal{O}\left( h^p \right)\) and the method is said to be a \(p\)th order method.
+\begin{equation*}
+    \text{Global error} \approx n \mathcal{O}\left( h^{p + 1} \right) = \frac{b - a}{h} \mathcal{O}\left( h^{p + 1} \right) = \mathcal{O}\left( h^p \right).
+\end{equation*}
 \end{document}
