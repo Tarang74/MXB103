@@ -1,5 +1,6 @@
 %!TEX TS-program = xelatex
 %!TEX options = -aux-directory=Debug -shell-escape -file-line-error -interaction=nonstopmode -halt-on-error -synctex=1 "%DOC%"
+
 \documentclass{article}
 \input{LaTeX-Submodule/template.tex}
 
@@ -260,7 +261,6 @@ the remainder term gives us a \textit{bound} on the size of this truncation erro
 \section{Ordinary Differential Equations}
 For certain classes of ordinary differential equations (ODEs), we can obtain analytical closed-form solutions using known techniques.
 However for most cases we will need to use numerical techniques to obtain approximate solutions.
-
 \subsection{Initial Value Problems}
 While solutions with arbitrary constants, such as \(y = C e^{t}\) are acceptable for theoretical analysis,
 we cannot have such variables when determining an approximate solution in the real world.
@@ -269,8 +269,8 @@ with an initial condition is called an \textbf{initial value problem} (IVP).
 \subsection{Time Discretisation}
 Consider the initial value problem,
 \begin{align*}
-    \odv{y\left( t \right)}{t} & = f\left( t,\: y\left( t \right) \right), \quad \quad a \leq t \leq b \\
-    y\left( a \right)          & = \alpha
+    y\left( a \right)          & = \alpha                                                              \\
+    \odv{y\left( t \right)}{t} & = f\left( t,\: y\left( t \right) \right), \quad \quad a \leq t \leq b
 \end{align*}
 Divide the interval \(\interval{a}{b}\) into \(n\) subintervals, each with width \(h = \left( b - a \right) / n\).
 Then define \(t_i = a + i h\), for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\). If we then compute
@@ -288,8 +288,8 @@ the error is proportional to \(h^2\). Using the ODE and substituting \(t_{i + 1}
 \end{equation*}
 By removing the remainder term, we obtain the approximation method known as \textbf{Euler's method}:
 \begin{align*}
-    w_{i + 1}         & = w_i + h f\left( t_i,\: w_i \right) \\
-    w_0 & = \alpha
+    w_0       & = \alpha                             \\
+    w_{i + 1} & = w_i + h f\left( t_i,\: w_i \right)
 \end{align*}
 for \(i = 0,\: 1,\: \ldots,\: n - 1\).
 \subsection{Local and Global Error}
@@ -311,4 +311,77 @@ In general, if the local error is \(\mathcal{O}\left( h^{p + 1} \right)\), then 
 \begin{equation*}
     \text{Global error} \approx n \mathcal{O}\left( h^{p + 1} \right) = \frac{b - a}{h} \mathcal{O}\left( h^{p + 1} \right) = \mathcal{O}\left( h^p \right).
 \end{equation*}
+\subsection{Second Order Taylor Method}
+To improve upon the accuracy of Euler's method, we can use additional Taylor polynomial terms by truncating at a higher order.
+Assuming \(y\) is three times differentiable, we have
+\begin{equation*}
+    y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \frac{h^2}{2} y''\left( t_i \right) + \mathcal{O}\left( h^3 \right)
+\end{equation*}
+which can be rewritten as
+\begin{equation*}
+    y_{i + 1} = y_i + h f\left( t_i,\: y_i \right) + \frac{h^2}{2} f'\left( t_i\: y_i \right) + \mathcal{O}\left( h^3 \right).
+\end{equation*}
+Again by removing the remainder term, we obtain the approximation \(w_i\) of \(y_i\), known as the \textbf{second order Taylor method}:
+\begin{align*}
+    w_0       & = \alpha                                                                         \\
+    w_{i + 1} & = w_i + h f\left( t_i,\: w_i \right) + \frac{h^2}{2} f'\left( t_i,\: w_i \right)
+\end{align*}
+for \(i = 0,\: 1,\: \ldots,\: n - 1\).
+This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
+\subsection{Modified Euler Method}
+Although the second order Taylor method is the more accurate than Euler's method,
+we require computing \(f'\left( t,\: y \right)\).
+
+Suppose we use a numerical approximation of the derivative of \(f\).
+
+By definition, the derivative of a function is the limiting value of the slope of the line connecting
+two nearby points on a curve,
+\begin{equation*}
+    f'\left( t_i,\: y_i \right) = \lim_{h \to 0} \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h}.
+\end{equation*}
+For small values of \(h\), we can approximate the derivative with
+\begin{equation*}
+    f'\left( t_i,\: y_i \right) \approx \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h}.
+\end{equation*}
+By deriving the error term we find that
+\begin{equation*}
+    f'\left( t_i,\: y_i \right) = \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h} + \mathcal{O}\left( h \right).
+\end{equation*}
+Hence the second order Taylor polynomial becomes
+\begin{align*}
+    y_{i + 1} & = y_i + h f\left( t_i,\: y_i \right) + \frac{h^2}{2} f'\left( t_i,\: y_i \right) + \mathcal{O}\left( h^3 \right)                                                                                                \\
+              & = y_i + h f\left( t_i,\: y_i \right) + \frac{h^2}{2} \left[ \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h} + \mathcal{O}\left( h \right) \right] + \mathcal{O}\left( h^3 \right) \\
+              & = y_i + h f\left( t_i,\: y_i \right) + \frac{h}{2} f\left( t_{i + 1},\: y_{i + 1} \right) - \frac{h}{2} f\left( t_i,\: y_i \right) + \mathcal{O}\left( h^3 \right) + \mathcal{O}\left( h^3 \right)              \\
+              & = y_i + \frac{h}{2} f\left( t_i,\: y_i \right) + \frac{h}{2} f\left( t_{i + 1},\: y_{i + 1} \right) + \mathcal{O}\left( h^3 \right)                                                                             \\
+              & = y_i + \frac{h}{2} \left[ f\left( t_i,\: y_i \right) + f\left( t_{i + 1},\: y_{i + 1} \right) \right] + \mathcal{O}\left( h^3 \right)                                                                          \\
+              & \approx y_i + \frac{h}{2} \left[ f\left( t_i,\: y_i \right) + f\left( t_{i + 1},\: y_{i + 1} \right) \right]                                                                                                    \\
+    w_{i + 1} & = w_i + \frac{h}{2} \left[ f\left( t_i,\: w_i \right) + f\left( t_{i + 1},\: w_{i + 1} \right) \right]
+\end{align*}
+As this formula involves itself, we will use Euler's method on
+\(w_{i + 1} = w_i + h f\left( t_i,\: w_i \right)\) on the RHS\@.
+\begin{align*}
+    w_{i + 1} & = w_i + \frac{1}{2} \left[ h f\left( t_i,\: w_i \right) + f\left( t_{i + 1},\: w_{i + 1} \right) \right]                                                                                     \\
+              & = w_i + \frac{1}{2} \left[ \underbrace{h f\left( t_i,\: w_i \right)}_{k_1} + \underbrace{h f\left( t_{i + 1},\: w_i + \underbrace{h f\left( t_i,\: w_i \right)}_{k_1} \right)}_{k_2} \right] \\
+              & = w_i + \frac{1}{2} \left( k_1 + k_2 \right)
+\end{align*}
+This result leads to what is known as the \textbf{modified Euler method}.
+\begin{align*}
+    w_0       & = \alpha                                     \\
+    w_{i + 1} & = w_i + \frac{1}{2} \left( k_1 + k_2 \right) \\
+    k_1       & = h f\left( t_i,\: w_i \right)               \\
+    k_2       & = h f\left( t_i + h,\: w_i + k_1 \right)
+\end{align*}
+This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
+\subsection{Runge-Kutta Method}
+Another popular method that agrees with the Taylor method for high orders is the Runge-Kutta method.
+It is a fourth order method, referred to as RK4. It has the following form:
+\begin{align*}
+    w_0 & = \alpha \\
+    w_{i + 1} & = w_i + \frac{1}{6} \left( k_1 + 2 k_2 + 2 k_3 + k_4 \right) \\
+    k_1 & = h f\left( t_i,\: w_i \right) \\
+    k_2 & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_1}{2} \right) \\
+    k_3 & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_2}{2} \right) \\
+    k_4 & = h f\left( t_i + h,\: w_i + k_3 \right)
+\end{align*}
+for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^4 \right)\), and the global error is \(\mathcal{O}\left( h^3 \right)\).
 \end{document}
