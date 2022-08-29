@@ -221,13 +221,15 @@ of the root that suffers from catastrophic cancellation.
     x_1 x_2 = \frac{c}{a}.
 \end{equation*}
 \subsection{Taylor Polynomials}
+\begin{equation*}
+    \cos{\left( x \right)} = \sum_{k = 0}^n \frac{\left( -1 \right)^k}{\left(2k \right)!} x^{2k}.
+\end{equation*}
 Suppose we have a function \(f\left( x \right)\) that is \(n\) differentiable at the point
 \(x = x_0\). This function can be approximated by a sum of polynomials that agrees with its first \(n\) derivatives at that point.
 \begin{definition}[Taylor polynomial]
     The \textbf{Taylor polynomial} of degree \(n\) of \(f\), centred at \(x_0\) is defined by
     \begin{align*}
-        P_n\left( x \right) & = f\left( x_0 \right) + f'\left( x_0 \right) \left( x - x_0 \right) + \frac{f''\left( x_0 \right)}{2} \left( x - x_0 \right)^2 + \cdots + \frac{f^{\left( n \right)} \left( x_0 \right)}{n!} \left( x - x_0 \right)^n \\
-                            & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
+        P_n\left( x \right) & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} x^k.
     \end{align*}
 \end{definition}
 The Taylor polynomial can be used to approximate a function \(f\) for values of \(x\) near \(x_0\), the following
@@ -376,12 +378,122 @@ This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and therefor
 Another popular method that agrees with the Taylor method for high orders is the Runge-Kutta method.
 It is a fourth order method, referred to as RK4. It has the following form:
 \begin{align*}
-    w_0 & = \alpha \\
+    w_0       & = \alpha                                                     \\
     w_{i + 1} & = w_i + \frac{1}{6} \left( k_1 + 2 k_2 + 2 k_3 + k_4 \right) \\
-    k_1 & = h f\left( t_i,\: w_i \right) \\
-    k_2 & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_1}{2} \right) \\
-    k_3 & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_2}{2} \right) \\
-    k_4 & = h f\left( t_i + h,\: w_i + k_3 \right)
+    k_1       & = h f\left( t_i,\: w_i \right)                               \\
+    k_2       & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_1}{2} \right) \\
+    k_3       & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_2}{2} \right) \\
+    k_4       & = h f\left( t_i + h,\: w_i + k_3 \right)
 \end{align*}
 for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^4 \right)\), and the global error is \(\mathcal{O}\left( h^3 \right)\).
+\section{Interpolation}
+\begin{definition}[Interpolating function]
+    A function \(f\) is said to interpolate the data points
+    \begin{equation*}
+        \left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right),\: \dots,\: \left( x_n,\: y_n \right) \right\}
+    \end{equation*}
+    if it satisfies \(f\left( x_0 \right) = y_0\), \(f\left( x_1 \right) = y_1\), \dots,  \(f\left( x_n \right) = y_n\).
+\end{definition}
+There are many kinds of functions that may satisfy an interpolating function, however, the most common choice is a
+\textbf{polynomial}.
+
+The following theorem addresses the existence and uniqueness of interpolating polynomials, given distinct \(x\)-values, or \textbf{abscissas}.
+\begin{theorem}
+    Let the abscissas \(x_0\), \(x_1\), \dots, \(x_n\) be distinct and the function values \(y_0\), \(y_1\), \dots, \(y_n\)
+    be given. Then there exists a \textbf{unique} interpolating polynomial \(P_n\) of degree (at most) \(n\), such that
+    \(P_n\left( x_i \right) = y_i\) for \(i \in \interval{0}{n}\).
+\end{theorem}
+The following methods are used to find the interpolating polynomial.
+\subsection{Lagrange Form}
+\subsubsection{Two Data Points}
+Consider constructing the interpolating polynomial through the points \(\left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right) \right\}\).
+We require a polynomial of degree \(1\) to satisfy the interpolating function. Let \(P_1\left( x \right) = a_0 + a_1 x\) satisfy the following
+conditions:
+\begin{align*}
+    P_1\left( x_0 \right) & = y_0 & \iff a_0 + a_1 x_0 & = y_0 \\
+    P_1\left( x_1 \right) & = y_1 & \iff a_0 + a_1 x_1 & = y_1
+\end{align*}
+solving this linear system of equations, we obtain the following:
+\begin{align*}
+    a_0 & = \frac{x_1 y_0 - x_0 y_1}{x_1 - x_0} \\
+    a_1 & = \frac{y_1 - y_0}{x_1 - x_0}
+\end{align*}
+so that
+\begin{equation*}
+    P_1\left( x \right) = \frac{x_1 y_0 - x_0 y_1}{x_1 - x_0} + \frac{y_1 - y_0}{x_1 - x_0} x.
+\end{equation*}
+To generalise this process, consider the following rearrangement of the polynomial:
+\begin{align*}
+    P_1\left( x \right) & = \frac{x_1 y_0 - x_0 y_1}{x_1 - x_0} + \frac{y_1 - y_0}{x_1 - x_0} x                                                              \\
+                        & = \frac{x_1 y_0}{x_1 - x_0} - \frac{x_0 y_1}{x_1 - x_0} + \frac{y_1 x}{x_1 - x_0} - \frac{y_0 x}{x_1 - x_0}                        \\
+                        & = \left( \frac{-x}{x_1 - x_0} + \frac{x_1}{x_1 - x_0} \right) y_0 + \left( \frac{x}{x_1 - x_0} - \frac{x_0}{x_1 - x_0} \right) y_1 \\
+                        & = \frac{x - x_1}{x_0 - x_1} y_0 + \frac{x - x_0}{x_1 - x_0} y_1.
+\end{align*}
+This form clearly shows that each point satisfies the interpolating function.
+\begin{itemize}
+    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\), and \textbf{0} when \(x = x_1\).
+    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\), and \textbf{1} when \(x = x_1\).
+\end{itemize}
+we can then write \(P_1\left( x \right)\) as
+\begin{equation*}
+    P_1\left( x \right) = L_{1,\: 0}\left( x \right) y_0 + L_{1,\: 1}\left( x \right) y_1
+\end{equation*}
+where \(L_{1,\: 0}\left( x \right) = \frac{x - x_1}{x_0 - x_1}\) and \(L_{1,\: 1}\left( x \right) = \frac{x - x_0}{x_1 - x_0}\)
+are the Lagrange basis functions. The first index corresponds to the degree
+of the polynomial, and the second index corresponds to the index of the
+point for which it is the coefficient of.
+\subsubsection{Three Data Points}
+For three data points, consider the reverse problem:
+\begin{itemize}
+    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\), \textbf{0} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\), \textbf{1} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+    \item The coefficient of \(y_2\) is \textbf{0} when \(x = x_0\), \textbf{0} when \(x = x_1\), and \textbf{1} when \(x = x_2\).
+\end{itemize}
+then solve for the Lagrange basis functions:
+\begin{align*}
+    P_2\left( x \right) & = L_{2,\: 0}\left( x \right) y_0 + L_{2,\: 1}\left( x \right) y_1 + L_{2,\: 2}\left( x \right) y_2                                                                                                                                                                                                                                   \\
+                        & = \frac{\left( x - x_1 \right)\left( x - x_2 \right)}{\left( x_0 - x_1 \right)\left( x_0 - x_2 \right)} y_0 + \frac{\left( x - x_0 \right)\left( x - x_2 \right)}{\left( x_1 - x_0 \right)\left( x_1 - x_2 \right)} y_1 + \frac{\left( x - x_0 \right)\left( x - x_1 \right)}{\left( x_2 - x_0 \right)\left( x_2 - x_1 \right)} y_2.
+\end{align*}
+\subsubsection{Arbitrary Number of Points}
+Given the abscissas \(\left\{ x_0,\: x_1,\: \dots,\: x_n \right\}\) and function values
+\(\left\{ y_0,\: y_1,\: \dots,\: y_n \right\}\) the polynomial \(P_n\left( x \right)\) defined by:
+\begin{equation*}
+    P_n\left( x \right) = \sum_{i = 0}^n L_{n,\: i}\left( x \right) y_i
+\end{equation*}
+where
+\begin{equation*}
+    L_{n,\: i}\left( x \right) = \prod_{j = 0,\: j \neq i}^n \frac{x - x_j}{x_i - x_j}
+\end{equation*}
+is called the \textbf{Lagrange form} of the interpolating polynomial.
+
+This arises from the fact that we can construct the Lagrange form using
+\begin{align*}
+    P_n\left( x \right) & = L_{n,\: 0}\left( x \right) y_0 + L_{n,\: 1}\left( x \right) y_1 + \cdots + L_{n,\: n}\left( x \right) y_n \\
+                        & = \sum_{i = 0}^n L_{n,\: i}\left( x \right) y_i
+\end{align*}
+where the Lagrange basis function is as follows:
+\begin{align*}
+    L_{n,\: i}\left( x \right) & = \frac{\left( x - x_0 \right)\left( x - x_1 \right) \cdots \left( x - x_{i - 1} \right) \left( x - x_{i + 1} \right) \cdots \left( x - x_n \right)}{\left( x_i - x_0 \right)\left( x_i - x_1 \right) \cdots \left( x_i - x_{i - 1} \right) \left( x_i - x_{i + 1} \right) \cdots \left( x_i - x_n \right)} \\
+                               & = \prod_{j = 0,\: j \neq i}^n \frac{x - x_j}{x_i - x_j}
+\end{align*}
+Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\), and \textbf{0} for all other abscissa:
+\begin{equation*}
+    L_{n,\: i}\left( x_j \right) = \delta_{ij}
+\end{equation*}
+\section{Error in Polynomial Approximation}
+\begin{theorem}[Lagrange form of remainder]
+    Suppose that \(f\) is \(n + 1\) times continuously \linebreak differentiable on \(\interval{a}{b}\)\footnote{\(a = \min \left( x_i \right)\) and \(b = \max \left( x_i \right)\).}
+    with distinct abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and interpolating polynomial
+    \(P_n\left( x \right)\).
+
+    Then for all \(x \in \interval{a}{b}\) there exists a \(c \in \interval{a}{b}\) such that
+    \begin{equation*}
+        f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right).
+    \end{equation*}
+    where the term
+    \begin{equation*}
+        R_n\left( x \right) = \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right)
+    \end{equation*}
+    is called the Lagrange form of the remainder term for \(P_n\left( x \right)\).
+\end{theorem}
 \end{document}
