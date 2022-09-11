@@ -180,12 +180,12 @@ which is based on \(\mathbb{F}\left( 2,\: 53,\: -1022,\: 1023 \right)\).
 The basic properties of this format are summarised in the following table.
 \begin{table}[H]
     \centering
-    \begin{tabular}{l | c}
+    \begin{tabular}{l | c} % chktex 44
         \toprule
         Unit roundoff                          & \(u = 1.11 \times 10^{-16}\)               \\
         Largest representable positive number  & \(1.80 \times 10^{308}\)                   \\
         Smallest representable positive number & \(2.23 \times 10^{-308}\)                  \\
-        Special values                         & \(\pm 0\), \(\pm \infty\), \lstinline!NaN! \\
+        Special values                         & \(\pm 0\), \(\pm \infty\), \lstinline!NaN! \\ % chktex 13
         \bottomrule
     \end{tabular}
     % \caption{} % \label{}
@@ -480,7 +480,7 @@ Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\)
 \begin{equation*}
     L_{n,\: i}\left( x_j \right) = \delta_{ij}
 \end{equation*}
-\section{Error in Polynomial Approximation}
+\subsection{Error in Polynomial Approximation}
 \begin{theorem}[Lagrange form of remainder]
     Suppose that \(f\) is \(n + 1\) times continuously \linebreak differentiable on \(\interval{a}{b}\)\footnote{\(a = \min \left( x_i \right)\) and \(b = \max \left( x_i \right)\).}
     with distinct abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and interpolating polynomial
@@ -497,14 +497,13 @@ Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\)
     is called the Lagrange form of the remainder term for \(P_n\left( x \right)\).
 \end{theorem}
 \subsection{Newton's Divided Difference Form}
-\subsection{Motivation}
 While the Lagrange form is straightforward to analyse,
 it is not ideal for numerical computation.
 Suppose that we have found the interpolating polynomial through
 \(n + 1\) points, and are now interested in including a new point
 in the interpolation. This requires us to recompute the Lagrange
 basis functions for all \(n + 2\) points.
-\subsection{Derivation}
+\subsubsection{Derivation}
 The Newton form of the interpolating polynomial is given by:
 \begin{equation*}
     P_n\left( x \right) = a_0 + a_1 \left( x - x_0 \right) + a_2 \left( x - x_0 \right) \left( x - x_1 \right) + \cdots + a_n \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_{n - 1} \right)
@@ -568,9 +567,52 @@ so that
                                & + f\left[ x_0,\: x_1,\: x_2,\: \dots,\: x_n \right] \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_{n - 1} \right).
                           \end{aligned}
 \end{align*}
-Therefore given the abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the ordinates \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined by
-\begin{equation*}
-    P_n\left( x \right) = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)
-\end{equation*}
-is called the \textbf{Newton divided difference form of the interpolating polynomial}.
+\begin{definition}[Newton's divided difference form]
+    Given the abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the function values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined by
+    \begin{equation*}
+        P_n\left( x \right) = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)
+    \end{equation*}
+    is called the \textbf{Newton divided difference form of the interpolating polynomial}.
+\end{definition}
+\subsection{Newton's Forward Difference Form}
+In the case where abscissas are equally spaced, the Newton divided difference form can be simplified.
+\begin{definition}[Forward difference operator]
+    The \textbf{forward difference operator} \(\Delta\) is defined by:
+    \begin{equation*}
+        \Delta y_i = y_{i + 1} - y_i
+    \end{equation*}
+    Higher order forward differences are defined by repeated application:
+    \begin{align*}
+        \Delta^2 y_i & = \Delta \left( \Delta y_i \right) = \Delta \left( y_{i + 1} - y_i \right) = \Delta y_{i + 1} - \Delta y_i = y_{i + 2} - y_{i + 1} - \left( y_{i + 1} - y_i \right) \\
+                     & = y_{i + 2} - 2y_{i + 1} + y_i                                                                                                                                      \\
+        \Delta^3 y_i & = \Delta \left( \Delta^2 y_i \right) = \Delta \left( y_{i + 2} - 2y_{i + 1} + y_i \right) = \Delta y_{i + 2} - \Delta y_{i + 1} - \Delta y_i                        \\
+                     & = y_{i + 3} - 3y_{i + 2} + 3y_{i + 1} - y_i
+    \end{align*}
+\end{definition}
+\begin{theorem}[Simplified divided differences]
+    If \(x_0,\: x_1,\: \dots,\: x_n\) are equally spaced, then
+    \begin{equation*}
+        f\left[ x_0,\: x_1,\: \dots,\: x_k \right] = \frac{\Delta^k y_0}{k! h^k}
+    \end{equation*}
+    where \(h = x_{i + 1} - x_i\) is the spacing between the abscissas.
+\end{theorem}
+Using the above theorem and making the substitution \(x = x_0 + sh\) (so that \(x_i = x_0 + ih\)) where \(s = \frac{x - x_0}{h}\), we can rewrite the Newton divided difference form as
+\begin{align*}
+    P_n\left( x \right) & = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)                                                 \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( \left( x_0 + sh \right) - \left( x_0 + ih \right) \right) \right)                      \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right)h \right)                                                                 \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right) \prod_{i = 0}^{k - 1} h \right)                                          \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right) h^k \right)                                                              \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k!} s\left( s - 1 \right) \left( s - 2 \right) \cdots \left( s - \left( k - 1 \right) \right)                                      \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k!} s\left( s - 1 \right) \left( s - 2 \right) \cdots \left( s - k + 1 \right) \frac{\left( s - k \right)!}{\left( s - k \right)!} \\
+                        & = \sum_{k = 0}^n \Delta^k y_0 \frac{s!}{k!\left( s - k \right)!}                                                                                                        \\
+                        & = \sum_{k = 0}^n \binom{s}{k} \Delta^k y_0
+\end{align*}
+\begin{definition}[Newton's forward difference form]
+    Given equally spaced abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the function values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined by
+    \begin{equation*}
+        P_n\left( x \right) = \sum_{k = 0}^n \binom{\frac{x - x_0}{h}}{k} \Delta^k y_0
+    \end{equation*}
+    where \(s = \frac{x - x_0}{h}\) with spacing \(h = x_{i + 1} - x_i\), is called the \textbf{Newton forward difference form of the interpolating polynomial}.
+\end{definition}
 \end{document}
