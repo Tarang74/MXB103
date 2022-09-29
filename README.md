@@ -25,7 +25,6 @@ This repository provides **lecture notes** and **exam notes** for **MXB103 - Int
 1. Preliminaries
 2. Ordinary Differential Equations
 3. Interpolation
-4. Error in Polynomial Approximation
 
 ---
 
