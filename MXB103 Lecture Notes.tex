@@ -690,4 +690,58 @@ will \textbf{converge} to the fixed-point of \(g\) and thus solve the equation \
         \left( g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b} \right) \land \left( \exists k \in \R^+ : k < 1 : \abs*{g'\left( x \right)} \leq k : \forall x \in \ointerval{a}{b} \right) \implies \exists! p \in \interval{a}{b} : g\left( p \right) = p.
     \end{equation*}
 \end{theorem}
+\subsection{Newton's Method}
+Newton's method is one of the most widely used methods for solving nonlinear equations.
+It approximates the solution of \(f\left( x \right) = 0\) by finding the root of the tangent line to \(f\) at
+each iteration. The next iterate is then the intersection of the tangent line with the \(x\)-axis.
+
+The first degree Taylor polynomial of \(f\) at \(x_n\) gives us the tangent line to \(f\) at \(x_n\):
+\begin{equation*}
+    f\left( x \right) \approx f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right)
+\end{equation*}
+if we solve this equation, we find:
+\begin{align*}
+    f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) & = 0 \\
+    f'\left( x_n \right) \left( x - x_n \right) & = -f\left( x_n \right) \\
+    x - x_n & = -\frac{f\left( x_n \right)}{f'\left( x_n \right)} \\
+    x & = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+\end{align*}
+This gives us the sequence:
+\begin{equation*}
+    x_{n + 1} = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+\end{equation*}
+for \(n \geq 0\).
+\subsection{Secant Method}
+While Newton's method converges rapidly, it requires the derivative of \(f\) to be known. The secant
+method approximates the derivative of \(f\) by using the slope of the secant line between two points,
+\(\left( x_{n - 1},\: f\left( x_{n - 1} \right)\right)\) and \(\left( x_n,\: f\left( x_n \right) \right)\).
+That is, \(f'\left( x_n \right)\) is approximated by
+\begin{equation*}
+    f'\left( x_n \right) \approx \frac{f\left( x_n \right) - f\left( x_{n - 1} \right)}{x_n - x_{n - 1}}.
+\end{equation*}
+This gives us the sequence
+\begin{equation*}
+    x_{n + 1} = x_n - f\left( x_n \right) \frac{x_n - x_{n - 1}}{f\left( x_n \right) - f\left( x_{n - 1} \right)}
+\end{equation*}
+for \(n \geq 1\). Note that two initial values are required to start the iteration.
+\subsection{Convergence of Fixed-Point Iteration}
+When the fixed-point iteration converges, the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+\begin{equation*}
+    \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}
+\end{equation*}
+where \(p\) is the fixed-point of \(g\) and \(0 < \lambda < 1\). Therefore the \textbf{error} in the solution decreases
+by a factor of \(\lambda\) in the long run of each iteration.
+
+When Newton's method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+\begin{equation*}
+    \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^2
+\end{equation*}
+for \(\lambda > 0\). This means that the number of correct digits approximately \textit{doubles} with each iteration.
+
+When the secant method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+\begin{equation*}
+    \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_{n - 1} - p}^r
+\end{equation*}
+for \(\lambda > 0\) and \(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio).
+Thus the secant method has a slower \textit{rate of convergence} than Newton's method.
 \end{document}
