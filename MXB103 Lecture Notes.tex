@@ -615,4 +615,79 @@ Using the above theorem and making the substitution \(x = x_0 + sh\) (so that \(
     \end{equation*}
     where \(s = \frac{x - x_0}{h}\) with spacing \(h = x_{i + 1} - x_i\), is called the \textbf{Newton forward difference form of the interpolating polynomial}.
 \end{definition}
+\section{Root Finding}
+Given a function \(f\left( x \right)\), it is often useful to find the values of \(x\) for which \(f\left( x \right) = 0\).
+These values are called \textbf{roots} of that function. The process of finding roots is very straightforward
+for linear functions of the form \(f\left( x \right) = a x + b\), but becomes more complicated for nonlinear functions.
+In these instances, it is often not possible to find the roots analytically, and numerical methods must be used.
+
+These methods are called \textbf{root finding methods}.
+\subsection{Bisection Method}
+The bisection method is a simple method based on the intermediate value theorem.
+\begin{theorem}[Intermediate Value Theorem]
+    Let \(f\) be a continuous function on the interval \(\interval{a}{b}\),
+    and let \(k\) be any number between \(f\left( a \right)\) and \(f\left( b \right)\) inclusive.
+    Then, there exists a number \(c\) in \(\interval{a}{b}\) such that \(f\left( c \right) = k\).
+    \begin{equation*}
+        f\left( a \right) \leq k \leq f\left( b \right) \iff \exists c \in \interval{a}{b} : f\left( c \right) = k.
+    \end{equation*}
+\end{theorem}
+\begin{corollary}
+    Let \(f\) be a continuous function on the interval \(\interval{a}{b}\).
+    If \(f\left( a \right) f\left( b \right) < 0\) (\(f\left( a \right)\) and \(f\left( b \right)\) have opposite signs),
+    then there exists a number \(c\) in \(\interval{a}{b}\) such that \(f\left( c \right) = 0\).
+    \begin{equation*}
+        f\left( a \right) f\left( b \right) < 0 \iff \exists c \in \interval{a}{b} : f\left( c \right) = 0.
+    \end{equation*}
+\end{corollary}
+The bisection method is based on the following algorithm:
+\begin{enumerate}
+    \item Find an interval \(\interval{a}{b}\) such that \(f\left( a \right) f\left( b \right) < 0\)\footnote{This procedure is known as \textbf{bracketing} the root.}.
+    \item Find the midpoint \(p\) of the interval \(\interval{a}{b}\) and evaluate \(f\left( p \right)\).
+          \begin{itemize}
+              \item If \(f\left( p \right) = 0\), then \(c\) is a root of \(f\).
+              \item Otherwise, the root lies in either \(\interval{a}{c}\) or \(\interval{c}{b}\).
+                    \begin{itemize}
+                        \item If \(f\left( a \right) f\left( p \right) < 0\), then \(p\) becomes the new \(b\) and the root lies in \(\interval{a}{p}\).
+                        \item If \(f\left( p \right) f\left( b \right) < 0\), then \(p\) becomes the new \(a\) and the root lies in \(\interval{p}{b}\).
+                    \end{itemize}
+          \end{itemize}
+    \item Go to step 2 and repeat until a satisfactory approximation of the root is found.
+\end{enumerate}
+This can be expressed in a table format:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccccccc}
+        \toprule
+        \textbf{Iteration} & \(a\)      & \(b\)      & \(p = \frac{a + b}{2}\)       & \(f\left( a \right)\)   & \(f\left( b \right)\)   & \(f\left( p \right)\)   \\
+        \midrule
+        1                  & \(a_0\)    & \(b_0\)    & \(p_0 = \frac{a_0 + b_0}{2}\) & \(f\left( a_0 \right)\) & \(f\left( b_0 \right)\) & \(f\left( p_0 \right)\) \\
+        2                  & \(a_1\)    & \(b_1\)    & \(p_1 = \frac{a_1 + b_1}{2}\) & \(f\left( a_1 \right)\) & \(f\left( b_1 \right)\) & \(f\left( p_1 \right)\) \\
+        \(\vdots\)         & \(\vdots\) & \(\vdots\) & \(\vdots\)                    & \(\vdots\)              & \(\vdots\)              & \(\vdots\)              \\
+        \bottomrule
+    \end{tabular}
+    % \caption{} % \label{}
+\end{table}
+\subsection{Fixed-Point Iteration}
+Fixed-point iteration is based on rewriting \(f\left( x \right) = 0\) as
+\begin{equation*}
+    x = g\left( x \right)
+\end{equation*}
+The equation is solved if we can find a number \(p\) such that \(g\left( p \right) = p\),
+called the \textbf{fixed-point} of \(g\).
+
+Using an initial guess, \(x_0\), and computing \(x_2 = g\left( x_1 \right)\), \(x_3 = g\left( x_2 \right)\), and so on,
+we can approximate the fixed-point of \(g\). Under certain conditions, the \textbf{sequence}, \(\left\{ x_n \right\}\),
+will \textbf{converge} to the fixed-point of \(g\) and thus solve the equation \(f\left( x \right) = 0\).
+\begin{theorem}[Brouwer's fixed-point theorem]
+    Let \(g\) be a continuous function on \(\interval{a}{b}\) with \(g\left( x \right)\) in \(\interval{a}{b}\)
+    for all \(x\). Furthermore, let \(g\) be differentiable on \(\ointerval{a}{b}\) and let a positive constant
+    \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) for all \(x\) in \(\ointerval{a}{b}\).
+
+    Then, \(g\) has a unique fixed-point in \(\interval{a}{b}\), and the iteration \(x_{n+1} = g\left( x_n \right)\)
+    will converge to this point for all initial guesses \(x_0\) in \(\interval{a}{b}\).
+    \begin{equation*}
+        \left( g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b} \right) \land \left( \exists k \in \R^+ : k < 1 : \abs*{g'\left( x \right)} \leq k : \forall x \in \ointerval{a}{b} \right) \implies \exists! p \in \interval{a}{b} : g\left( p \right) = p.
+    \end{equation*}
+\end{theorem}
 \end{document}
