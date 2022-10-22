@@ -26,6 +26,8 @@ This repository provides **lecture notes** and **exam notes** for **MXB103 - Int
 2. Ordinary Differential Equations
 3. Interpolation
 4. Root Finding
+5. Numerical Differentiation
+6. Numerical Integration
 
 ---
 
