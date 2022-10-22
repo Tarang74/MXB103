@@ -229,7 +229,7 @@ Suppose we have a function \(f\left( x \right)\) that is \(n\) differentiable at
 \begin{definition}[Taylor polynomial]
     The \textbf{Taylor polynomial} of degree \(n\) of \(f\), centred at \(x_0\) is defined by
     \begin{align*}
-        P_n\left( x \right) & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} x^k.
+        P_n\left( x \right) & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
     \end{align*}
 \end{definition}
 The Taylor polynomial can be used to approximate a function \(f\) for values of \(x\) near \(x_0\), the following
@@ -701,10 +701,10 @@ The first degree Taylor polynomial of \(f\) at \(x_n\) gives us the tangent line
 \end{equation*}
 if we solve this equation, we find:
 \begin{align*}
-    f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) & = 0 \\
-    f'\left( x_n \right) \left( x - x_n \right) & = -f\left( x_n \right) \\
-    x - x_n & = -\frac{f\left( x_n \right)}{f'\left( x_n \right)} \\
-    x & = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+    f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) & = 0                                                      \\
+    f'\left( x_n \right) \left( x - x_n \right)                       & = -f\left( x_n \right)                                   \\
+    x - x_n                                                           & = -\frac{f\left( x_n \right)}{f'\left( x_n \right)}      \\
+    x                                                                 & = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
 \end{align*}
 This gives us the sequence:
 \begin{equation*}
@@ -744,4 +744,155 @@ When the secant method converges to the root \(p\), the sequence it generates, \
 \end{equation*}
 for \(\lambda > 0\) and \(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio).
 Thus the secant method has a slower \textit{rate of convergence} than Newton's method.
+\section{Numerical Differentiation}
+\subsection{First Derivative}
+Often no explicit derivative of a function \(f\) can be found, for example when given a table of
+values for \(f\left( x \right)\). In this case, the Taylor polynomial can be used.
+
+Provided the function \(f\) is sufficiently differentiable, we can express the Taylor polynomial of \(f\) at \(x_0\) as
+\begin{equation*}
+    f\left( x \right) = f\left( x_0 \right) + f'\left( x_0 \right) \left( x - x_0 \right) + \frac{f''\left( x_0 \right)}{2!} \left( x - x_0 \right)^2 + \cdots + \frac{f^{\left( n \right)}\left( x_0 \right)}{n!} \left( x - x_0 \right)^n + \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}.
+\end{equation*}
+If we let \(h = x - x_0\), we can write this as
+\begin{equation*}
+    f\left( x_0 + h \right) = f\left( x_0 \right) + h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) + \cdots + \frac{h^n}{n!} f^{\left( n \right)}\left( x_0 \right) + \frac{h^{n + 1}}{\left( n + 1 \right)!} f^{\left( n + 1 \right)}\left( c \right).
+\end{equation*}
+where \(c\) is between \(x_0\) and \(x_0 + h\).
+\subsubsection{First Order Approximations}
+Using the Taylor polynomial of degree 1, we can obtain a first order approximation for \(f'\left( x_0 \right)\).
+The formula
+\begin{equation*}
+    f'\left( x_0 \right) = \frac{f\left( x_0 + h \right) - f\left( x_0 \right)}{h} - \frac{h}{2} f''\left( c \right)
+\end{equation*}
+is known as the \textbf{first order forward difference} for \(f'\left( x_0 \right)\). Replacing
+\(h\) with \(-h\) gives the \textbf{first order backward difference} for \(f'\left( x_0 \right)\). The
+\begin{equation*}
+    f'\left( x_0 \right) = \frac{f\left( x_0 \right) - f\left( x_0 - h \right)}{2h} + \frac{h}{2} f''\left( c \right).
+\end{equation*}
+In both cases, the error term is \(\mathcal{O}\left( h \right)\).
+\subsubsection{Second Order Approximations}
+Consider the Taylor polynomial of degree 2 for \(f\left( x_0 + h \right)\) and \(f\left( x_0 - h \right)\):
+\begin{align*}
+    f\left( x_0 + h \right) & = f\left( x_0 \right) + h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) + \frac{h^3}{3!} f'''\left( c_1 \right) \\
+    f\left( x_0 - h \right) & = f\left( x_0 \right) - h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) - \frac{h^3}{3!} f'''\left( c_2 \right)
+\end{align*}
+where \(c_1\) is between \(x_0\) and \(x_0 + h\), and \(c_2\) is between \(x_0 - h\) and \(x_0\).
+Subtracting the two equations gives
+\begin{align*}
+    f\left( x_0 + h \right) - f\left( x_0 - h \right) & = 2h f'\left( x_0 \right) + \frac{h^3}{3!} \left( f'''\left( c_1 \right) + f'''\left( c_2 \right) \right) \\
+    f'\left( x_0 \right)                              & = \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} - \frac{h^2}{6} f'''\left( c \right)
+\end{align*}
+where \(f'''\left( c \right) = \frac{f''\left( c_1 \right) + f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
+and \(c\) is between \(x_0 - h\) and \(x_0 + h\).
+This is known as the \textbf{second order central difference} approximation for \(f'\left( x_0 \right)\). The error term is \(\mathcal{O}\left( h^2 \right)\).
+\subsection{Second Derivative}
+It is also possible to obtain a second order central difference approximation for the second derivative, \(f''\left( x_0 \right)\) using the Taylor polynomial of degree 3
+for \(f\left( x_0 + h \right)\) and \(f\left( x_0 - h \right)\):
+\begin{align*}
+    f\left( x_0 + h \right) & = f\left( x_0 \right) + h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) + \frac{h^3}{3!} f'''\left( x \right) + \frac{h^4}{4!} f^{\left( 4 \right)}\left( c_1 \right) \\
+    f\left( x_0 - h \right) & = f\left( x_0 \right) - h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) - \frac{h^3}{3!} f'''\left( x \right) + \frac{h^4}{4!} f^{\left( 4 \right)}\left( c_2 \right)
+\end{align*}
+where \(c_1\) and \(c_2\) are between \(x_0\) and \(x_0 + h\) and between \(x_0 - h\) and \(x_0\), respectively.
+Adding the two equations gives
+\begin{align*}
+    f\left( x_0 + h \right) + f\left( x_0 - h \right) & = 2f\left( x_0 \right) + h^2 f''\left( x_0 \right) + \frac{h^4}{4!} \left( f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right) \right) \\
+    f''\left( x_0 \right)                             & = \frac{f\left( x_0 + h \right) - 2f\left( x_0 \right) + f\left( x_0 - h \right)}{h^2} - \frac{h^2}{12} f^{\left( 4 \right)}\left( c \right)
+\end{align*}
+where \(f^{\left( 4 \right)}\left( c \right) = \frac{f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
+and \(c\) is between \(x_0 - h\) and \(x_0 + h\).
+\subsection{Instability}
+When performing numerical differentiation, it is important to realise that as \(h\) decreases, the first and second derivative formulas will require the
+subtraction of nearly equal values, which can lead to \textbf{numerical instability}. It is therefore important to choose a value of \(h\)
+so that it is not too large, which results in inaccuracies due to truncation error, or too small, which results in inaccuracies due to roundoff error.
+\section{Numerical Integration}
+Indefinite integration is defined as the anti-derivative of a function \(f\), denoted by \(F\left( x \right)\),
+such that
+\begin{equation*}
+    F'\left( x \right) = f\left( x \right).
+\end{equation*}
+The definite integral of \(f\) over the interval \(\interval{a}{b}\) is defined as
+\begin{equation*}
+    I = \int_a^b f\left( x \right) \odif{x}.
+\end{equation*}
+Numerical integration, also known as \textbf{quadrature}, is concerned with approximating the definite integral of a function \(f\) over a given interval \(\interval{a}{b}\).
+It approximates the integral \(\int_a^b f\left( x \right) \odif{x}\) by a weighted sum of function values.
+\begin{equation*}
+    \int_a^b f\left( x \right) \odif{x} \approx \sum_{i = 0}^n w_i f\left( x_i \right)
+\end{equation*}
+where \(w_i\) are the weights and \(x_i\) are the abscissas. The primary rule for developing integral approximations is the interpolating polynomial.
+\subsection{Trapezoidal Rule}
+Consider dividing the interval \(\interval{a}{b}\) into \(n\) subintervals, each of width \(h\). Then \(h = \frac{b - a}{n}\),
+and let \(x_i = a + ih\) for \(i = 0, 1, \ldots, n\), so that \(x_0 = a\) and \(x_n = b\).
+
+The \textbf{trapezoidal rule} uses the interpolating polynomial of degree 1 to approximate \(f\left( x \right)\) over each subinterval \(\interval{x_i}{x_{i + 1}}\).
+Consider the interpolating polynomial which passes through the points \(\interval{x_0}{y_0}\) and \(\interval{x_1}{y_1}\) where
+\(y_0 = f\left( x_0 \right)\) and \(y_1 = f\left( x_1 \right)\). The interpolating polynomial is
+\begin{equation*}
+    P_1\left( x \right) = y_0 + s \Delta{y_0}
+\end{equation*}
+using the Newton forward difference form. Using the change of variables \(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of integration become \(\interval{0}{1}\).
+The integral of \(P_1\) over \(\interval{0}{1}\) is
+\begin{align*}
+    \int_{x_0}^{x_1} f\left( x \right) \odif{x} & = \int_0^1 P_1\left( x \right) \odif{x}                               \\
+                                                & = \int_0^1 \left( y_0 + s \Delta{y_0} \right) h \odif{s}              \\
+                                                & = h \int_0^1 y_0 + s \Delta{y_0} \odif{s}                             \\
+                                                & = h \left[ y_0 s + \left( y_1 - y_0 \right) \frac{s^2}{2} \right]_0^1 \\
+                                                & = h \left[ y_0 + \frac{y_1 - y_0}{2} \right]                          \\
+                                                & = \frac{h}{2} \left( y_0 + y_1 \right)
+\end{align*}
+It follows that:
+\begin{equation*}
+    \int_{x_{i - 1}}^{x_i} f\left( x \right) \odif{x} \approx \frac{h}{2} \left[ f\left( x_{i - 1} \right) + f\left( x_i \right) \right]
+\end{equation*}
+for all \(i = 1, 2, \ldots, n\). The trapezoidal rule is therefore
+\begin{align*}
+    \int_a^b f\left( x \right) \odif{x} & = \int_{x_0}^{x_1} f\left( x \right) \odif{x} + \int_{x_1}^{x_2} f\left( x \right) \odif{x} + \cdots + \int_{x_{n - 1}}^{x_n} f\left( x \right) \odif{x}                                                                                  \\
+                                        & \approx \frac{h}{2} \left[ f\left( x_0 \right) + f\left( x_1 \right) \right] + \frac{h}{2} \left[ f\left( x_1 \right) + f\left( x_2 \right) \right] + \cdots + \frac{h}{2} \left[ f\left( x_{n - 1} \right) + f\left( x_n \right) \right] \\
+                                        & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 f\left( x_1 \right) + 2 f\left( x_2 \right) + \cdots + 2 f\left( x_{n - 1} \right) + f\left( x_n \right) \right]                                                                             \\
+                                        & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right]
+\end{align*}
+Therefore, for a twice continuously differentiable function \(f\) on \(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) and \(x_i = a + i h\), for \(i = 0, 1, \ldots, n\),
+\begin{equation*}
+    \int_a^b f\left( x \right) \odif{x} = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right) h^2}{12} f''\left( c \right)
+\end{equation*}
+where \(c\) is between \(a\) and \(b\). The error in the trapezoidal rule is \(\mathcal{O}\left( h^2 \right)\), and this method is exact for polynomials of degree one or less, as the error term is zero.
+\subsection{Simpson's Rule}
+The \textbf{Simpson's rule} uses the interpolating polynomial of degree 2 to approximate \(f\left( x \right)\) over each subinterval \(\interval{x_i}{x_{i + 2}}\).
+Consider the interpolating polynomial which passes through the points \(\interval{x_0}{y_0}\), \(\interval{x_1}{y_1}\), and \(\interval{x_2}{y_2}\) where
+\(y_i = f\left( x_i \right)\). The interpolating polynomial is
+\begin{equation*}
+    P_2\left( x \right) = y_0 + s \Delta{y_0} + \frac{s\left( s - 1 \right)}{2} \Delta^2{y_0}
+\end{equation*}
+using the Newton forward difference form. Using the change of variables \(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of integration become \(\interval{0}{2}\).
+The integral of \(P_2\) over \(\interval{0}{2}\) is
+\begin{align*}
+    \int_{x_0}^{x_2} f\left( x \right) \odif{x} & = \int_0^2 P_2\left( x \right) \odif{x}                                                                                                                  \\
+                                                & = \int_0^2 \left( y_0 + s \Delta{y_0} + \frac{s\left( s - 1 \right)}{2} \Delta^2{y_0} \right) h \odif{s}                                                 \\
+                                                & = h \int_0^1 y_0 + s \Delta{y_0} + \left( \frac{1}{2} s^2 - \frac{1}{2} s \right) \Delta^2{y_0} \odif{s}                                                 \\
+                                                & = h \left[ y_0 s + \left( y_1 - y_0 \right) \frac{s^2}{2} + \left( \frac{1}{6} s^3 - \frac{1}{4} s^2 \right) \left( y_2 - 2y_1 + y_0 \right) \right]_0^2 \\
+                                                & = h \left[ 2 y_0 + 2 \left( y_1 - y_0 \right) + \left( \frac{8}{6} - \frac{1}{4} 4 \right) \left( y_2 - 2y_1 + y_0 \right) \right]                       \\
+                                                & = \frac{h}{3} \left( y_0 + 4 y_1 + y_2 \right)
+\end{align*}
+It follows that:
+\begin{equation*}
+    \int_{x_{2i - 2}}^{x_{2i}} f\left( x \right) \odif{x} \approx \frac{h}{3} \left[ f\left( x_{2i - 2} \right) + 4f\left( x_{2i - 1} \right) + f\left( x_{2i} \right) \right]
+\end{equation*}
+for all \(i = 1, 2, \ldots, n/2\). Simpson's rule is therefore
+\begin{align*}
+    \int_a^b f\left( x \right) \odif{x} & = \int_{x_0}^{x_2} f\left( x \right) \odif{x} + \int_{x_2}^{x_4} f\left( x \right) \odif{x} + \cdots + \int_{x_{n - 2}}^{x_n} f\left( x \right) \odif{x}                                                         \\
+                                        & \approx \begin{aligned}[t]
+                                                       & \frac{h}{3} \left[ f\left( x_0 \right) + 4f\left( x_1 \right) + f\left( x_2 \right) \right] + \frac{h}{3} \left[ f\left( x_2 \right) + 4f\left( x_3 \right) + f\left( x_4 \right) \right] + \cdots \\
+                                                       & + \frac{h}{3} \left[ f\left( x_{n - 2} \right) + 4f\left( x_{n - 1} \right) + f\left( x_n \right) \right]
+                                                  \end{aligned} \\
+                                        & = \begin{aligned}[t]
+                                                 & \frac{h}{3} \left[ f\left( x_0 \right) + 4 \left( f\left( x_1 \right) + f\left( x_3 \right) + \cdots + f\left( x_{n - 1} \right) \right) \right. \\
+                                                 & + \left. 2 \left( f\left( x_2 \right) + f\left( x_4 \right) + \cdots + f\left( x_{n - 2} \right) \right) f\left( x_n \right) \right]
+                                            \end{aligned}                                              \\
+                                        & = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{\frac{n}{2}} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{\frac{n}{2} - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right]
+\end{align*}
+Therefore, for a four times continuously differentiable function \(f\) on \(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) (with \(n\) even) and \(x_i = a + i h\), for \(i = 0, 1, \ldots, n\),
+\begin{equation*}
+    \int_a^b f\left( x \right) \odif{x} = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{\frac{n}{2}} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{\frac{n}{2} - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right) h^4}{180} f^{\left( 4 \right)}\left( c \right)
+\end{equation*}
+where \(c\) is between \(a\) and \(b\). The error in Simpson's rule is \(\mathcal{O}\left( h^4 \right)\), and this method is exact for polynomials of degree three or less, as the error term is zero.
 \end{document}
