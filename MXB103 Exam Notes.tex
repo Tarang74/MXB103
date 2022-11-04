@@ -4,34 +4,437 @@
 \input{LaTeX-Submodule/template.tex}
 
 % Additional packages & macros
+\usepackage{mathdots}
+\setitemize{leftmargin=*,topsep=1ex,partopsep=0ex,itemsep=-1ex,partopsep=0ex,parsep=1ex}
+\setlist{leftmargin=*,topsep=1ex,partopsep=0ex,itemsep=-1ex,partopsep=0ex,parsep=1ex}
+
+\usepackage{changepage} % Modify page width
+\usepackage{multicol} % Use multiple columns
+\usepackage[explicit]{titlesec} % Modify section heading styles
+
+\titleformat{\section}{\raggedright\normalfont\bfseries}{}{0em}{#1}
+\titleformat{\subsection}{\raggedright\normalfont\small\bfseries}{}{0em}{#1}
 
 %% A4 page
 \geometry{
-	a4paper,
-	margin = 10mm
+a4paper,
+margin = 10mm
 }
 
 %% Hide horizontal rule
 \renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
 
-% Modify spacing
-\titlespacing*{\section}{0pt}{0\baselineskip}{0\baselineskip}
-\titlespacing*{\subsection}{0pt}{0\baselineskip}{0\baselineskip}
+%% Hide page numbers
+\pagenumbering{gobble}
 
-% Metadata for README
-\newcommand{\unitName}{Introductory Computational Mathematics}
-\newcommand{\unitTime}{Semester 2, 2022}
-\newcommand{\unitCoordinator}{Dr Elliot Carr}
-\newcommand{\documentAuthors}{Tarang Janawalkar}
+%% Multi-columns setup
+\setlength\columnsep{4pt}
 
-%% Copyright
-\usepackage[
-    type={CC},
-    modifier={by-nc-sa},
-    version={4.0},
-    imagewidth={5em},
-    hyphenation={raggedright}
-]{doclicense}
+%% Paragraph setup
+\setlength\parindent{0pt}
+\setlength\parskip{0pt}
+
+%% Customise section heading styles
+% \titleformat*\section{\raggedright\bfseries}
 
 \begin{document}
+% Modify spacing
+\titlespacing*\section{0pt}{0.5ex}{1ex}
+\titlespacing*\subsection{0pt}{0.5ex}{1ex}
+%
+\setlength\abovecaptionskip{8pt}
+\setlength\belowcaptionskip{-15pt}
+\setlength\textfloatsep{0pt}
+%
+\setlength\abovedisplayskip{1pt}
+\setlength\belowdisplayskip{1pt}
+
+\begin{multicols}{3}
+    \subsection{Error (Approximating \texorpdfstring{\(x\)}{x} with \texorpdfstring{\(\tilde{x}\)}{tilde-x})}
+    \begin{align*}
+        \text{absolute error} & = \abs*{\tilde{x}-x}                   \\
+        \text{relative error} & = \frac{\abs*{\tilde{x}-x}}{\abs*{x}}.
+    \end{align*}
+    \subsection{Floating Point Number Systems}
+    \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
+    is a \textit{finite subset} of the real number system. For \(f \in \mathbb{F}\):
+    \begin{equation*}
+        f = \pm \left( d_1.d_2 d_3 \dots d_k \right)_\beta \times \beta^e
+    \end{equation*}
+    \begin{itemize}
+        \item \(\beta \in \N\): the base
+        \item \(d_1.d_2 d_3 \dots d_k\): the significand
+        \item \(k \in \N\): \#digits in the significand
+        \item \(e \in \Z\): the exponent, \(m \leq e \leq M\)
+    \end{itemize}
+    \(d_i\) are base-\(\beta\) digits with \(d_1 \neq 0\) unless \(f = 0\).
+    For \(x \in \R\) and \(f > 0\):
+    \begin{align*}
+        f_\mathrm{min} = \min_{f \in \mathbb{F}} \abs*{f} & = \beta^m                                      \\
+        f_\mathrm{max} = \max_{f \in \mathbb{F}} \abs*{f} & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
+    \end{align*}
+    \textbf{Underflow}: \(x < f_\mathrm{min}\) (replaced by \(0\)). \\
+    \textbf{Overflow}: \(x > f_\mathrm{max}\) (replaced by \(\infty\)).
+
+    For \(\mathbb{F}^+ = \left\{ f \in \mathbb{F} : f > 0 \right\}\):
+    \begin{equation*}
+        \abs*{\mathbb{F}^+} = \left( M - m + 1 \right) \left( \beta - 1 \right) \beta^{k - 1}.
+    \end{equation*}
+    \subsection{Representing Real Numbers}
+    If \(x \notin \mathbb{F}\), \(x\) is rounded to the nearest representable number
+    with \(fl : \R \to \mathbb{F}\). To determine \(fl\left( x \right)\):
+    \begin{enumerate}
+        \item Express \(x\) in base-\(\beta\).
+        \item Express \(x\) in scientific form.
+        \item Verify that \(m \leq e \leq M\):
+              \begin{itemize}
+                  \item if \(e > M\), then \(x = \infty\).
+                  \item if \(e < m\), then \(x = 0\).
+                  \item else, round to \(k\) digits.
+              \end{itemize}
+    \end{enumerate}
+    \begin{equation*}
+        \frac{\abs*{fl\left( x \right) - x}}{\abs*{x}} \leq u = \frac{1}{2} \beta^{1 - k}.
+    \end{equation*}
+    where \(u\) is the \textbf{unit roundoff}  of \(\mathbb{F}\).
+    \subsection{Catastrophic Cancellation}
+    The error when subtracting similar floating
+    point numbers, where at least one is not exactly representable.
+    \subsection{Taylor Polynomials}
+    The \(n\)th degree \textbf{Taylor polynomial} of \(f\)
+    approximates \(f\) for \(x\) near \(x_0\):
+    \begin{align*}
+        P_n\left( x \right) & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
+    \end{align*}
+    If \(f\) is \(n + 1\) times differentiable on \(\interval{a}{b}\) containing \(x_0\),
+    then for all \(x \in \interval{a}{b}\),
+    there exists a value \(x_0 < c < x\) such that
+    \begin{equation*}
+        f\left( x \right) = P_n\left( x \right) + R_n\left( x \right)
+    \end{equation*}
+    where
+    \begin{equation*}
+        R_n\left( x \right) = \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}
+    \end{equation*}
+    is the \textbf{remainder (error) term} for \(P_n\).
+    The maximum value of \(\abs*{R_n\left( x \right)}\) on \(\interval{a}{b}\) bounds the maximum absolute error of the approximation:
+    \begin{equation*}
+        \abs*{f\left( x \right) - P_n\left( x \right)} = \abs*{R_n\left( x \right)}.
+    \end{equation*}
+    \section{Ordinary Differential Equations}
+    For the IVP \(\odv{y\left( t \right)}{t} = f\left( t,\: y\left( t \right) \right)\) with \(y\left( a \right) = \alpha\) on \(a \leq t \leq b\).
+
+    Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
+    Let \(t_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\).
+    Then \(y_i = y\left( t_i \right)\) approximates the solution \(y\) at \(t_i\).
+    \subsection{Euler's Method (First Order Taylor)}
+    Assuming \(y\) is twice differentiable,
+    \begin{equation*}
+        y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \mathcal{O}\left( h^2 \right).
+    \end{equation*}
+    where the error is proportional to \(h^2\).
+    \begin{equation*}
+        y_{i + 1} = y_i + h f\left( t_i,\: y_i \right).
+    \end{equation*}
+    \subsection{Local and Global Error}
+    Assuming the solution was correct at the previous step: \\
+    \textbf{Local}: error after \textbf{\(1\) step} --- \(\mathcal{O}\left( h^{p + 1} \right)\). \\
+    \textbf{Global}: error after \textbf{\(i\) steps} --- \(\mathcal{O}\left( h^p \right)\).
+    The \textbf{order} of a method is its global error.
+    \subsection{Second Order Taylor Method}
+    Assuming \(y\) is three times differentiable,
+    \begin{equation*}
+        y_{i + 1} = y_i + h f\left( t_i,\: y_i \right) + \frac{h^2}{2} f'\left( t_i,\: y_i \right).
+    \end{equation*}
+    \subsection{Modified Euler Method}
+    To avoid computing \(f'\left( t,\: y \right)\) use,
+    \begin{equation*}
+        \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h} + \mathcal{O}\left( h \right).
+    \end{equation*}
+    \begin{align*}
+        y_{i + 1} & = y_i + \frac{1}{2} \left( k_1 + k_2 \right) \\
+        k_1       & = h f\left( t_i,\: y_i \right)               \\
+        k_2       & = h f\left( t_i + h,\: y_i + k_1 \right)
+    \end{align*}
+    \subsection{Runge-Kutta Method (Fourth Order)}
+    \begin{align*}
+        y_{i + 1} & = y_i + \frac{1}{6} \left( k_1 + 2 k_2 + 2 k_3 + k_4 \right) \\
+        k_1       & = h f\left( t_i,\: y_i \right)                               \\
+        k_2       & = h f\left( t_i + \frac{h}{2},\: y_i + \frac{k_1}{2} \right) \\
+        k_3       & = h f\left( t_i + \frac{h}{2},\: y_i + \frac{k_2}{2} \right) \\
+        k_4       & = h f\left( t_i + h,\: y_i + k_3 \right)
+    \end{align*}
+    \underline{\(i = 0,\: 1,\: \ldots,\: n - 1\) for all four methods.}
+    \section{Interpolation}
+    Given \textbf{abscissas} \(x_i\) and \textbf{function values} \(y_i = f\left( x_i \right)\),
+    \(f\) interpolates
+    \begin{equation*}
+        \left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right),\: \dots,\: \left( x_n,\: y_n \right) \right\}
+    \end{equation*}
+    if it satisfies \(f\left( x_0 \right) = y_0\), \dots,  \(f\left( x_n \right) = y_n\).
+
+    For \(n + 1\) distinct \(x_i\), there exists a unique interpolating polynomial \(P_n\) of degree (at most) \(n\):
+    \begin{equation*}
+        P_n\left( x \right) = a_0 + a_1 x + \cdots + a_n x^n.
+    \end{equation*}
+    \subsection{Lagrange Form}
+    Factor \(P_n\left( x_i \right)\) for \(y_i\):
+    \begin{equation*}
+        P_n\left( x \right) = \sum_{i = 0}^n L_{n,\: i}\left( x \right) y_i
+    \end{equation*}
+    \begin{equation*}
+        L_{n,\: i}\left( x \right) = \prod_{\substack{j = 0 \\ j \neq i}}^n \frac{x - x_j}{x_i - x_j}, L_{n,\: i}\left( x_j \right) = \delta_{ij}
+    \end{equation*}
+    If \(f\) is \(n + 1\) times differentiable with distinct increasing \(x_i\) on \(\interval{a}{b}\)
+    then for all \(x \in \interval{a}{b}\) there exists \(c \in \interval{a}{b}\) such that
+    \begin{equation*}
+        f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \prod_{i = 0}^n \left( x - x_i \right).
+    \end{equation*}
+    \subsection{Newton's Divided Difference Form}
+    \begin{multline*}
+        P_n\left( x \right) = \begin{aligned}[t]
+             & a_0 + a_1 \left( x - x_0 \right)                                 \\
+             & + a_2 \left( x - x_0 \right) \left( x - x_1 \right) + \cdots     \\
+             & + a_n \left( x - x_0 \right) \cdots \left( x - x_{n - 1} \right)
+        \end{aligned} \\
+        = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \prod_{i = 0}^{k - 1} \left( x - x_i \right)
+    \end{multline*}
+    Solve \(P_n\left( x_i \right) = y_i\) for \(a_0,\: a_1,\: \dots,\: a_n\):
+    \begin{align*}
+        a_0 & = y_0, \quad a_1 = \frac{y_1 - y_0}{x_1 - x_0}                                \\
+        a_2 & = \frac{\frac{y_2 - y_1}{x_2 - x_1} - \frac{y_1 - y_0}{x_1 - x_0}}{x_2 - x_0}
+    \end{align*}
+    \underline{\textbf{Divided Differences (Simplify \(a_i\))}}
+    \begin{align*}
+        f\left[ x_i \right] & = y_i & (\text{Zeroth divided difference})
+    \end{align*}
+    \begin{multline*}
+        f\left[ x_i,\: x_{i + 1},\: \dots,\: x_{i + k} \right] = \\
+        \frac{f\left[ x_{i + 1},\: \dots,\: x_{i + k} \right] - f\left[ x_i,\: \dots,\: x_{i + k - 1} \right]}{x_{i + k} - x_i}
+    \end{multline*}
+    \begin{align*}
+        f\left[ x_0,\: x_1 \right]    & = \frac{f\left[ x_1 \right] - f\left[ x_0 \right]}{x_1 - x_0} = \frac{y_1 - y_0}{x_1 - x_0} \\
+        f\left[ x_1,\: x_2 \right]    & = \frac{f\left[ x_2 \right] - f\left[ x_1 \right]}{x_1 - x_0} = \frac{y_2 - y_1}{x_2 - x_1} \\
+        f\left[ x_0, x_1, x_2 \right] & = \frac{f\left[ x_1, x_2 \right] - f\left[ x_0, x_1 \right]}{x_2 - x_0}
+    \end{align*}
+    \subsection{Newton's Forward Difference Form}
+    Equally spaced abscissas: \(h =  x_{i + 1} - x_i\). \\
+    \underline{\textbf{Forward Difference Operator}}
+    \begin{align*}
+        \Delta y_i   & = y_{i + 1} - y_i, \quad \Delta^{k + 1} y_i = \Delta \left( \Delta^k y_i \right) \\
+        \Delta^2 y_i & = y_{i + 2} - 2y_{i + 1} + y_i                                                   \\
+        \Delta^3 y_i & = y_{i + 3} - 3y_{i + 2} + 3y_{i + 1} - y_i
+    \end{align*}
+    \begin{equation*}
+        f\left[ x_0,\: x_1,\: \dots,\: x_k \right] = \frac{\Delta^k y_0}{k! h^k}
+    \end{equation*}
+    Substitute \(x = x_0 + s h\) (\(x_i = x_0 + i h\)), with \(s = \frac{x - x_0}{h}\) into the divided difference form:
+    \begin{equation*}
+        P_n\left( x \right) = \sum_{k = 0}^n \frac{\Delta^k y_0}{k!} \prod_{i = 0}^{k - 1} \left( s - i \right)
+    \end{equation*}
+    \section{Root Finding (\texorpdfstring{\(f\left( x \right) = 0\)}{f(x) = 0})}
+    \underline{\textbf{Intermediate Value Theorem}} \\
+    For continuous \(f\) on \(\interval{a}{b}\) with \(f\left( a \right) \leq k \leq f\left( b \right)\),
+    \(\exists c_1 \in \interval{a}{b} : f\left( c_1 \right) = k\).
+    If \(f\left( a \right) f\left( b \right) < 0\) (\(f\left( a \right)\) and \(f\left( b \right)\) have opposite signs),
+    \(\exists c_2 \in \interval{a}{b} : f\left( c_2 \right) = 0\).
+    \subsection{Bisection Method}
+    \begin{enumerate}
+        \item Find \(\interval{a}{b}\) such that \(f\left( a \right) f\left( b \right) < 0\).
+        \item For \(p = \tfrac{a+b}{2}\), evaluate \(f\left( p \right)\).
+              \begin{itemize}
+                  \item If \(f\left( p \right) = 0\), then \(p\) is a root of \(f\).
+                  \item If \(f\left( a \right) f\left( p \right) < 0\), then \(p\) becomes the new \(b\) and the root lies in \(\interval{a}{p}\).
+                  \item If \(f\left( p \right) f\left( b \right) < 0\), then \(p\) becomes the new \(a\) and the root lies in \(\interval{p}{b}\).
+              \end{itemize}
+        \item Go to step 2.
+    \end{enumerate}
+    \subsection{Fixed-Point Iteration}
+    Rewrite \(f\left( x \right) = 0\) as \(x = g\left( x \right)\). Solve by finding a fixed-point
+    \(p\) s.t. \(g\left( p \right) = p\).
+
+    \begin{equation*}
+        x_{n + 1} = g\left( x_n \right)
+    \end{equation*}
+    with initial guess \(x_0\) for \(n > 0\).
+\end{multicols}
+\begin{minipage}[t]{62.39259259mm}
+    \subsection{Newton's Method}
+    Find the root of the tangent line at each iterate \(x_n\) using the first degree Taylor polynomial
+    and solving for \(x\):
+    \begin{align*}
+        f\left( x \right) & \approx f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) \\
+        x                 & = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+    \end{align*}
+    This gives us the sequence:
+    \begin{equation*}
+        x_{n + 1} = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+    \end{equation*}
+    for \(n \geq 0\).
+    \subsection{Secant Method}
+    Secant between \(x_{n - 1}\) and \(x_n\).
+    \begin{equation*}
+        f'\left( x_n \right) \approx \frac{f\left( x_n \right) - f\left( x_{n - 1} \right)}{x_n - x_{n - 1}}.
+    \end{equation*}
+    This gives us the sequence
+    \begin{equation*}
+        x_{n + 1} = x_n - f\left( x_n \right) \frac{x_n - x_{n - 1}}{f\left( x_n \right) - f\left( x_{n - 1} \right)}
+    \end{equation*}
+    for \(n \geq 1\). Two initial values are required.
+    \subsection{Convergence of Rootfinding Methods}
+    A convergent \(\left\{ x_n \right\}\) satisfies (for large \(n\))
+    \begin{equation*}
+        \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^r
+    \end{equation*}
+    \underline{\textbf{Fixed-point iteration (\(r = 1\))}} \\
+    \(p\) is a fixed-point and \(0 < \lambda < 1\).
+
+    \underline{\textbf{Newton's method (\(r = 2\))}} \\
+    \(p\) is a root and \(\lambda > 0\).
+
+    \underline{\textbf{Secant method (\(r = \tfrac{1 + \sqrt{5}}{2} \approx 1.618\))}} \\
+    \(p\) is a root and \(\lambda > 0\).
+    \section{Numerical Differentiation}
+    \subsection{Forward (\texorpdfstring{\(h = x - x_0\)}{h = x - x0}, \texorpdfstring{\(c \in \interval{x_0}{x_0 + h}\)}{c in [x0, x0 + h]})}
+    \begin{equation*}
+        f'\left( x_0 \right) = \frac{f\left( x_0 + h \right) - f\left( x_0 \right)}{h} - \frac{h}{2} f''\left( c \right)
+    \end{equation*}
+    \subsection{Backward (\texorpdfstring{\(-h = x - x_0\)}{-h = x - x0}, \texorpdfstring{\(c \in \interval{x_0 - h}{x_0}\)}{c in [x0 - h, x0]})}
+    \begin{equation*}
+        f'\left( x_0 \right) = \frac{f\left( x_0 \right) - f\left( x_0 - h \right)}{h} + \frac{h}{2} f''\left( c \right)
+    \end{equation*}
+    \subsection{Central Difference (Second Order)}
+    Derive using \(f\left( x_0 + h \right) - f\left( x_0 - h \right)\):
+    \begin{equation*}
+        f'\left( x_0 \right) = \begin{aligned}[t]
+             & \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} \\
+             & - \frac{h^2}{6} f'''\left( c \right)
+        \end{aligned}
+    \end{equation*}
+    \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) + f'''\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
+    with \(c_1 \in \interval{x_0 - h}{x_0}\) and \(c_2 \in \interval{x_0}{x_0 + h}\).
+    \subsection{Second Derivative (Third Order)}
+    Derive using \(f\left( x_0 + h \right) + f\left( x_0 - h \right)\):
+    \begin{multline*}
+        f''\left( x_0 \right) = - \frac{h^2}{12} f^{\left( 4 \right)}\left( c \right) \\
+        + \frac{f\left( x_0 + h \right) - 2f\left( x_0 \right) + f\left( x_0 - h \right)}{h^2}
+    \end{multline*}
+    \(f^{\left( 4 \right)}\left( c \right) = \frac{f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
+    with \(c_1 \in \interval{x_0 - h}{x_0}\) and \(c_2 \in \interval{x_0}{x_0 + h}\).
+    \subsection{Instability}
+    Choose \(h\) to minimise roundoff error and truncation error.
+    \section{Numerical Integration (Quadrature)}
+    \begin{equation*}
+        I = \int_a^b f\left( x \right) \odif{x} \approx \sum_{i = 0}^n w_i f\left( x_i \right)
+    \end{equation*}
+    for weights \(w_i\) and abscissas \(x_i\).
+\end{minipage}\hfill%
+\begin{minipage}[t]{126.1962963mm}
+    Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
+    Let \(x_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(x_0 = a\) and \(x_n = b\).
+    \subsection{Trapezoidal Rule (Second Order)}
+    Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{i - 1}}{x_i}\) with a degree 1 interpolant:
+    \begin{align*}
+        P_{1,\: i}\left( x \right) = y_{i - 1} + s \Delta{y_{i - 1}} = y_{i - 1} + s \left( y_i - y_{i - 1} \right)
+    \end{align*}
+    and integrate w.r.t. \(s\): \(x = x_{i - 1} + s h\), \(\odif{x} = h \odif{s}\), with limits \(s \in \interval{0}{1}\):
+    \begin{align*}
+        \int_{x_{i - 1}}^{x_i} f\left( x \right) \odif{x} \approx \int_0^1 P_{1,\: i}\left( x \right) h \odif{s} = \frac{h}{2} \left( y_{i - 1} + y_i \right) \quad \left(i = 1, 2, \ldots, n\right).
+    \end{align*}
+    \begin{align*}
+        I = \sum_{i = 1}^n \int_{x_{i-1}}^{x_i} f\left( x \right) \odif{x} & \approx \sum_{i = 1}^n \frac{h}{2} \left[ f\left( x_{i - 1} \right) + f\left( x_i \right) \right]                                                                           \\
+                                                                           & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] -\frac{\left( b - a \right)h^2}{12} f''\left( c \right)
+    \end{align*}
+    Error \(\mathcal{O}\left( h^2 \right)\) where \(c \in \interval{a}{b}\), and the method is exact if \(f\) is linear.
+    \subsection{Simpson's Rule (Fourth Order)}
+    Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{2i - 2}}{x_{2i}}\) with a degree 2 interpolant:
+    \begin{align*}
+        P_{2,\: i}\left( x \right) & = y_{2i - 2} + s \Delta{y_{2i - 2}} + \frac{s\left( s - 1 \right)}{2} \Delta^2 y_{2i - 2}                                               \\
+                                   & = y_{2i - 2} + s \left( y_{2i} - y_{2i - 1} \right) + \frac{s\left( s - 1 \right)}{2} \left( y_{2i} - 2 y_{2i - 1} + y_{2i - 2} \right)
+    \end{align*}
+    and integrate w.r.t. \(s\): \(x = x_{2i - 2} + s h\), \(\odif{x} = h \odif{s}\), with limits \(s \in \interval{0}{2}\):
+    \begin{equation*}
+        \int_{x_{2i - 2}}^{x_{2i}} f\left( x \right) \odif{x} \approx \int_0^2 P_{2,\: i}\left( x \right) h \odif{s} = \frac{h}{3} \left( y_{2i - 2} + 4y_{2i - 1} + y_{2i} \right) \quad \left(i = 1, 2, \ldots, n/2\right).
+    \end{equation*}
+    \begin{multline*}
+        I = \sum_{i = 2}^{n/2}\int_{x_{2i - 2}}^{x_{2i}} f\left( x \right) \odif{x} \approx \sum_{i = 2}^{n/2} \frac{h}{3} \left[ f\left( x_{2i - 2} \right) + 4f\left( x_{2i - 1} \right) + f\left( x_{2i} \right) \right]                                                                                                               \\
+        = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{n/2} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{n/2 - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right)h^4}{180} f^{\left( 4 \right)}\left( c \right)
+    \end{multline*}
+    Error \(\mathcal{O}\left( h^4 \right)\) where \(c \in \interval{a}{b}\), method is exact if \(f\) is cubic. (\(n\) is even).
+    \section{Linear Systems (\texorpdfstring{\(\symbf{A} \symbfit{x} = \symbfit{b}\)}{A x = b})}
+    \subsection{Solving Triangular Systems}
+    \begin{align*}
+        \overset{\text{(Upper)}}{\text{Backward}}: x_i & = \frac{b_i - \sum_{j = i + 1}^n a_{ij} x_j}{a_{ii}},
+                                                       &                                                       & \overset{\text{(Lower)}}{\text{Forward}}: x_i = \frac{b_i - \sum_{j = 1}^{i - 1} a_{ij} x_j}{a_{ii}}
+    \end{align*}
+    \subsection{LU Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{U} \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{U} \symbfit{x} = \symbfit{z}\)}{A = LU => L z = b, U x = z})}
+    \begin{equation*}
+        \begin{bmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n} \\
+            a_{21} & a_{22} & \cdots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{bmatrix} =
+        \begin{bmatrix}
+            1      & 0      & \cdots    & 0      \\
+            l_{21} & 1      & \ddots    & \vdots \\
+            \vdots & \ddots & \ddots    & 0      \\
+            l_{n1} & \cdots & l_{n,n-1} & 1
+        \end{bmatrix}
+        \begin{bmatrix}
+            u_{11} & u_{12} & \cdots & u_{1n} \\
+            0      & u_{22} & \cdots & u_{2n} \\
+            \vdots & \ddots & \ddots & \vdots \\
+            0      & \cdots & 0      & u_{nn}
+        \end{bmatrix}
+    \end{equation*}
+    Solve \(\symbfit{z}\) using forward substitution, then solve \(\symbfit{x}\) using backward substitution.
+    \begin{equation*}
+        \begin{bmatrix}
+            u_{11}        & u_{12}                      & u_{13}                                    & u_{14}                                           \\
+            l_{21} u_{11} & l_{21} u_{12}+u_{22}        & l_{21} u_{13}+u_{23}                      & l_{21} u_{14}+u_{24}                             \\
+            l_{31} u_{11} & l_{31} u_{12}+l_{32} u_{22} & l_{31} u_{13}+l_{32} u_{23}+u_{33}        & l_{31} u_{14}+l_{32} u_{24}+u_{34}               \\
+            l_{41} u_{11} & l_{41} u_{12}+l_{42} u_{22} & l_{41} u_{13}+l_{42} u_{23}+l_{43} u_{33} & l_{41} u_{14}+l_{42} u_{24}+l_{43} u_{34}+u_{44}
+        \end{bmatrix}
+    \end{equation*}
+    \underline{\textbf{Symmetric Positive Definite:}} \(\symbfit{x}^\top \symbf{A} \symbfit{x} > \symbfit{0} : \forall \symbfit{x} \in \mathbb{R}^n\).
+    \subsection{Cholesky Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{L}^\top \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{L}^\top \symbfit{x} = \symbfit{z}\)}{A = L LT => L z = b, LT x = z})}
+    \begin{equation*}
+        \begin{bmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n} \\
+            a_{21} & a_{22} & \cdots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{bmatrix} =
+        \begin{bmatrix}
+            l_{11} & 0      & \cdots    & 0      \\
+            l_{21} & l_{22} & \ddots    & \vdots \\
+            \vdots & \ddots & \ddots    & 0      \\
+            l_{n1} & \cdots & l_{n,n-1} & l_{nn}
+        \end{bmatrix}
+        \begin{bmatrix}
+            l_{11} & l_{21} & \cdots & l_{n1} \\
+            0      & l_{22} & \cdots & l_{n2} \\
+            \vdots & \ddots & \ddots & \vdots \\
+            0      & \cdots & 0      & l_{nn}
+        \end{bmatrix}
+    \end{equation*}
+    Solve \(\symbfit{z}\) using forward substitution, then solve \(\symbfit{x}\) using backward substitution.
+    \begin{equation*}
+        \begin{bmatrix}
+            l_{11}^2      & l_{11} l_{21}               & l_{11} l_{31}                             & l_{11} l_{41}                             \\
+            l_{11} l_{21} & l_{21}^2+l_{22}^2           & l_{21} l_{31}+l_{22} l_{32}               & l_{21} l_{41}+l_{22} l_{42}               \\
+            l_{11} l_{31} & l_{21} l_{31}+l_{22} l_{32} & l_{31}^2+l_{32}^2+l_{33}^2                & l_{31} l_{41}+l_{32} l_{42}+l_{33} l_{43} \\
+            l_{11} l_{41} & l_{21} l_{41}+l_{22} l_{42} & l_{31} l_{41}+l_{32} l_{42}+l_{33} l_{43} & l_{41}^2+l_{42}^2+l_{43}^2+l_{44}^2
+        \end{bmatrix}
+    \end{equation*}
+    \underline{\textbf{Brouwer's Fixed-Point Theorem}} \\
+    If \(g\) is continuous on \(\interval{a}{b}\) and \(g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b}\)
+    and differentiable on \(\ointerval{a}{b}\), let a positive constant
+    \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) \(\forall x \in \ointerval{a}{b}\).
+
+    Then, \(g\) has a unique fixed-point \(p\) in \(\interval{a}{b}\), and \(x_{n+1} = g\left( x_n \right)\)
+    will converge to \(p\) for all \(x_0\) in \(\interval{a}{b}\).
+\end{minipage}
 \end{document}

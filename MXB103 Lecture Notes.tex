@@ -221,9 +221,6 @@ of the root that suffers from catastrophic cancellation.
     x_1 x_2 = \frac{c}{a}.
 \end{equation*}
 \subsection{Taylor Polynomials}
-\begin{equation*}
-    \cos{\left( x \right)} = \sum_{k = 0}^n \frac{\left( -1 \right)^k}{\left(2k \right)!} x^{2k}.
-\end{equation*}
 Suppose we have a function \(f\left( x \right)\) that is \(n\) differentiable at the point
 \(x = x_0\). This function can be approximated by a sum of polynomials that agrees with its first \(n\) derivatives at that point.
 \begin{definition}[Taylor polynomial]
@@ -385,7 +382,7 @@ It is a fourth order method, referred to as RK4. It has the following form:
     k_3       & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_2}{2} \right) \\
     k_4       & = h f\left( t_i + h,\: w_i + k_3 \right)
 \end{align*}
-for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^4 \right)\), and the global error is \(\mathcal{O}\left( h^3 \right)\).
+for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^5 \right)\), and the global error is \(\mathcal{O}\left( h^4 \right)\).
 \section{Interpolation}
 \begin{definition}[Interpolating function]
     A function \(f\) is said to interpolate the data points
@@ -645,8 +642,8 @@ The bisection method is based on the following algorithm:
     \item Find an interval \(\interval{a}{b}\) such that \(f\left( a \right) f\left( b \right) < 0\)\footnote{This procedure is known as \textbf{bracketing} the root.}.
     \item Find the midpoint \(p\) of the interval \(\interval{a}{b}\) and evaluate \(f\left( p \right)\).
           \begin{itemize}
-              \item If \(f\left( p \right) = 0\), then \(c\) is a root of \(f\).
-              \item Otherwise, the root lies in either \(\interval{a}{c}\) or \(\interval{c}{b}\).
+              \item If \(f\left( p \right) = 0\), then \(p\) is a root of \(f\).
+              \item Otherwise, the root lies in either \(\interval{a}{p}\) or \(\interval{p}{b}\).
                     \begin{itemize}
                         \item If \(f\left( a \right) f\left( p \right) < 0\), then \(p\) becomes the new \(b\) and the root lies in \(\interval{a}{p}\).
                         \item If \(f\left( p \right) f\left( b \right) < 0\), then \(p\) becomes the new \(a\) and the root lies in \(\interval{p}{b}\).
@@ -731,16 +728,16 @@ When the fixed-point iteration converges, the sequence it generates, \(\left\{ x
 \end{equation*}
 where \(p\) is the fixed-point of \(g\) and \(0 < \lambda < 1\). Therefore the \textbf{error} in the solution decreases
 by a factor of \(\lambda\) in the long run of each iteration.
-
+\subsection{Convergence of Newton's Method}
 When Newton's method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
 \begin{equation*}
     \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^2
 \end{equation*}
 for \(\lambda > 0\). This means that the number of correct digits approximately \textit{doubles} with each iteration.
-
+\subsection{Convergence of the Secant Method}
 When the secant method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
 \begin{equation*}
-    \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_{n - 1} - p}^r
+    \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^r
 \end{equation*}
 for \(\lambda > 0\) and \(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio).
 Thus the secant method has a slower \textit{rate of convergence} than Newton's method.
@@ -767,7 +764,7 @@ The formula
 is known as the \textbf{first order forward difference} for \(f'\left( x_0 \right)\). Replacing
 \(h\) with \(-h\) gives the \textbf{first order backward difference} for \(f'\left( x_0 \right)\). The
 \begin{equation*}
-    f'\left( x_0 \right) = \frac{f\left( x_0 \right) - f\left( x_0 - h \right)}{2h} + \frac{h}{2} f''\left( c \right).
+    f'\left( x_0 \right) = \frac{f\left( x_0 \right) - f\left( x_0 - h \right)}{h} + \frac{h}{2} f''\left( c \right).
 \end{equation*}
 In both cases, the error term is \(\mathcal{O}\left( h \right)\).
 \subsubsection{Second Order Approximations}
@@ -782,7 +779,7 @@ Subtracting the two equations gives
     f\left( x_0 + h \right) - f\left( x_0 - h \right) & = 2h f'\left( x_0 \right) + \frac{h^3}{3!} \left( f'''\left( c_1 \right) + f'''\left( c_2 \right) \right) \\
     f'\left( x_0 \right)                              & = \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} - \frac{h^2}{6} f'''\left( c \right)
 \end{align*}
-where \(f'''\left( c \right) = \frac{f''\left( c_1 \right) + f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
+where \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) + f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
 and \(c\) is between \(x_0 - h\) and \(x_0 + h\).
 This is known as the \textbf{second order central difference} approximation for \(f'\left( x_0 \right)\). The error term is \(\mathcal{O}\left( h^2 \right)\).
 \subsection{Second Derivative}
@@ -895,4 +892,201 @@ Therefore, for a four times continuously differentiable function \(f\) on \(\int
     \int_a^b f\left( x \right) \odif{x} = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{\frac{n}{2}} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{\frac{n}{2} - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right) h^4}{180} f^{\left( 4 \right)}\left( c \right)
 \end{equation*}
 where \(c\) is between \(a\) and \(b\). The error in Simpson's rule is \(\mathcal{O}\left( h^4 \right)\), and this method is exact for polynomials of degree three or less, as the error term is zero.
+\section{Linear Systems}
+Given a linear system with \(n\) knowns and \(n\) unknowns, we can represent this system using matrix notation:
+\begin{align*}
+    \begin{bmatrix*}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{bmatrix*}
+    \begin{bmatrix*}
+        x_1 \\
+        x_2 \\
+        \vdots \\
+        x_n
+    \end{bmatrix*}
+                          & =
+    \begin{bmatrix*}
+        b_1 \\
+        b_2 \\
+        \vdots \\
+        b_n
+    \end{bmatrix*}                       \\
+    \symbf{A} \symbfit{x} & = \symbfit{b}
+\end{align*}
+where \(\symbf{A}\) is the \textbf{coefficient matrix},
+\(\symbfit{x}\) is the \textbf{solution vector}, and \(\symbfit{b}\) is the \textbf{right hand side vector}.
+Alternatively, this equation can be written using an \textbf{augmented matrix}, by augmenting \(\symbf{A}\) with \(\symbfit{b}\):
+\begin{equation*}
+    \begin{bmatrix}[cccc|c]
+        a_{11} & a_{12} & \cdots & a_{1n} & b_1    \\
+        a_{21} & a_{22} & \cdots & a_{2n} & b_2    \\
+        \vdots & \vdots & \ddots & \vdots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
+    \end{bmatrix}
+\end{equation*}
+the vertical bar separates the coefficient matrix from the right hand side vector.
+\subsection{Triangular Systems}
+A linear system that takes the form
+\begin{equation*}
+    \begin{bmatrix}[cccc|c]
+        a_{11} & a_{12} & \cdots & a_{1n} & b_1    \\
+        0      & a_{22} & \cdots & a_{2n} & b_2    \\
+        \vdots & \ddots & \ddots & \vdots & \vdots \\
+        0      & \cdots & 0      & a_{nn} & b_n
+    \end{bmatrix}
+\end{equation*}
+is known as an \textbf{upper triangular system}. Similarly, a linear system that takes the form
+\begin{equation*}
+    \begin{bmatrix}[cccc|c]
+        a_{11} & 0      & \cdots & 0      & b_1    \\
+        a_{21} & a_{22} & \ddots & \vdots & b_2    \\
+        \vdots & \vdots & \ddots & 0      & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
+    \end{bmatrix}
+\end{equation*}
+is known as a \textbf{lower triangular system}.
+\subsection{Backward Substitution}
+When solving an upper triangular system, we can use \textbf{backward substitution} to solve for the unknowns.
+This method starts with the last unknown, \(x_n\), and solves for it using the last equation in the system.
+Then, we use the second to last equation to solve for \(x_{n - 1}\), and so on.
+This leads to the following algorithm:
+\begin{align*}
+    x_n       & = \frac{b_n}{a_{nn}}                                                                         \\
+    x_{n - 1} & = \frac{b_{n - 1} - a_{n - 1, n} x_n}{a_{n - 1, n - 1}}                                      \\
+              & \vdotswithin{=}                                                                              \\
+    x_i       & = \frac{b_i - a_{in} x_n - a_{i, n - 1} x_{n - 1} - \cdots - a_{i, i + 1} x_{i + 1}}{a_{ii}} \\
+              & = \frac{b_i - \sum_{j = i + 1}^n a_{ij} x_j}{a_{ii}}                                         \\
+\end{align*}
+\subsection{Forward Substitution}
+When solving a lower triangular system, we can use \textbf{forward substitution} to solve for the unknowns.
+This method starts with the first unknown, \(x_1\), and solves for it using the first equation in the system.
+Then, we use the second equation to solve for \(x_2\), and so on.
+This leads to the following algorithm:
+\begin{align*}
+    x_1 & = \frac{b_1}{a_{11}}                                                                 \\
+    x_2 & = \frac{b_2 - a_{21} x_1}{a_{22}}                                                    \\
+        & \vdotswithin{=}                                                                      \\
+    x_i & = \frac{b_i - a_{i, 1} x_1 - a_{i, 2} x_2 - \cdots - a_{i, i - 1} x_{i - 1}}{a_{ii}} \\
+        & = \frac{b_i - \sum_{j = 1}^{i - 1} a_{ij} x_j}{a_{ii}}                               \\
+\end{align*}
+\subsection{LU Decomposition}
+The \textbf{LU decomposition} is a method for factoring a square matrix into a lower triangular matrix \(\symbf{L}\) and an upper triangular matrix \(\symbf{U}\):
+\begin{equation*}
+    \symbf{A} = \symbf{L} \symbf{U}
+\end{equation*}
+to solve the linear system:
+\begin{align*}
+    \symbf{A} \symbfit{x}           & = \symbfit{b}                                                         \\
+    \symbf{L} \symbf{U} \symbfit{x} & = \symbfit{b}                                                         \\
+    \symbf{L} \symbfit{z}           & = \symbfit{b} &  & \left( \symbf{U} \symbfit{x} = \symbfit{z} \right)
+\end{align*}
+where \(\symbfit{z}\) can be solved using forward substitution, and then \(\symbfit{x}\) can be solved using backward substitution.
+The matrices \(\symbf{L}\) and \(\symbf{U}\) can be found by considering the following:
+\begin{align*}
+    \symbf{A}                            & = \symbf{L} \symbf{U} \\
+    \begin{bmatrix*}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{bmatrix*} & =
+    \begin{bmatrix*}
+        1 & 0      & \cdots & 0      \\
+        l_{21} & 1 & \ddots & \vdots      \\
+        \vdots & \ddots & \ddots & 0 \\
+        l_{n1} & \cdots & l_{n,n-1} & 1
+    \end{bmatrix*}
+    \begin{bmatrix*}
+        u_{11} & u_{12} & \cdots & u_{1n} \\
+        0      & u_{22} & \cdots & u_{2n} \\
+        \vdots & \ddots & \ddots & \vdots \\
+        0      & \cdots & 0      & u_{nn}
+    \end{bmatrix*}
+\end{align*}
+If we perform this product, we get the following:
+\begin{align*}
+    \begin{bmatrix*}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{bmatrix*} & = \begin{bmatrix*}
+                           u_{11}        & u_{12} & \cdots & u_{1n} \\
+                           l_{21} u_{11} & l_{21} u_{12} + u_{22} & \cdots & l_{21} u_{1n} + u_{2n} \\
+                           \vdots        & \vdots & \ddots & \vdots \\
+                           l_{n1} u_{11} & l_{n1} u_{12} + l_{n2} u_{22} & \cdots & l_{n1} u_{1n} + l_{n2} u_{2n} + \cdots + u_{nn}
+                       \end{bmatrix*}
+\end{align*}
+which allows us to solve for \(u_{ij}\) and \(l_{ij}\). This can be done by
+considering the first row, then the first column, then the second row, then the second column, and so on.
+
+In general, the equations to consider are, for \(l_{ij}\)
+\begin{equation*}
+    l_{ij} = \begin{cases}
+        \frac{a_{ij}}{u_{jj}}                                & \text{if \(i > j\) and \(j = 1\)} \\
+        \frac{a_{ij} - \sum_{k = 1}^j l_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\) and \(j > 1\)} \\
+        1                                                    & \text{if \(i = j\)}               \\
+        0                                                    & \text{if \(i < j\)}               \\
+    \end{cases}
+\end{equation*}
+and for \(u_{ij}\)
+\begin{equation*}
+    u_{ij} = \begin{cases}
+        a_{ij}                                & \text{if \(i \leq j\) and \(i = 1\)} \\
+        a_{ij} - \sum_{k = 1}^i l_{ik} u_{kj} & \text{if \(i \leq j\) and \(i > 1\)} \\
+        0                                     & \text{if \(i > j\)}
+    \end{cases}
+\end{equation*}
+\subsection{Cholesky Decomposition}
+The \textbf{Cholesky decomposition} is a method for factoring a symmetric, positive definite matrix into a lower triangular matrix \(\symbf{L}\) and its transpose:
+\begin{equation*}
+    \symbf{A} = \symbf{L} \symbf{L}^T
+\end{equation*}
+to solve the linear system:
+\begin{align*}
+    \symbf{A} \symbfit{x} & = \symbfit{b} \\
+    \symbf{L} \symbf{L}^\top \symbfit{x} & = \symbfit{b} \\
+    \symbf{L} \symbfit{z} & = \symbfit{b} &  & \left( \symbf{L}^\top \symbfit{x} = \symbfit{z} \right)
+\end{align*}
+where \(\symbfit{z}\) can be solved using forward substitution, and then \(\symbfit{x}\) can be solved using backward substitution.
+The matrix \(\symbf{L}\) can be found by considering the following:
+\begin{align*}
+    \symbf{A}                            & = \symbf{L} \symbf{L}^\top \\
+    \begin{bmatrix*}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{bmatrix*} & =
+    \begin{bmatrix*}
+        l_{11} & 0      & \cdots & 0      \\
+        l_{21} & l_{22} & \ddots & \vdots      \\
+        \vdots & \ddots & \ddots & 0 \\
+        l_{n1} & \cdots & l_{n,n-1} & l_{nn}
+    \end{bmatrix*}
+    \begin{bmatrix*}
+        l_{11} & l_{21} & \cdots & l_{n1} \\
+        0      & l_{22} & \cdots & l_{n2} \\
+        \vdots & \ddots & \ddots & \vdots \\
+        0      & \cdots & 0      & l_{nn}
+    \end{bmatrix*}
+\end{align*}
+If we perform this product, we get the following:
+\begin{align*}
+    \begin{bmatrix*}
+        a_{11} & a_{12} & \cdots & a_{1n} \\
+        a_{21} & a_{22} & \cdots & a_{2n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        a_{n1} & a_{n2} & \cdots & a_{nn}
+    \end{bmatrix*} & = \begin{bmatrix*}
+                           l_{11}^2        & l_{11} l_{21} & \cdots & l_{11} l_{n1} \\
+                           l_{21} l_{11} & l_{21}^2 + l_{22}^2 & \cdots & l_{21} l_{n1} + l_{22} l_{n2} \\
+                           \vdots        & \vdots & \ddots & \vdots \\
+                           l_{n1} l_{11} & l_{n1} l_{21} + l_{n2} l_{22} & \cdots & l_{n1}^2 + l_{n2}^2 + \cdots + l_{nn}^2
+                       \end{bmatrix*}
+\end{align*}
+which allows us to solve for \(l_{ij}\). This can be done by solving each column of \(\symbf{L}\).
 \end{document}
