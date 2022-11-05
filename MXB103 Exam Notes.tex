@@ -51,6 +51,7 @@ margin = 10mm
 \setlength\belowdisplayskip{1pt}
 
 \begin{multicols}{3}
+    \addcontentsline{toc}{section}{Preliminaries}
     \subsection{Error (Approximating \texorpdfstring{\(x\)}{x} with \texorpdfstring{\(\tilde{x}\)}{tilde-x})}
     \begin{align*}
         \text{absolute error} & = \abs*{\tilde{x}-x}                   \\
@@ -71,11 +72,11 @@ margin = 10mm
     \(d_i\) are base-\(\beta\) digits with \(d_1 \neq 0\) unless \(f = 0\).
     For \(x \in \R\) and \(f > 0\):
     \begin{align*}
-        f_\mathrm{min} = \min_{f \in \mathbb{F}} \abs*{f} & = \beta^m                                      \\
-        f_\mathrm{max} = \max_{f \in \mathbb{F}} \abs*{f} & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
+        f_{\min} = \min_{f \in \mathbb{F}} \abs*{f} & = \beta^m                                      \\
+        f_{\max} = \max_{f \in \mathbb{F}} \abs*{f} & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
     \end{align*}
-    \textbf{Underflow}: \(x < f_\mathrm{min}\) (replaced by \(0\)). \\
-    \textbf{Overflow}: \(x > f_\mathrm{max}\) (replaced by \(\infty\)).
+    \textbf{Underflow}: \(x < f_{\min}\) (replaced by \(0\)). \\
+    \textbf{Overflow}: \(x > f_{\max}\) (replaced by \(\infty\)).
 
     For \(\mathbb{F}^+ = \left\{ f \in \mathbb{F} : f > 0 \right\}\):
     \begin{equation*}
@@ -123,13 +124,12 @@ margin = 10mm
         \abs*{f\left( x \right) - P_n\left( x \right)} = \abs*{R_n\left( x \right)}.
     \end{equation*}
     \section{Ordinary Differential Equations}
-    For the IVP \(\odv{y\left( t \right)}{t} = f\left( t,\: y\left( t \right) \right)\) with \(y\left( a \right) = \alpha\) on \(a \leq t \leq b\).
+    \(\odv{y}{t} = f\left( t,\: y \right)\) with \(y\left( a \right) = \alpha\) on \(a \leq t \leq b\).
 
     Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
-    Let \(t_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\).
-    Then \(y_i = y\left( t_i \right)\) approximates the solution \(y\) at \(t = t_i\).
+    Let \(t_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\).
+    Then \(y_i = y\left( t_i \right)\) approximates \(y\) at \(t = t_i\), with \(y_0 = \alpha\).
     \subsection{Euler's Method (First Order Taylor)}
-    Assuming \(y\) is twice differentiable,
     \begin{equation*}
         y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \mathcal{O}\left( h^2 \right).
     \end{equation*}
@@ -143,7 +143,6 @@ margin = 10mm
     \textbf{Global}: error after \textbf{\(i\) steps} --- \(\mathcal{O}\left( h^p \right)\).
     The \textbf{order} of a method is its global error.
     \subsection{Second Order Taylor Method}
-    Assuming \(y\) is three times differentiable,
     \begin{equation*}
         y_{i + 1} = y_i + h f\left( t_i,\: y_i \right) + \frac{h^2}{2} f'\left( t_i,\: y_i \right).
     \end{equation*}
@@ -167,27 +166,18 @@ margin = 10mm
     \end{align*}
     \underline{\(i = 0,\: 1,\: \ldots,\: n - 1\) for all four methods.}
     \section{Interpolation}
-    Given \textbf{abscissas} \(x_i\) and \textbf{function values} \(y_i = f\left( x_i \right)\),
-    \(f\) interpolates
-    \begin{equation*}
-        \left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right),\: \dots,\: \left( x_n,\: y_n \right) \right\}
-    \end{equation*}
-    if it satisfies \(f\left( x_0 \right) = y_0\), \dots,  \(f\left( x_n \right) = y_n\).
-
-    For \(n + 1\) distinct \(x_i\), there exists a unique interpolating polynomial \(P_n\) of degree (at most) \(n\):
     \begin{equation*}
         P_n\left( x \right) = a_0 + a_1 x + \cdots + a_n x^n.
     \end{equation*}
     \subsection{Lagrange Form}
-    Factor \(P_n\left( x_i \right)\) for \(y_i\):
+    Solve for \(a_i\) then factor \(P_n\left( x_i \right)\) for \(y_i\):
     \begin{equation*}
         P_n\left( x \right) = \sum_{i = 0}^n L_{n,\: i}\left( x \right) y_i
     \end{equation*}
     \begin{equation*}
         L_{n,\: i}\left( x \right) = \prod_{\substack{j = 0 \\ j \neq i}}^n \frac{x - x_j}{x_i - x_j}, L_{n,\: i}\left( x_j \right) = \delta_{ij}
     \end{equation*}
-    If \(f\) is \(n + 1\) times differentiable with distinct increasing \(x_i\) on \(\interval{a}{b}\)
-    then for all \(x \in \interval{a}{b}\) there exists \(c \in \interval{a}{b}\) such that
+    For distinct increasing \(x_i\) on \(\interval{a}{b}\) there exists \(c \in \interval{a}{b}\) such that
     \begin{equation*}
         f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \prod_{i = 0}^n \left( x - x_i \right).
     \end{equation*}
@@ -253,35 +243,25 @@ margin = 10mm
     \subsection{Fixed-Point Iteration}
     Rewrite \(f\left( x \right) = 0\) as \(x = g\left( x \right)\). Solve by finding a fixed-point
     \(p\) s.t. \(g\left( p \right) = p\).
-
     \begin{equation*}
-        x_{n + 1} = g\left( x_n \right)
+        x_{n + 1} = g\left( x_n \right) \quad \left( n \geq 0 \right).
     \end{equation*}
-    with initial guess \(x_0\) for \(n > 0\).
-\end{multicols}
-\begin{minipage}[t]{62.39259259mm}
     \subsection{Newton's Method}
     Find the root of the tangent line at each iterate \(x_n\) using the first degree Taylor polynomial
     and solving for \(x\):
     \begin{align*}
-        f\left( x \right) & \approx f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) \\
-        x                 & = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
+        f\left( x \right) & \approx f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right) \overset{\mathrm{set}}{=} 0 \\
+        x                 & = x_{n + 1} = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)} \quad \left( n \geq 0 \right)
     \end{align*}
-    This gives us the sequence:
-    \begin{equation*}
-        x_{n + 1} = x_n - \frac{f\left( x_n \right)}{f'\left( x_n \right)}
-    \end{equation*}
-    for \(n \geq 0\).
     \subsection{Secant Method}
-    Secant between \(x_{n - 1}\) and \(x_n\).
+    Approximate \(f'\left( x_n \right)\) with the secant between \(x_{n - 1}\) and \(x_n\):
     \begin{equation*}
-        f'\left( x_n \right) \approx \frac{f\left( x_n \right) - f\left( x_{n - 1} \right)}{x_n - x_{n - 1}}.
+        f'\left( x_n \right) \approx \frac{f\left( x_n \right) - f\left( x_{n - 1} \right)}{x_n - x_{n - 1}}
+        % x_{n + 1} = x_n - f\left( x_n \right) \frac{x_n - x_{n - 1}}{f\left( x_n \right) - f\left( x_{n - 1} \right)}
     \end{equation*}
-    This gives us the sequence
-    \begin{equation*}
-        x_{n + 1} = x_n - f\left( x_n \right) \frac{x_n - x_{n - 1}}{f\left( x_n \right) - f\left( x_{n - 1} \right)}
-    \end{equation*}
-    for \(n \geq 1\). Two initial values are required.
+    with two initial values for \(n \geq 1\).
+\end{multicols}
+\begin{minipage}[t]{62.39259259mm}
     \subsection{Convergence of Rootfinding Methods}
     A convergent \(\left\{ x_n \right\}\) satisfies (for large \(n\))
     \begin{equation*}
@@ -309,10 +289,10 @@ margin = 10mm
     \begin{equation*}
         f'\left( x_0 \right) = \begin{aligned}[t]
              & \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} \\
-             & - \frac{h^2}{6} f'''\left( c \right)
+             & - \frac{h^2}{6} f^{\left( 3 \right)}\left( c \right)
         \end{aligned}
     \end{equation*}
-    \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) + f'''\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
+    \(f^{\left( 3 \right)}\left( c \right) = \frac{f^{\left( 3 \right)}\left( c_1 \right) + f^{\left( 3 \right)}\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
     with \(c_1 \in \interval{x_0 - h}{x_0}\) and \(c_2 \in \interval{x_0}{x_0 + h}\).
     \subsection{Second Derivative (Third Order)}
     Derive using \(f\left( x_0 + h \right) + f\left( x_0 - h \right)\):
@@ -322,7 +302,9 @@ margin = 10mm
     \end{multline*}
     \(f^{\left( 4 \right)}\left( c \right) = \frac{f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
     with \(c_1 \in \interval{x_0 - h}{x_0}\) and \(c_2 \in \interval{x_0}{x_0 + h}\).
-    \section{Numerical Integration}
+\end{minipage}\hfill%
+\begin{minipage}[t]{126.1962963mm}
+    \section{Numerical Integration (Quadrature)}
     \begin{equation*}
         I = \int_a^b f\left( x \right) \odif{x} \approx \sum_{i = 0}^n w_i f\left( x_i \right)
     \end{equation*}
@@ -330,8 +312,6 @@ margin = 10mm
 
     Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
     Let \(x_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(x_0 = a\) and \(x_n = b\).
-\end{minipage}\hfill%
-\begin{minipage}[t]{126.1962963mm}
     \subsection{Trapezoidal Rule (Second Order)}
     Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{i - 1}}{x_i}\) with a degree 1 interpolant:
     \begin{align*}
@@ -359,54 +339,47 @@ margin = 10mm
         I = \sum_{i = 2}^{n/2}\int_{x_{2i - 2}}^{x_{2i}} f\left( x \right) \odif{x} \approx \sum_{i = 2}^{n/2} \frac{h}{3} \left[ f\left( x_{2i - 2} \right) + 4f\left( x_{2i - 1} \right) + f\left( x_{2i} \right) \right]                                                                                                               \\
         = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{n/2} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{n/2 - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right)h^4}{180} f^{\left( 4 \right)}\left( c \right)
     \end{multline*}
-    \section{Linear Systems (\texorpdfstring{\(\symbf{A} \symbfit{x} = \symbfit{b}\)}{A x = b})}
-    \subsection{LU Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{U} \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{U} \symbfit{x} = \symbfit{z}\)}{A = LU => L z = b, U x = z})}
-    \begin{align*}
-        \symbf{L} & = \begin{bmatrix}
-                          1                     & 0                                   & 0                                                 & 0 \\
-                          \frac{a_{21}}{u_{11}} & 1                                   & 0                                                 & 0 \\
-                          \frac{a_{31}}{u_{11}} & \frac{a_{32}-l_{31} u_{12}}{u_{22}} & 1                                                 & 0 \\
-                          \frac{a_{41}}{u_{11}} & \frac{a_{42}-l_{41} u_{12}}{u_{22}} & \frac{a_{43}-l_{41} u_{13}-l_{42} u_{23}}{u_{33}} & 1
-                      \end{bmatrix} \\
-        \symbf{U} & = \begin{bmatrix}
-                          a_{11} & a_{12}               & a_{13}                             & a_{14}                                           \\
-                          0      & a_{22}-l_{21} u_{12} & a_{23}-l_{21} u_{13}               & a_{24}-l_{21} u_{14}                             \\
-                          0      & 0                    & a_{33}-l_{31} u_{13}-l_{32} u_{23} & a_{34}-l_{31} u_{14}-l_{32} u_{24}               \\
-                          0      & 0                    & 0                                  & a_{44}-l_{41} u_{14}-l_{42} u_{24}-l_{43} u_{34}
-                      \end{bmatrix}
-    \end{align*}
-    \begin{equation*}
-        \begin{bmatrix}
-            u_{11}        & u_{12}                      & u_{13}                                    & u_{14}                                           \\
-            l_{21} u_{11} & l_{21} u_{12}+u_{22}        & l_{21} u_{13}+u_{23}                      & l_{21} u_{14}+u_{24}                             \\
-            l_{31} u_{11} & l_{31} u_{12}+l_{32} u_{22} & l_{31} u_{13}+l_{32} u_{23}+u_{33}        & l_{31} u_{14}+l_{32} u_{24}+u_{34}               \\
-            l_{41} u_{11} & l_{41} u_{12}+l_{42} u_{22} & l_{41} u_{13}+l_{42} u_{23}+l_{43} u_{33} & l_{41} u_{14}+l_{42} u_{24}+l_{43} u_{34}+u_{44}
-        \end{bmatrix}
-    \end{equation*}
-    \underline{\textbf{Symmetric Positive Definite:}} \(\symbfit{x}^\top \symbf{A} \symbfit{x} > \symbfit{0} : \forall \symbfit{x} \in \mathbb{R}^n\).
-    \subsection{Cholesky Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{L}^\top \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{L}^\top \symbfit{x} = \symbfit{z}\)}{A = L LT => L z = b, LT x = z})}
-    \begin{equation*}
-        \symbf{L} =
-        \begin{bmatrix}
-            \sqrt{a_{11}}         & 0                                   & 0                                                 & 0                                        \\
-            \frac{a_{21}}{l_{11}} & \sqrt{a_{22}-l_{21}^2}              & 0                                                 & 0                                        \\
-            \frac{a_{31}}{l_{11}} & \frac{a_{32}-l_{21} l_{31}}{l_{22}} & \sqrt{a_{33}-l_{31}^2-l_{32}^2}                   & 0                                        \\
-            \frac{a_{41}}{l_{11}} & \frac{a_{42}-l_{21} l_{41}}{l_{22}} & \frac{a_{43}-l_{31} l_{41}-l_{32} l_{42}}{l_{33}} & \sqrt{a_{44}-l_{41}^2-l_{42}^2-l_{43}^2}
-        \end{bmatrix}
-    \end{equation*}
-    \begin{equation*}
-        \begin{bmatrix}
-            l_{11}^2      & l_{11} l_{21}               & l_{11} l_{31}                             & l_{11} l_{41}                             \\
-            l_{11} l_{21} & l_{21}^2+l_{22}^2           & l_{21} l_{31}+l_{22} l_{32}               & l_{21} l_{41}+l_{22} l_{42}               \\
-            l_{11} l_{31} & l_{21} l_{31}+l_{22} l_{32} & l_{31}^2+l_{32}^2+l_{33}^2                & l_{31} l_{41}+l_{32} l_{42}+l_{33} l_{43} \\
-            l_{11} l_{41} & l_{21} l_{41}+l_{22} l_{42} & l_{31} l_{41}+l_{32} l_{42}+l_{33} l_{43} & l_{41}^2+l_{42}^2+l_{43}^2+l_{44}^2
-        \end{bmatrix}
-    \end{equation*}
-    \underline{\textbf{Brouwer's Fixed-Point Theorem}} \\
-    For \(g\) continuous on \(\interval{a}{b}\), and differentiable on \(\ointerval{a}{b}\), with \(g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b}\),
-    let a positive constant \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) \(\forall x \in \ointerval{a}{b}\).
-
-    Then, \(g\) has a unique fixed-point \(p\) in \(\interval{a}{b}\), and \(x_{n+1} = g\left( x_n \right)\)
-    will converge to \(p\) for all \(x_0\) in \(\interval{a}{b}\).
 \end{minipage}
+\section{Linear Systems (\texorpdfstring{\(\symbf{A} \symbfit{x} = \symbfit{b}\)}{A x = b})}
+\subsection{LU Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{U} \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{U} \symbfit{x} = \symbfit{z}\)}{A = LU => L z = b, U x = z})}
+\begin{flalign*}
+    \symbf{L} \symbf{U} & = \begin{bmatrix}
+                                1                     & 0                                      & 0                                                       & 0 \\
+                                \frac{a_{21}}{u_{11}} & 1                                      & 0                                                       & 0 \\
+                                \frac{a_{31}}{u_{11}} & \frac{a_{32}-\ell_{31} u_{12}}{u_{22}} & 1                                                       & 0 \\
+                                \frac{a_{41}}{u_{11}} & \frac{a_{42}-\ell_{41} u_{12}}{u_{22}} & \frac{a_{43}-\ell_{41} u_{13}-\ell_{42} u_{23}}{u_{33}} & 1
+                            \end{bmatrix} \begin{bmatrix}
+                                              a_{11} & a_{12}                  & a_{13}                                   & a_{14}                                                    \\
+                                              0      & a_{22}-\ell_{21} u_{12} & a_{23}-\ell_{21} u_{13}                  & a_{24}-\ell_{21} u_{14}                                   \\
+                                              0      & 0                       & a_{33}-\ell_{31} u_{13}-\ell_{32} u_{23} & a_{34}-\ell_{31} u_{14}-\ell_{32} u_{24}                  \\
+                                              0      & 0                       & 0                                        & a_{44}-\ell_{41} u_{14}-\ell_{42} u_{24}-\ell_{43} u_{34}
+                                          \end{bmatrix} & \\
+                        & = \begin{bmatrix}
+                                u_{11}           & u_{12}                            & u_{13}                                             & u_{14}                                                    \\
+                                \ell_{21} u_{11} & \ell_{21} u_{12}+u_{22}           & \ell_{21} u_{13}+u_{23}                            & \ell_{21} u_{14}+u_{24}                                   \\
+                                \ell_{31} u_{11} & \ell_{31} u_{12}+\ell_{32} u_{22} & \ell_{31} u_{13}+\ell_{32} u_{23}+u_{33}           & \ell_{31} u_{14}+\ell_{32} u_{24}+u_{34}                  \\
+                                \ell_{41} u_{11} & \ell_{41} u_{12}+\ell_{42} u_{22} & \ell_{41} u_{13}+\ell_{42} u_{23}+\ell_{43} u_{33} & \ell_{41} u_{14}+\ell_{42} u_{24}+\ell_{43} u_{34}+u_{44}
+                            \end{bmatrix} &
+\end{flalign*}
+\underline{\textbf{Symmetric Positive Definite:}} \(\symbfit{x}^\top \symbf{A} \symbfit{x} > \symbfit{0} : \forall \symbfit{x} \in \mathbb{R}^n\).
+\subsection{Cholesky Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{L}^\top \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{L}^\top \symbfit{x} = \symbfit{z}\)}{A = L LT => L z = b, LT x = z})}
+\begin{flalign*}
+    \symbf{L}                & = \begin{bmatrix}
+                                     \sqrt{a_{11}}            & 0                                            & 0                                                                & 0                                                 \\
+                                     \frac{a_{21}}{\ell_{11}} & \sqrt{a_{22}-\ell_{21}^2}                    & 0                                                                & 0                                                 \\
+                                     \frac{a_{31}}{\ell_{11}} & \frac{a_{32}-\ell_{21} \ell_{31}}{\ell_{22}} & \sqrt{a_{33}-\ell_{31}^2-\ell_{32}^2}                            & 0                                                 \\
+                                     \frac{a_{41}}{\ell_{11}} & \frac{a_{42}-\ell_{21} \ell_{41}}{\ell_{22}} & \frac{a_{43}-\ell_{31} \ell_{41}-\ell_{32} \ell_{42}}{\ell_{33}} & \sqrt{a_{44}-\ell_{41}^2-\ell_{42}^2-\ell_{43}^2}
+                                 \end{bmatrix} & \\
+    \symbf{L} \symbf{L}^\top & = \begin{bmatrix}
+                                     \ell_{11}^2         & \ell_{11} \ell_{21}                     & \ell_{11} \ell_{31}                                         & \ell_{11} \ell_{41}                                         \\
+                                     \ell_{11} \ell_{21} & \ell_{21}^2+\ell_{22}^2                 & \ell_{21} \ell_{31}+\ell_{22} \ell_{32}                     & \ell_{21} \ell_{41}+\ell_{22} \ell_{42}                     \\
+                                     \ell_{11} \ell_{31} & \ell_{21} \ell_{31}+\ell_{22} \ell_{32} & \ell_{31}^2+\ell_{32}^2+\ell_{33}^2                         & \ell_{31} \ell_{41}+\ell_{32} \ell_{42}+\ell_{33} \ell_{43} \\
+                                     \ell_{11} \ell_{41} & \ell_{21} \ell_{41}+\ell_{22} \ell_{42} & \ell_{31} \ell_{41}+\ell_{32} \ell_{42}+\ell_{33} \ell_{43} & \ell_{41}^2+\ell_{42}^2+\ell_{43}^2+\ell_{44}^2
+                                 \end{bmatrix} &
+\end{flalign*}
+\underline{\textbf{Brouwer's Fixed-Point Theorem}} \\
+For \(g\) continuous on \(\interval{a}{b}\), and differentiable on \(\ointerval{a}{b}\), with \(g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b}\),
+let a positive constant \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) \(\forall x \in \ointerval{a}{b}\).
+Then, \(g\) has a unique fixed-point \(p\) in \(\interval{a}{b}\), and \(x_{n+1} = g\left( x_n \right)\)
+will converge to \(p\) for all \(x_0\) in \(\interval{a}{b}\).
 \end{document}

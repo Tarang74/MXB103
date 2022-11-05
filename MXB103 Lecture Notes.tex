@@ -995,9 +995,9 @@ The matrices \(\symbf{L}\) and \(\symbf{U}\) can be found by considering the fol
     \end{bmatrix*} & =
     \begin{bmatrix*}
         1 & 0      & \cdots & 0      \\
-        l_{21} & 1 & \ddots & \vdots      \\
+        \ell_{21} & 1 & \ddots & \vdots      \\
         \vdots & \ddots & \ddots & 0 \\
-        l_{n1} & \cdots & l_{n,n-1} & 1
+        \ell_{n1} & \cdots & \ell_{n,n-1} & 1
     \end{bmatrix*}
     \begin{bmatrix*}
         u_{11} & u_{12} & \cdots & u_{1n} \\
@@ -1015,18 +1015,18 @@ If we perform this product, we get the following:
         a_{n1} & a_{n2} & \cdots & a_{nn}
     \end{bmatrix*} & = \begin{bmatrix*}
                            u_{11}        & u_{12} & \cdots & u_{1n} \\
-                           l_{21} u_{11} & l_{21} u_{12} + u_{22} & \cdots & l_{21} u_{1n} + u_{2n} \\
+                           \ell_{21} u_{11} & \ell_{21} u_{12} + u_{22} & \cdots & \ell_{21} u_{1n} + u_{2n} \\
                            \vdots        & \vdots & \ddots & \vdots \\
-                           l_{n1} u_{11} & l_{n1} u_{12} + l_{n2} u_{22} & \cdots & l_{n1} u_{1n} + l_{n2} u_{2n} + \cdots + u_{nn}
+                           \ell_{n1} u_{11} & \ell_{n1} u_{12} + \ell_{n2} u_{22} & \cdots & \ell_{n1} u_{1n} + \ell_{n2} u_{2n} + \cdots + u_{nn}
                        \end{bmatrix*}
 \end{align*}
-which allows us to solve for \(u_{ij}\) and \(l_{ij}\). This can be done by
+which allows us to solve for \(u_{ij}\) and \(\ell_{ij}\). This can be done by
 considering the first row, then the first column, then the second row, then the second column, and so on.
 
-In general, the equations to consider are, for \(l_{ij}\)
+In general, the equations to consider are, for \(\ell_{ij}\)
 \begin{equation*}
-    l_{ij} = \begin{cases}
-        \frac{a_{ij} - \sum_{k = 1}^{j - 1} l_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\)} \\
+    \ell_{ij} = \begin{cases}
+        \frac{a_{ij} - \sum_{k = 1}^{j - 1} \ell_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\)} \\
         1                                                          & \text{if \(i = j\)} \\
         0                                                          & \text{if \(i < j\)} \\
     \end{cases}
@@ -1034,7 +1034,7 @@ In general, the equations to consider are, for \(l_{ij}\)
 and for \(u_{ij}\)
 \begin{equation*}
     u_{ij} = \begin{cases}
-        a_{ij} - \sum_{k = 1}^{i - 1} l_{ik} u_{kj} & \text{if \(i \leq j\)} \\
+        a_{ij} - \sum_{k = 1}^{i - 1} \ell_{ik} u_{kj} & \text{if \(i \leq j\)} \\
         0                                           & \text{if \(i > j\)}
     \end{cases}
 \end{equation*}
@@ -1060,16 +1060,16 @@ The matrix \(\symbf{L}\) can be found by considering the following:
         a_{n1} & a_{n2} & \cdots & a_{nn}
     \end{bmatrix*} & =
     \begin{bmatrix*}
-        l_{11} & 0      & \cdots & 0      \\
-        l_{21} & l_{22} & \ddots & \vdots      \\
+        \ell_{11} & 0      & \cdots & 0      \\
+        \ell_{21} & \ell_{22} & \ddots & \vdots      \\
         \vdots & \ddots & \ddots & 0 \\
-        l_{n1} & \cdots & l_{n,n-1} & l_{nn}
+        \ell_{n1} & \cdots & \ell_{n,n-1} & \ell_{nn}
     \end{bmatrix*}
     \begin{bmatrix*}
-        l_{11} & l_{21} & \cdots & l_{n1} \\
-        0      & l_{22} & \cdots & l_{n2} \\
+        \ell_{11} & \ell_{21} & \cdots & \ell_{n1} \\
+        0      & \ell_{22} & \cdots & \ell_{n2} \\
         \vdots & \ddots & \ddots & \vdots \\
-        0      & \cdots & 0      & l_{nn}
+        0      & \cdots & 0      & \ell_{nn}
     \end{bmatrix*}
 \end{align*}
 If we perform this product, we get the following:
@@ -1080,18 +1080,18 @@ If we perform this product, we get the following:
         \vdots & \vdots & \ddots & \vdots \\
         a_{n1} & a_{n2} & \cdots & a_{nn}
     \end{bmatrix*} & = \begin{bmatrix*}
-                           l_{11}^2        & l_{11} l_{21} & \cdots & l_{11} l_{n1} \\
-                           l_{21} l_{11} & l_{21}^2 + l_{22}^2 & \cdots & l_{21} l_{n1} + l_{22} l_{n2} \\
+                           \ell_{11}^2        & \ell_{11} \ell_{21} & \cdots & \ell_{11} \ell_{n1} \\
+                           \ell_{21} \ell_{11} & \ell_{21}^2 + \ell_{22}^2 & \cdots & \ell_{21} \ell_{n1} + \ell_{22} \ell_{n2} \\
                            \vdots        & \vdots & \ddots & \vdots \\
-                           l_{n1} l_{11} & l_{n1} l_{21} + l_{n2} l_{22} & \cdots & l_{n1}^2 + l_{n2}^2 + \cdots + l_{nn}^2
+                           \ell_{n1} \ell_{11} & \ell_{n1} \ell_{21} + \ell_{n2} \ell_{22} & \cdots & \ell_{n1}^2 + \ell_{n2}^2 + \cdots + \ell_{nn}^2
                        \end{bmatrix*}
 \end{align*}
-which allows us to solve for \(l_{ij}\). This can be done by solving each column of \(\symbf{L}\).
+which allows us to solve for \(\ell_{ij}\). This can be done by solving each column of \(\symbf{L}\).
 In general, the equations are
 \begin{equation*}
-    l_{ij} = \begin{cases}
-        \frac{1}{l_{jj}} \left( a_{ij} - \sum_{k = 1}^{j - 1} l_{ik} l_{jk} \right) & \text{if \(i > j\)} \\
-        \sqrt{a_{jj} - \sum_{k = 1}^{j - 1} l_{jk}^2}                               & \text{if \(i = j\)} \\
+    \ell_{ij} = \begin{cases}
+        \frac{1}{\ell_{jj}} \left( a_{ij} - \sum_{k = 1}^{j - 1} \ell_{ik} \ell_{jk} \right) & \text{if \(i > j\)} \\
+        \sqrt{a_{jj} - \sum_{k = 1}^{j - 1} \ell_{jk}^2}                               & \text{if \(i = j\)} \\
         0                                                                           & \text{if \(i < j\)} \\
     \end{cases}
 \end{equation*}
