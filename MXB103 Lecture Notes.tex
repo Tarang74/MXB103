@@ -1026,18 +1026,16 @@ considering the first row, then the first column, then the second row, then the 
 In general, the equations to consider are, for \(l_{ij}\)
 \begin{equation*}
     l_{ij} = \begin{cases}
-        \frac{a_{ij}}{u_{jj}}                                & \text{if \(i > j\) and \(j = 1\)} \\
-        \frac{a_{ij} - \sum_{k = 1}^j l_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\) and \(j > 1\)} \\
-        1                                                    & \text{if \(i = j\)}               \\
-        0                                                    & \text{if \(i < j\)}               \\
+        \frac{a_{ij} - \sum_{k = 1}^{j - 1} l_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\)} \\
+        1                                                          & \text{if \(i = j\)} \\
+        0                                                          & \text{if \(i < j\)} \\
     \end{cases}
 \end{equation*}
 and for \(u_{ij}\)
 \begin{equation*}
     u_{ij} = \begin{cases}
-        a_{ij}                                & \text{if \(i \leq j\) and \(i = 1\)} \\
-        a_{ij} - \sum_{k = 1}^i l_{ik} u_{kj} & \text{if \(i \leq j\) and \(i > 1\)} \\
-        0                                     & \text{if \(i > j\)}
+        a_{ij} - \sum_{k = 1}^{i - 1} l_{ik} u_{kj} & \text{if \(i \leq j\)} \\
+        0                                           & \text{if \(i > j\)}
     \end{cases}
 \end{equation*}
 \subsection{Cholesky Decomposition}
@@ -1047,9 +1045,9 @@ The \textbf{Cholesky decomposition} is a method for factoring a symmetric, posit
 \end{equation*}
 to solve the linear system:
 \begin{align*}
-    \symbf{A} \symbfit{x} & = \symbfit{b} \\
-    \symbf{L} \symbf{L}^\top \symbfit{x} & = \symbfit{b} \\
-    \symbf{L} \symbfit{z} & = \symbfit{b} &  & \left( \symbf{L}^\top \symbfit{x} = \symbfit{z} \right)
+    \symbf{A} \symbfit{x}                & = \symbfit{b}                                                              \\
+    \symbf{L} \symbf{L}^\top \symbfit{x} & = \symbfit{b}                                                              \\
+    \symbf{L} \symbfit{z}                & = \symbfit{b} &  & \left( \symbf{L}^\top \symbfit{x} = \symbfit{z} \right)
 \end{align*}
 where \(\symbfit{z}\) can be solved using forward substitution, and then \(\symbfit{x}\) can be solved using backward substitution.
 The matrix \(\symbf{L}\) can be found by considering the following:
@@ -1089,4 +1087,12 @@ If we perform this product, we get the following:
                        \end{bmatrix*}
 \end{align*}
 which allows us to solve for \(l_{ij}\). This can be done by solving each column of \(\symbf{L}\).
+In general, the equations are
+\begin{equation*}
+    l_{ij} = \begin{cases}
+        \frac{1}{l_{jj}} \left( a_{ij} - \sum_{k = 1}^{j - 1} l_{ik} l_{jk} \right) & \text{if \(i > j\)} \\
+        \sqrt{a_{jj} - \sum_{k = 1}^{j - 1} l_{jk}^2}                               & \text{if \(i = j\)} \\
+        0                                                                           & \text{if \(i < j\)} \\
+    \end{cases}
+\end{equation*}
 \end{document}

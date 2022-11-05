@@ -127,7 +127,7 @@ margin = 10mm
 
     Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
     Let \(t_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\).
-    Then \(y_i = y\left( t_i \right)\) approximates the solution \(y\) at \(t_i\).
+    Then \(y_i = y\left( t_i \right)\) approximates the solution \(y\) at \(t = t_i\).
     \subsection{Euler's Method (First Order Taylor)}
     Assuming \(y\) is twice differentiable,
     \begin{equation*}
@@ -215,7 +215,7 @@ margin = 10mm
     \end{multline*}
     \begin{align*}
         f\left[ x_0,\: x_1 \right]    & = \frac{f\left[ x_1 \right] - f\left[ x_0 \right]}{x_1 - x_0} = \frac{y_1 - y_0}{x_1 - x_0} \\
-        f\left[ x_1,\: x_2 \right]    & = \frac{f\left[ x_2 \right] - f\left[ x_1 \right]}{x_1 - x_0} = \frac{y_2 - y_1}{x_2 - x_1} \\
+        f\left[ x_1,\: x_2 \right]    & = \frac{f\left[ x_2 \right] - f\left[ x_1 \right]}{x_2 - x_1} = \frac{y_2 - y_1}{x_2 - x_1} \\
         f\left[ x_0, x_1, x_2 \right] & = \frac{f\left[ x_1, x_2 \right] - f\left[ x_0, x_1 \right]}{x_2 - x_0}
     \end{align*}
     \subsection{Newton's Forward Difference Form}
@@ -322,17 +322,16 @@ margin = 10mm
     \end{multline*}
     \(f^{\left( 4 \right)}\left( c \right) = \frac{f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right)}{2}\) and \(c \in \interval{c_1}{c_2}\),
     with \(c_1 \in \interval{x_0 - h}{x_0}\) and \(c_2 \in \interval{x_0}{x_0 + h}\).
-    \subsection{Instability}
-    Choose \(h\) to minimise roundoff error and truncation error.
-    \section{Numerical Integration (Quadrature)}
+    \section{Numerical Integration}
     \begin{equation*}
         I = \int_a^b f\left( x \right) \odif{x} \approx \sum_{i = 0}^n w_i f\left( x_i \right)
     \end{equation*}
     for weights \(w_i\) and abscissas \(x_i\).
-\end{minipage}\hfill%
-\begin{minipage}[t]{126.1962963mm}
+
     Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
     Let \(x_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(x_0 = a\) and \(x_n = b\).
+\end{minipage}\hfill%
+\begin{minipage}[t]{126.1962963mm}
     \subsection{Trapezoidal Rule (Second Order)}
     Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{i - 1}}{x_i}\) with a degree 1 interpolant:
     \begin{align*}
@@ -342,11 +341,10 @@ margin = 10mm
     \begin{align*}
         \int_{x_{i - 1}}^{x_i} f\left( x \right) \odif{x} \approx \int_0^1 P_{1,\: i}\left( x \right) h \odif{s} = \frac{h}{2} \left( y_{i - 1} + y_i \right) \quad \left(i = 1, 2, \ldots, n\right).
     \end{align*}
-    \begin{align*}
-        I = \sum_{i = 1}^n \int_{x_{i-1}}^{x_i} f\left( x \right) \odif{x} & \approx \sum_{i = 1}^n \frac{h}{2} \left[ f\left( x_{i - 1} \right) + f\left( x_i \right) \right]                                                                           \\
-                                                                           & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] -\frac{\left( b - a \right)h^2}{12} f''\left( c \right)
-    \end{align*}
-    Error \(\mathcal{O}\left( h^2 \right)\) where \(c \in \interval{a}{b}\), and the method is exact if \(f\) is linear.
+    \begin{multline*}
+        I = \sum_{i = 1}^n \int_{x_{i-1}}^{x_i} f\left( x \right) \odif{x} \approx \sum_{i = 1}^n \frac{h}{2} \left[ f\left( x_{i - 1} \right) + f\left( x_i \right) \right]                                                                           \\
+        = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] -\frac{\left( b - a \right)h^2}{12} f''\left( c \right)
+    \end{multline*}
     \subsection{Simpson's Rule (Fourth Order)}
     Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{2i - 2}}{x_{2i}}\) with a degree 2 interpolant:
     \begin{align*}
@@ -361,35 +359,22 @@ margin = 10mm
         I = \sum_{i = 2}^{n/2}\int_{x_{2i - 2}}^{x_{2i}} f\left( x \right) \odif{x} \approx \sum_{i = 2}^{n/2} \frac{h}{3} \left[ f\left( x_{2i - 2} \right) + 4f\left( x_{2i - 1} \right) + f\left( x_{2i} \right) \right]                                                                                                               \\
         = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{n/2} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{n/2 - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right)h^4}{180} f^{\left( 4 \right)}\left( c \right)
     \end{multline*}
-    Error \(\mathcal{O}\left( h^4 \right)\) where \(c \in \interval{a}{b}\), method is exact if \(f\) is cubic. (\(n\) is even).
     \section{Linear Systems (\texorpdfstring{\(\symbf{A} \symbfit{x} = \symbfit{b}\)}{A x = b})}
-    \subsection{Solving Triangular Systems}
-    \begin{align*}
-        \overset{\text{(Upper)}}{\text{Backward}}: x_i & = \frac{b_i - \sum_{j = i + 1}^n a_{ij} x_j}{a_{ii}},
-                                                       &                                                       & \overset{\text{(Lower)}}{\text{Forward}}: x_i = \frac{b_i - \sum_{j = 1}^{i - 1} a_{ij} x_j}{a_{ii}}
-    \end{align*}
     \subsection{LU Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{U} \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{U} \symbfit{x} = \symbfit{z}\)}{A = LU => L z = b, U x = z})}
-    \begin{equation*}
-        \begin{bmatrix}
-            a_{11} & a_{12} & \cdots & a_{1n} \\
-            a_{21} & a_{22} & \cdots & a_{2n} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            a_{n1} & a_{n2} & \cdots & a_{nn}
-        \end{bmatrix} =
-        \begin{bmatrix}
-            1      & 0      & \cdots    & 0      \\
-            l_{21} & 1      & \ddots    & \vdots \\
-            \vdots & \ddots & \ddots    & 0      \\
-            l_{n1} & \cdots & l_{n,n-1} & 1
-        \end{bmatrix}
-        \begin{bmatrix}
-            u_{11} & u_{12} & \cdots & u_{1n} \\
-            0      & u_{22} & \cdots & u_{2n} \\
-            \vdots & \ddots & \ddots & \vdots \\
-            0      & \cdots & 0      & u_{nn}
-        \end{bmatrix}
-    \end{equation*}
-    Solve \(\symbfit{z}\) using forward substitution, then solve \(\symbfit{x}\) using backward substitution.
+    \begin{align*}
+        \symbf{L} & = \begin{bmatrix}
+                          1                     & 0                                   & 0                                                 & 0 \\
+                          \frac{a_{21}}{u_{11}} & 1                                   & 0                                                 & 0 \\
+                          \frac{a_{31}}{u_{11}} & \frac{a_{32}-l_{31} u_{12}}{u_{22}} & 1                                                 & 0 \\
+                          \frac{a_{41}}{u_{11}} & \frac{a_{42}-l_{41} u_{12}}{u_{22}} & \frac{a_{43}-l_{41} u_{13}-l_{42} u_{23}}{u_{33}} & 1
+                      \end{bmatrix} \\
+        \symbf{U} & = \begin{bmatrix}
+                          a_{11} & a_{12}               & a_{13}                             & a_{14}                                           \\
+                          0      & a_{22}-l_{21} u_{12} & a_{23}-l_{21} u_{13}               & a_{24}-l_{21} u_{14}                             \\
+                          0      & 0                    & a_{33}-l_{31} u_{13}-l_{32} u_{23} & a_{34}-l_{31} u_{14}-l_{32} u_{24}               \\
+                          0      & 0                    & 0                                  & a_{44}-l_{41} u_{14}-l_{42} u_{24}-l_{43} u_{34}
+                      \end{bmatrix}
+    \end{align*}
     \begin{equation*}
         \begin{bmatrix}
             u_{11}        & u_{12}                      & u_{13}                                    & u_{14}                                           \\
@@ -401,26 +386,14 @@ margin = 10mm
     \underline{\textbf{Symmetric Positive Definite:}} \(\symbfit{x}^\top \symbf{A} \symbfit{x} > \symbfit{0} : \forall \symbfit{x} \in \mathbb{R}^n\).
     \subsection{Cholesky Decomposition (\texorpdfstring{\(\symbf{A} = \symbf{L} \symbf{L}^\top \implies \symbf{L} \symbfit{z} = \symbfit{b}\), \(\symbf{L}^\top \symbfit{x} = \symbfit{z}\)}{A = L LT => L z = b, LT x = z})}
     \begin{equation*}
+        \symbf{L} =
         \begin{bmatrix}
-            a_{11} & a_{12} & \cdots & a_{1n} \\
-            a_{21} & a_{22} & \cdots & a_{2n} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            a_{n1} & a_{n2} & \cdots & a_{nn}
-        \end{bmatrix} =
-        \begin{bmatrix}
-            l_{11} & 0      & \cdots    & 0      \\
-            l_{21} & l_{22} & \ddots    & \vdots \\
-            \vdots & \ddots & \ddots    & 0      \\
-            l_{n1} & \cdots & l_{n,n-1} & l_{nn}
-        \end{bmatrix}
-        \begin{bmatrix}
-            l_{11} & l_{21} & \cdots & l_{n1} \\
-            0      & l_{22} & \cdots & l_{n2} \\
-            \vdots & \ddots & \ddots & \vdots \\
-            0      & \cdots & 0      & l_{nn}
+            \sqrt{a_{11}}         & 0                                   & 0                                                 & 0                                        \\
+            \frac{a_{21}}{l_{11}} & \sqrt{a_{22}-l_{21}^2}              & 0                                                 & 0                                        \\
+            \frac{a_{31}}{l_{11}} & \frac{a_{32}-l_{21} l_{31}}{l_{22}} & \sqrt{a_{33}-l_{31}^2-l_{32}^2}                   & 0                                        \\
+            \frac{a_{41}}{l_{11}} & \frac{a_{42}-l_{21} l_{41}}{l_{22}} & \frac{a_{43}-l_{31} l_{41}-l_{32} l_{42}}{l_{33}} & \sqrt{a_{44}-l_{41}^2-l_{42}^2-l_{43}^2}
         \end{bmatrix}
     \end{equation*}
-    Solve \(\symbfit{z}\) using forward substitution, then solve \(\symbfit{x}\) using backward substitution.
     \begin{equation*}
         \begin{bmatrix}
             l_{11}^2      & l_{11} l_{21}               & l_{11} l_{31}                             & l_{11} l_{41}                             \\
@@ -430,9 +403,8 @@ margin = 10mm
         \end{bmatrix}
     \end{equation*}
     \underline{\textbf{Brouwer's Fixed-Point Theorem}} \\
-    If \(g\) is continuous on \(\interval{a}{b}\) and \(g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b}\)
-    and differentiable on \(\ointerval{a}{b}\), let a positive constant
-    \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) \(\forall x \in \ointerval{a}{b}\).
+    For \(g\) continuous on \(\interval{a}{b}\), and differentiable on \(\ointerval{a}{b}\), with \(g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b}\),
+    let a positive constant \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) \(\forall x \in \ointerval{a}{b}\).
 
     Then, \(g\) has a unique fixed-point \(p\) in \(\interval{a}{b}\), and \(x_{n+1} = g\left( x_n \right)\)
     will converge to \(p\) for all \(x_0\) in \(\interval{a}{b}\).
