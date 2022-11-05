@@ -28,6 +28,7 @@ This repository provides **lecture notes** and **exam notes** for **MXB103 - Int
 4. Root Finding
 5. Numerical Differentiation
 6. Numerical Integration
+7. Linear Systems
 
 ---
 
