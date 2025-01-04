@@ -656,7 +656,7 @@ Using the above theorem and making the substitution \(x = x_0 + sh\)
 rewrite the Newton divided difference form as
 \begin{align*}
     P_n\left( x \right) & = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)                                                 \\
-                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( \left( x_0 + sh \right) - \left( x_0 + ih \right) \right) \right)                      \\
+                        & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( \left( x_0 + s h \right) - \left( x_0 + i h \right) \right) \right)                    \\
                         & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right)h \right)                                                                 \\
                         & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right) \prod_{i = 0}^{k - 1} h \right)                                          \\
                         & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( s - i \right) h^k \right)                                                              \\
@@ -884,7 +884,7 @@ where \(c_1\) is between \(x_0\) and \(x_0 + h\), and \(c_2\) is between
     f'\left( x_0 \right)                              & = \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} - \frac{h^2}{6} f'''\left( c \right)
 \end{align*}
 where \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) +
-f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate
+    f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate
 Value Theorem), and \(c\) is between \(x_0 - h\) and \(x_0 + h\). This
 is known as the \textbf{second order central difference} approximation
 for \(f'\left( x_0 \right)\). The error term is
@@ -907,7 +907,7 @@ gives
 \end{align*}
 where \(f^{\left( 4 \right)}\left( c \right) =
 \frac{f^{\left( 4 \right)}\left( c_1 \right) +
-f^{\left( 4 \right)}\left( c_2 \right)}{2}\), for
+    f^{\left( 4 \right)}\left( c_2 \right)}{2}\), for
 \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem), and \(c\) is
 between \(x_0 - h\) and \(x_0 + h\).
 \subsection{Instability}
@@ -1194,7 +1194,7 @@ to consider are, for \(\ell_{ij}\)
 \end{equation*}
 and for \(u_{ij}\)
 \begin{equation*}
-    u_{ij} =
+    u_{i j} =
     \begin{cases}
         a_{ij} - \sum_{k = 1}^{i - 1} \ell_{ik} u_{kj} & \text{if \(i \leq j\)} \\
         0                                              & \text{if \(i > j\)}
