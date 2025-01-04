@@ -48,8 +48,8 @@
 %
 \section{Preliminaries}
 \subsection{Errors}
-Errors in calculations are a common problem in numerical analysis.
-We can quantify the magnitude of such an error by two measures.
+Errors in calculations are a common problem in numerical analysis. We
+can quantify the magnitude of such an error by two measures.
 \begin{definition}[Absolute and relative error]
     Let \(\tilde{x}\) be an approximation of \(x\). Then the \textbf{absolute
         error} is given by
@@ -66,11 +66,10 @@ misleading when comparing different sizes of errors,
 i.e., it is always small for small values of \(x\) and \(\tilde{x}\).
 \subsection{Floating Point Arithmetic}
 The set of real numbers \(\R\) contains uncountably many elements.
-Computers have a limited number of bits, and can
-therefore only represent a small subset of these elements.
-
-The most common approximation of real arithmetic used in computers is known
-as \textbf{floating point arithmetic}.
+Computers have a limited number of bits, and can therefore only
+represent a small subset of these elements. The most common
+approximation of real arithmetic used in computers is known as
+\textbf{floating point arithmetic}.
 \begin{definition}[Floating point number system]
     A floating point number system \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
     is a \textit{finite subset} of the real number system characterised by the parameters:
@@ -92,63 +91,68 @@ as \textbf{floating point arithmetic}.
     where \(d_i\) are base-\(\beta\) digits, with \(d_1 \neq 0\) unless \(f = 0\),
     to ensure a unique representation of \(f\).
 \end{definition}
-Computers primarily use floating point number systems with base \(\beta = 2\) (binary),
-other common bases include \(\beta = 10\)
-(decimal\footnote{Note that for base-10, we do not need to include the subscript in the significand.})
-and \(\beta = 16\) (hexadecimal).
-
-To illustrate the finiteness of the floating point number system, consider
+Computers primarily use floating point number systems with base
+\(\beta = 2\) (binary), other common bases include \(\beta = 10\)
+(decimal\footnote{Note that for base-10, we do not need to include the
+    subscript in the significand.}) and \(\beta = 16\) (hexadecimal). To
+illustrate the finiteness of the floating point number system, consider
 the following example:
 \begin{align*}
-    \mathbb{F}\left( 10,\: 3,\: -1,\: 1\right) & = \begin{aligned}[t]
-                                                       \left\{\right. & 0,                                                                                                                \\
-                                                                      & \pm 1.00 \times 10^{-1},\: &  & \pm 1.01 \times 10^{-1},\: &  & \dots,\: &  & \pm 9.99 \times 10^{-1},            \\
-                                                                      & \pm 1.00 \times 10^0,\:    &  & \pm 1.01 \times 10^0,\:    &  & \dots,\: &  & \pm 9.99 \times 10^0,               \\
-                                                                      & \pm 1.00 \times 10^1,\:    &  & \pm 1.01 \times 10^1,\:    &  & \dots,\: &  & \pm 9.99 \times 10^1 \left.\right\}
-                                                   \end{aligned} \\
-                                               & = \begin{aligned}[t]
-                                                       \left\{\right. & 0,                                                                        \\
-                                                                      & \pm 0.100,\: &  & \pm 0.101,\: &  & \dots,\: &  & \pm 0.999,              \\
-                                                                      & \pm 1.00,\:  &  & \pm 1.01,\:  &  & \dots,\: &  & \pm 9.99,               \\
-                                                                      & \pm 10.0,\:  &  & \pm 10.1,\:  &  & \dots,\: &  & \pm 99.9 \left.\right\}
-                                                   \end{aligned}
+    \mathbb{F}\left( 10,\: 3,\: -1,\: 1\right) & =
+    \begin{aligned}[t]
+        \left\{\right. & 0,                                                                                                                \\
+                       & \pm 1.00 \times 10^{-1},\: &  & \pm 1.01 \times 10^{-1},\: &  & \dots,\: &  & \pm 9.99 \times 10^{-1},            \\
+                       & \pm 1.00 \times 10^0,\:    &  & \pm 1.01 \times 10^0,\:    &  & \dots,\: &  & \pm 9.99 \times 10^0,               \\
+                       & \pm 1.00 \times 10^1,\:    &  & \pm 1.01 \times 10^1,\:    &  & \dots,\: &  & \pm 9.99 \times 10^1 \left.\right\}
+    \end{aligned}
+    \\
+                                               & =
+    \begin{aligned}[t]
+        \left\{\right. & 0,                                                                        \\
+                       & \pm 0.100,\: &  & \pm 0.101,\: &  & \dots,\: &  & \pm 0.999,              \\
+                       & \pm 1.00,\:  &  & \pm 1.01,\:  &  & \dots,\: &  & \pm 9.99,               \\
+                       & \pm 10.0,\:  &  & \pm 10.1,\:  &  & \dots,\: &  & \pm 99.9 \left.\right\}
+    \end{aligned}
 \end{align*}
-Note that the numbers in this set are not equally spaced, (smaller spacing for smaller exponents).
+Note that the numbers in this set are not equally spaced, (smaller
+spacing for smaller exponents).
 \begin{definition}[Overflow and underflow]
-    Consider the value \(x \in \R\), if \(x\) is too small in magnitude to be
-    represented in \(\mathbb{F}\),
-    an \textbf{underflow} occurs which typically causes the number to be replaced by zero.
-
-    Similarly, if \(x\) is too large in magnitude to be represented in \(\mathbb{F}\),
-    an \textbf{overflow} occurs which typically causes the number to be replaced by infinity.
+    Consider the value \(x \in \R\), if \(x\) is too small in magnitude
+    to be represented in \(\mathbb{F}\), an \textbf{underflow} occurs
+    which typically causes the number to be replaced by zero. Similarly,
+    if \(x\) is too large in magnitude to be represented in
+    \(\mathbb{F}\), an \textbf{overflow} occurs which typically causes
+    the number to be replaced by infinity.
 \end{definition}
 \begin{corollary}
-    The smallest and largest values (in magnitude) of \(\mathbb{F}\) are given by
+    The smallest and largest values (in magnitude) of \(\mathbb{F}\) are
+    given by
     \begin{align*}
         \min_{f \in \mathbb{F}} \abs*{f} & = \beta^m                                      \\
         \max_{f \in \mathbb{F}} \abs*{f} & = \left( 1 - \beta^{-k} \right) \beta^{M + 1}.
     \end{align*}
-    The cardinality of the positive elements in \(\mathbb{F}\),
-    is given by
+    The cardinality of the positive elements in \(\mathbb{F}\), is given
+    by
     \begin{equation*}
         \abs*{\left\{ f \in \mathbb{F} : f > 0 \right\}} = \left( M - m + 1 \right) \left( \beta - 1 \right) \beta^{k - 1}
     \end{equation*}
-    so that by including negative numbers and zero, the cardinality of \(\mathbb{F}\)
-    is given by
+    so that by including negative numbers and zero, the cardinality of
+    \(\mathbb{F}\) is given by
     \begin{equation*}
         \abs*{\mathbb{F}} = 2 \abs*{\left\{ f \in \mathbb{F} : f > 0 \right\}} + 1.
     \end{equation*}
 \end{corollary}
 \subsubsection{Representing Real Numbers as Floating Point Numbers}
-If we wish to represent a real number\footnote{\(x\) must satisfy \(\min{\left( \mathbb{F} \right)} \leq x \leq \max{\left( \mathbb{F} \right)}\).}
-\(x\) that is not exactly representable in \(\mathbb{F}\),
-we can \textbf{round} the number to the nearest \textit{representable} number.
-
-The error committed by this process is known as the \textbf{roundoff error}.
+If we wish to represent a real number\footnote{\(x\) must satisfy
+\(\min{\left( \mathbb{F} \right)} \leq x \leq \max{\left( \mathbb{F}
+\right)}\).} \(x\) that is not exactly representable in \(\mathbb{F}\),
+we can \textbf{round} the number to the nearest \textit{representable}
+number. The error committed by this process is known as the
+\textbf{roundoff error}.
 \subsubsection{Converting between Floating Point Number Systems}
-Consider \(fl : \R \to \mathbb{F}\left( \beta,\: k,\: m,\: M \right)\), defined as function which maps
-real numbers \(x\) to the nearest element in
-\(\mathbb{F}\). To determine \(fl\left( x \right)\):
+Consider \(fl : \R \to \mathbb{F}\left( \beta,\: k,\: m,\: M \right)\),
+defined as function which maps real numbers \(x\) to the nearest
+element in \(\mathbb{F}\). To determine \(fl\left( x \right)\):
 \begin{enumerate}
     \item Express \(x\) in base \(\beta\).
     \item Express \(x\) in scientific form.
@@ -159,46 +163,45 @@ real numbers \(x\) to the nearest element in
               \item Otherwise, round the significand to \(k\) digits.
           \end{itemize}
 \end{enumerate}
-The relative error produced by rounding \(x\) to \(fl\left( x \right)\) is bounded
-according to
+The relative error produced by rounding \(x\) to \(fl\left( x \right)\)
+is bounded according to
 \begin{equation*}
     \frac{\abs*{x - fl\left( x \right)}}{\abs*{x}} \leq \frac{1}{2} \beta^{1 - k}.
 \end{equation*}
 \begin{definition}[Unit roundoff]
-    The \textbf{unit roundoff} or \textbf{machine precision} \(u\) of a floating point number system \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\)
-    is given by
+    The \textbf{unit roundoff} or \textbf{machine precision} \(u\) of a
+    floating point number system
+    \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\) is given by
     \begin{equation*}
         u = \frac{1}{2} \beta^{1 - k}.
     \end{equation*}
 \end{definition}
 \subsubsection{IEEE Floating Point Standard}
-IEEE 754 is the standard for floating point arithmetic used by most modern computers.
-
-It is a binary format, with several variants. The most common variant is \textbf{IEEE double precision},
-which is based on \(\mathbb{F}\left( 2,\: 53,\: -1022,\: 1023 \right)\).
-
-The basic properties of this format are summarised in the following table.
+IEEE 754 is the standard for floating point arithmetic used by most
+modern computers. It is a binary format, with several variants. The
+most common variant is \textbf{IEEE double precision}, which is based
+on \(\mathbb{F}\left( 2,\: 53,\: -1022,\: 1023 \right)\). The basic
+properties of this format are summarised in the following table.
 \begin{table}[H]
     \centering
     \begin{tabular}{l | c} % chktex 44
         \toprule
-        Unit roundoff                          & \(u = 1.11 \times 10^{-16}\)               \\
-        Largest representable positive number  & \(1.80 \times 10^{308}\)                   \\
-        Smallest representable positive number & \(2.23 \times 10^{-308}\)                  \\
-        Special values                         & \(\pm 0\), \(\pm \infty\), \lstinline!NaN! \\ % chktex 13
+        Unit roundoff                          & \(u = 1.11 \times 10^{-16}\)                      \\
+        Largest representable positive number  & \(1.80 \times 10^{308}\)                          \\
+        Smallest representable positive number & \(2.23 \times 10^{-308}\)                         \\
+        Special values                         & \(\pm 0\), \(\pm \infty\), \mintinline{text}!NaN! \\ % chktex 13
         \bottomrule
     \end{tabular}
     % \caption{} % \label{}
 \end{table}
 \subsection{Catastrophic Cancellation}
-When working with floating point arithmetic, roundoff is a common source of error.
-Certain operations may bring roundoff errors that are too large to be easily corrected.
-
-\textbf{Catastrophic cancellation} or \textbf{cancellation error} is the error that occurs in the floating
-point subtraction of two numbers that are very close to each other, where at least
-one of them is not exactly representable.
-
-As an example, the quadratic formula
+When working with floating point arithmetic, roundoff is a common
+source of error. Certain operations may bring roundoff errors that are
+too large to be easily corrected. \textbf{Catastrophic cancellation} or
+\textbf{cancellation error} is the error that occurs in the floating
+point subtraction of two numbers that are very close to each other,
+where at least one of them is not exactly representable. As an example,
+the quadratic formula
 \begin{align*}
     x_1 = \frac{-b + \sqrt{b^2 - 4 a c}}{2 a} &  & x_2 = \frac{-b - \sqrt{b^2 - 4 a c}}{2 a}
 \end{align*}
@@ -215,26 +218,33 @@ And when \(b < 0\), \(\abs*{b} = -b\), so that
 \begin{equation*}
     x_2 = \frac{-b - \left( -b \right)}{2a} = \frac{b - b}{2a}.
 \end{equation*}
-This cancellation can be avoided by taking the product of the two roots to determine the exact result
-of the root that suffers from catastrophic cancellation.
+This cancellation can be avoided by taking the product of the two roots
+to determine the exact result of the root that suffers from catastrophic
+cancellation.
 \begin{equation*}
     x_1 x_2 = \frac{c}{a}.
 \end{equation*}
 \subsection{Taylor Polynomials}
-Suppose we have a function \(f\left( x \right)\) that is \(n\) differentiable at the point
-\(x = x_0\). This function can be approximated by a sum of polynomials that agrees with its first \(n\) derivatives at that point.
+Suppose we have a function \(f\left( x \right)\) that is \(n\)
+differentiable at the point \(x = x_0\). This function can be
+approximated by a sum of polynomials that agrees with its first \(n\)
+derivatives at that point.
 \begin{definition}[Taylor polynomial]
-    The \textbf{Taylor polynomial} of degree \(n\) of \(f\), centred at \(x_0\) is defined by
+    The \textbf{Taylor polynomial} of degree \(n\) of \(f\), centred at
+    \(x_0\) is defined by
     \begin{align*}
         P_n\left( x \right) & = \sum_{k = 0}^n \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
     \end{align*}
 \end{definition}
-The Taylor polynomial can be used to approximate a function \(f\) for values of \(x\) near \(x_0\), the following
-theorem addresses how accurate the approximation is.
+The Taylor polynomial can be used to approximate a function \(f\) for
+values of \(x\) near \(x_0\), the following theorem addresses how
+accurate the approximation is.
 \begin{definition}[Taylor's theorem]
-    Suppose that \(f\) is \(n + 1\) times differentiable on an interval \(\interval{a}{b}\) containing \(x_0\),
-    and let \(P_n\) be the degree \(n\) Taylor polynomial for \(f\), centred on \(x_0\). Then for all \(x \in \interval{a}{b}\),
-    there exists a value \(x_0 < c < x\) such that
+    Suppose that \(f\) is \(n + 1\) times differentiable on an interval
+    \(\interval{a}{b}\) containing \(x_0\), and let \(P_n\) be the
+    degree \(n\) Taylor polynomial for \(f\), centred on \(x_0\). Then
+    for all \(x \in \interval{a}{b}\), there exists a value
+    \(x_0 < c < x\) such that
     \begin{equation*}
         f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}.
     \end{equation*}
@@ -242,77 +252,97 @@ theorem addresses how accurate the approximation is.
     \begin{equation*}
         R_n\left( x \right) = \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}
     \end{equation*}
-    is called the \textbf{error term} or \textbf{remainder term} for \(P_n\).
+    is called the \textbf{error term} or \textbf{remainder term} for
+    \(P_n\).
 \end{definition}
-To determine the absolute error from the Taylor series polynomial, consider the error term:
+To determine the absolute error from the Taylor series polynomial,
+consider the error term:
 \begin{equation*}
     \abs*{f\left( x \right) - P_n\left( x \right)} = \abs*{R_n\left( x \right)}.
 \end{equation*}
-The maximum value of \(\abs*{R_n\left( x \right)}\) on the interval \(\interval{a}{b}\) gives the bound on the maximum error incurred when approximating
-\(f\) by \(P_n\) on that interval.
+The maximum value of \(\abs*{R_n\left( x \right)}\) on the interval
+\(\interval{a}{b}\) gives the bound on the maximum error incurred when
+approximating \(f\) by \(P_n\) on that interval.
 \subsection{Taylor Series}
-Given an infinitely differentiable function \(f\), we can take the limit \(n \to \infty\) to find Taylor series representation of \(f\), given by:
+Given an infinitely differentiable function \(f\), we can take the
+limit \(n \to \infty\) to find Taylor series representation of \(f\),
+given by:
 \begin{equation*}
     f\left( x \right) = \sum_{k = 0}^\infty \frac{f^{\left( k \right)}\left( x_0 \right)}{k!} \left( x - x_0 \right)^k.
 \end{equation*}
-When we truncate this series at a finite \(n\), the error from the Taylor series is known as \textbf{truncation error}. In this case,
-the remainder term gives us a \textit{bound} on the size of this truncation error.
+When we truncate this series at a finite \(n\), the error from the
+Taylor series is known as \textbf{truncation error}. In this case, the
+remainder term gives us a \textit{bound} on the size of this truncation
+error.
 \section{Ordinary Differential Equations}
-For certain classes of ordinary differential equations (ODEs), we can obtain analytical closed-form solutions using known techniques.
-However for most cases we will need to use numerical techniques to obtain approximate solutions.
+For certain classes of ordinary differential equations (ODEs), we can
+obtain analytical closed-form solutions using known techniques. However
+for most cases we will need to use numerical techniques to obtain
+approximate solutions.
 \subsection{Initial Value Problems}
-While solutions with arbitrary constants, such as \(y = C e^{t}\) are acceptable for theoretical analysis,
-we cannot have such variables when determining an approximate solution in the real world.
-Hence we require \textbf{initial conditions} to obtain a definitive solution. An ODE combined
-with an initial condition is called an \textbf{initial value problem} (IVP).
+While solutions with arbitrary constants, such as \(y = C e^{t}\) are
+acceptable for theoretical analysis, we cannot have such variables when
+determining an approximate solution in the real world. Hence we require
+\textbf{initial conditions} to obtain a definitive solution. An ODE
+combined with an initial condition is called an \textbf{initial value
+problem} (IVP).
 \subsection{Time Discretisation}
 Consider the initial value problem,
 \begin{align*}
     y\left( a \right)          & = \alpha                                                              \\
     \odv{y\left( t \right)}{t} & = f\left( t,\: y\left( t \right) \right), \quad \quad a \leq t \leq b
 \end{align*}
-Divide the interval \(\interval{a}{b}\) into \(n\) subintervals, each with width \(h = \left( b - a \right) / n\).
-Then define \(t_i = a + i h\), for \(i = 0,\: 1,\: \ldots,\: n\), so that \(t_0 = a\) and \(t_n = b\). If we then compute
-\(y_i = y\left( t_i \right)\) denoted as \(w_i\), then \(w_i \approx y_i\) for all \(i = 0,\: 1,\: \ldots,\: n\).
+Divide the interval \(\interval{a}{b}\) into \(n\) subintervals, each
+with width \(h = \left( b - a \right) / n\). Then define
+\(t_i = a + i h\), for \(i = 0,\: 1,\: \ldots,\: n\), so that
+\(t_0 = a\) and \(t_n = b\). If we then compute
+\(y_i = y\left( t_i \right)\) denoted as \(w_i\), then
+\(w_i \approx y_i\) for all \(i = 0,\: 1,\: \ldots,\: n\).
 \subsection{Euler's Method}
-Euler's method, or the first order Taylor method, uses a Taylor polynomial approximation of \(y\) over each subinterval.
-Assuming \(y\) is twice differentiable,
+Euler's method, or the first order Taylor method, uses a Taylor
+polynomial approximation of \(y\) over each subinterval. Assuming \(y\)
+is twice differentiable,
 \begin{equation*}
     y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \mathcal{O}\left( h^2 \right).
 \end{equation*}
-The remainder term is not shown in its exact form but rather as \(\mathcal{O}\left( h^2 \right)\), ``Big-O of \(h^2\)'', or ``order \(h^2\)'', meaning that
-the error is proportional to \(h^2\). Using the ODE and substituting \(t_{i + 1} = t_i + h\) gives
+The remainder term is not shown in its exact form but rather as
+\(\mathcal{O}\left( h^2 \right)\), ``Big-O of \(h^2\)'', or
+``order \(h^2\)'', meaning that the error is proportional to \(h^2\).
+Using the ODE and substituting \(t_{i + 1} = t_i + h\) gives
 \begin{equation*}
     y_{i + 1} = y_i + h f\left( t_i,\: y_i \right) + \mathcal{O}\left( h^2 \right).
 \end{equation*}
-By removing the remainder term, we obtain the approximation method known as \textbf{Euler's method}:
+By removing the remainder term, we obtain the approximation method known
+as \textbf{Euler's method}:
 \begin{align*}
     w_0       & = \alpha                             \\
     w_{i + 1} & = w_i + h f\left( t_i,\: w_i \right)
 \end{align*}
 for \(i = 0,\: 1,\: \ldots,\: n - 1\).
 \subsection{Local and Global Error}
-\textbf{Local error} is defined as the error that the method would incur in \textbf{one step},
-assuming the solution was correct at the previous step.
-The \textbf{global error} is defined as the error in the solution after \(i\) steps (at \(t = t_i\)),
-and is given by:
+\textbf{Local error} is defined as the error that the method would incur
+in \textbf{one step}, assuming the solution was correct at the previous
+step. The \textbf{global error} is defined as the error in the solution
+after \(i\) steps (at \(t = t_i\)), and is given by:
 \begin{equation*}
     \abs*{y_i - w_i}.
 \end{equation*}
-It is the accumulation of the local errors from steps \(1,\: 2,\: \ldots,\: i\).
-
-The \textbf{order} of a method refers to the global error of that method. For Euler's
-method, the local error is \(\mathcal{O}\left( h^2 \right)\) while the global error is
-\(\mathcal{O}\left( h \right)\), hence ``\textit{first order} Taylor method''.
-
-In general, if the local error is \(\mathcal{O}\left( h^{p + 1} \right)\), then the global error is
-\(\mathcal{O}\left( h^p \right)\) and the method is said to be a \(p\)th order method.
+It is the accumulation of the local errors from steps
+\(1,\: 2,\: \ldots,\: i\). The \textbf{order} of a method refers to the
+global error of that method. For Euler's method, the local error is
+\(\mathcal{O}\left( h^2 \right)\) while the global error is
+\(\mathcal{O}\left( h \right)\), hence ``\textit{first order} Taylor
+method''. In general, if the local error is
+\(\mathcal{O}\left( h^{p + 1} \right)\), then the global error is
+\(\mathcal{O}\left( h^p \right)\) and the method is said to be a \(p\)th
+order method.
 \begin{equation*}
     \text{Global error} \approx n \mathcal{O}\left( h^{p + 1} \right) = \frac{b - a}{h} \mathcal{O}\left( h^{p + 1} \right) = \mathcal{O}\left( h^p \right).
 \end{equation*}
 \subsection{Second Order Taylor Method}
-To improve upon the accuracy of Euler's method, we can use additional Taylor polynomial terms by truncating at a higher order.
-Assuming \(y\) is three times differentiable, we have
+To improve upon the accuracy of Euler's method, we can use additional
+Taylor polynomial terms by truncating at a higher order. Assuming \(y\)
+is three times differentiable, we have
 \begin{equation*}
     y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \frac{h^2}{2} y''\left( t_i \right) + \mathcal{O}\left( h^3 \right)
 \end{equation*}
@@ -326,15 +356,14 @@ Again by removing the remainder term, we obtain the approximation \(w_i\) of \(y
     w_{i + 1} & = w_i + h f\left( t_i,\: w_i \right) + \frac{h^2}{2} f'\left( t_i,\: w_i \right)
 \end{align*}
 for \(i = 0,\: 1,\: \ldots,\: n - 1\).
-This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
+This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and
+therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
 \subsection{Modified Euler Method}
-Although the second order Taylor method is the more accurate than Euler's method,
-we require computing \(f'\left( t,\: y \right)\).
-
-Suppose we use a numerical approximation of the derivative of \(f\).
-
-By definition, the derivative of a function is the limiting value of the slope of the line connecting
-two nearby points on a curve,
+Although the second order Taylor method is the more accurate than
+Euler's method, we require computing \(f'\left( t,\: y \right)\).
+Suppose we use a numerical approximation of the derivative of \(f\). By
+definition, the derivative of a function is the limiting value of the
+slope of the line connecting two nearby points on a curve,
 \begin{equation*}
     f'\left( t_i,\: y_i \right) = \lim_{h \to 0} \frac{f\left( t_{i + 1},\: y_{i + 1} \right) - f\left( t_i,\: y_i \right)}{h}.
 \end{equation*}
@@ -370,10 +399,12 @@ This result leads to what is known as the \textbf{modified Euler method}.
     k_1       & = h f\left( t_i,\: w_i \right)               \\
     k_2       & = h f\left( t_i + h,\: w_i + k_1 \right)
 \end{align*}
-This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
+This method has a local error of \(\mathcal{O}\left( h^3 \right)\), and
+therefore a global error of \(\mathcal{O}\left( h^2 \right)\).
 \subsection{Runge-Kutta Method}
-Another popular method that agrees with the Taylor method for high orders is the Runge-Kutta method.
-It is a fourth order method, referred to as RK4. It has the following form:
+Another popular method that agrees with the Taylor method for high
+orders is the Runge-Kutta method. It is a fourth order method, referred
+to as RK4. It has the following form:
 \begin{align*}
     w_0       & = \alpha                                                     \\
     w_{i + 1} & = w_i + \frac{1}{6} \left( k_1 + 2 k_2 + 2 k_3 + k_4 \right) \\
@@ -382,7 +413,9 @@ It is a fourth order method, referred to as RK4. It has the following form:
     k_3       & = h f\left( t_i + \frac{h}{2},\: w_i + \frac{k_2}{2} \right) \\
     k_4       & = h f\left( t_i + h,\: w_i + k_3 \right)
 \end{align*}
-for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^5 \right)\), and the global error is \(\mathcal{O}\left( h^4 \right)\).
+for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is
+\(\mathcal{O}\left( h^5 \right)\), and the global error is
+\(\mathcal{O}\left( h^4 \right)\).
 \section{Interpolation}
 \begin{definition}[Interpolating function]
     A function \(f\) is said to interpolate the data points
@@ -391,21 +424,27 @@ for \(i = 0,\: 1,\: \ldots,\: n - 1\). The local error is \(\mathcal{O}\left( h^
     \end{equation*}
     if it satisfies \(f\left( x_0 \right) = y_0\), \(f\left( x_1 \right) = y_1\), \dots,  \(f\left( x_n \right) = y_n\).
 \end{definition}
-There are many kinds of functions that may satisfy an interpolating function, however, the most common choice is a
+There are many kinds of functions that may satisfy an interpolating
+function, however, the most common choice is a
 \textbf{polynomial}.
-
-The following theorem addresses the existence and uniqueness of interpolating polynomials, given distinct \(x\)-values, or \textbf{abscissas}.
+The following theorem addresses the existence and uniqueness of
+interpolating polynomials, given distinct \(x\)-values, or
+\textbf{abscissas}.
 \begin{theorem}
-    Let the abscissas \(x_0\), \(x_1\), \dots, \(x_n\) be distinct and the function values \(y_0\), \(y_1\), \dots, \(y_n\)
-    be given. Then there exists a \textbf{unique} interpolating polynomial \(P_n\) of degree (at most) \(n\), such that
-    \(P_n\left( x_i \right) = y_i\) for \(i \in \interval{0}{n}\).
+    Let the abscissas \(x_0\), \(x_1\), \dots, \(x_n\) be distinct and
+    the function values \(y_0\), \(y_1\), \dots, \(y_n\) be given. Then
+    there exists a \textbf{unique} interpolating polynomial \(P_n\) of
+    degree (at most) \(n\), such that \(P_n\left( x_i \right) = y_i\)
+    for \(i \in \interval{0}{n}\).
 \end{theorem}
 The following methods are used to find the interpolating polynomial.
 \subsection{Lagrange Form}
 \subsubsection{Two Data Points}
-Consider constructing the interpolating polynomial through the points \(\left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right) \right\}\).
-We require a polynomial of degree \(1\) to satisfy the interpolating function. Let \(P_1\left( x \right) = a_0 + a_1 x\) satisfy the following
-conditions:
+Consider constructing the interpolating polynomial through the points
+\(\left\{ \left( x_0,\: y_0 \right),\: \left( x_1,\: y_1 \right)
+\right\}\). We require a polynomial of degree \(1\) to satisfy the
+interpolating function. Let \(P_1\left( x \right) = a_0 + a_1 x\)
+satisfy the following conditions:
 \begin{align*}
     P_1\left( x_0 \right) & = y_0 & \iff a_0 + a_1 x_0 & = y_0 \\
     P_1\left( x_1 \right) & = y_1 & \iff a_0 + a_1 x_1 & = y_1
@@ -419,32 +458,40 @@ so that
 \begin{equation*}
     P_1\left( x \right) = \frac{x_1 y_0 - x_0 y_1}{x_1 - x_0} + \frac{y_1 - y_0}{x_1 - x_0} x.
 \end{equation*}
-To generalise this process, consider the following rearrangement of the polynomial:
+To generalise this process, consider the following rearrangement of the
+polynomial:
 \begin{align*}
     P_1\left( x \right) & = \frac{x_1 y_0 - x_0 y_1}{x_1 - x_0} + \frac{y_1 - y_0}{x_1 - x_0} x                                                              \\
                         & = \frac{x_1 y_0}{x_1 - x_0} - \frac{x_0 y_1}{x_1 - x_0} + \frac{y_1 x}{x_1 - x_0} - \frac{y_0 x}{x_1 - x_0}                        \\
                         & = \left( \frac{-x}{x_1 - x_0} + \frac{x_1}{x_1 - x_0} \right) y_0 + \left( \frac{x}{x_1 - x_0} - \frac{x_0}{x_1 - x_0} \right) y_1 \\
                         & = \frac{x - x_1}{x_0 - x_1} y_0 + \frac{x - x_0}{x_1 - x_0} y_1.
 \end{align*}
-This form clearly shows that each point satisfies the interpolating function.
+This form clearly shows that each point satisfies the interpolating
+function.
 \begin{itemize}
-    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\), and \textbf{0} when \(x = x_1\).
-    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\), and \textbf{1} when \(x = x_1\).
+    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\),
+          and \textbf{0} when \(x = x_1\).
+    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\),
+          and \textbf{1} when \(x = x_1\).
 \end{itemize}
 we can then write \(P_1\left( x \right)\) as
 \begin{equation*}
     P_1\left( x \right) = L_{1,\: 0}\left( x \right) y_0 + L_{1,\: 1}\left( x \right) y_1
 \end{equation*}
-where \(L_{1,\: 0}\left( x \right) = \frac{x - x_1}{x_0 - x_1}\) and \(L_{1,\: 1}\left( x \right) = \frac{x - x_0}{x_1 - x_0}\)
-are the Lagrange basis functions. The first index corresponds to the degree
-of the polynomial, and the second index corresponds to the index of the
+where \(L_{1,\: 0}\left( x \right) = \frac{x - x_1}{x_0 - x_1}\) and
+\(L_{1,\: 1}\left( x \right) = \frac{x - x_0}{x_1 - x_0}\) are the
+Lagrange basis functions. The first index corresponds to the degree of
+the polynomial, and the second index corresponds to the index of the
 point for which it is the coefficient of.
 \subsubsection{Three Data Points}
 For three data points, consider the reverse problem:
 \begin{itemize}
-    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\), \textbf{0} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
-    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\), \textbf{1} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
-    \item The coefficient of \(y_2\) is \textbf{0} when \(x = x_0\), \textbf{0} when \(x = x_1\), and \textbf{1} when \(x = x_2\).
+    \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\),
+          \textbf{0} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+    \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\),
+          \textbf{1} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+    \item The coefficient of \(y_2\) is \textbf{0} when \(x = x_0\),
+          \textbf{0} when \(x = x_1\), and \textbf{1} when \(x = x_2\).
 \end{itemize}
 then solve for the Lagrange basis functions:
 \begin{align*}
@@ -452,8 +499,9 @@ then solve for the Lagrange basis functions:
                         & = \frac{\left( x - x_1 \right)\left( x - x_2 \right)}{\left( x_0 - x_1 \right)\left( x_0 - x_2 \right)} y_0 + \frac{\left( x - x_0 \right)\left( x - x_2 \right)}{\left( x_1 - x_0 \right)\left( x_1 - x_2 \right)} y_1 + \frac{\left( x - x_0 \right)\left( x - x_1 \right)}{\left( x_2 - x_0 \right)\left( x_2 - x_1 \right)} y_2.
 \end{align*}
 \subsubsection{Arbitrary Number of Points}
-Given the abscissas \(\left\{ x_0,\: x_1,\: \dots,\: x_n \right\}\) and function values
-\(\left\{ y_0,\: y_1,\: \dots,\: y_n \right\}\) the polynomial \(P_n\left( x \right)\) defined by:
+Given the abscissas \(\left\{ x_0,\: x_1,\: \dots,\: x_n \right\}\) and
+function values \(\left\{ y_0,\: y_1,\: \dots,\: y_n \right\}\) the
+polynomial \(P_n\left( x \right)\) defined by:
 \begin{equation*}
     P_n\left( x \right) = \sum_{i = 0}^n L_{n,\: i}\left( x \right) y_i
 \end{equation*}
@@ -462,7 +510,6 @@ where
     L_{n,\: i}\left( x \right) = \prod_{j = 0,\: j \neq i}^n \frac{x - x_j}{x_i - x_j}
 \end{equation*}
 is called the \textbf{Lagrange form} of the interpolating polynomial.
-
 This arises from the fact that we can construct the Lagrange form using
 \begin{align*}
     P_n\left( x \right) & = L_{n,\: 0}\left( x \right) y_0 + L_{n,\: 1}\left( x \right) y_1 + \cdots + L_{n,\: n}\left( x \right) y_n \\
@@ -479,11 +526,12 @@ Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\)
 \end{equation*}
 \subsection{Error in Polynomial Approximation}
 \begin{theorem}[Lagrange form of remainder]
-    Suppose that \(f\) is \(n + 1\) times continuously \linebreak differentiable on \(\interval{a}{b}\)\footnote{\(a = \min \left( x_i \right)\) and \(b = \max \left( x_i \right)\).}
-    with distinct abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and interpolating polynomial
-    \(P_n\left( x \right)\).
-
-    Then for all \(x \in \interval{a}{b}\) there exists a \(c \in \interval{a}{b}\) such that
+    Suppose that \(f\) is \(n + 1\) times continuously \linebreak
+    differentiable on \(\interval{a}{b}\)\footnote{\(a = \min \left( x_i \right)\)
+        and \(b = \max \left( x_i \right)\).} with distinct abscissas
+    \(x_0,\: x_1,\: \dots,\: x_n\) and interpolating polynomial
+    \(P_n\left( x \right)\). Then for all \(x \in \interval{a}{b}\)
+    there exists a \(c \in \interval{a}{b}\) such that
     \begin{equation*}
         f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right).
     \end{equation*}
@@ -491,15 +539,15 @@ Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\)
     \begin{equation*}
         R_n\left( x \right) = \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right)
     \end{equation*}
-    is called the Lagrange form of the remainder term for \(P_n\left( x \right)\).
+    is called the Lagrange form of the remainder term for
+    \(P_n\left( x \right)\).
 \end{theorem}
 \subsection{Newton's Divided Difference Form}
-While the Lagrange form is straightforward to analyse,
-it is not ideal for numerical computation.
-Suppose that we have found the interpolating polynomial through
-\(n + 1\) points, and are now interested in including a new point
-in the interpolation. This requires us to recompute the Lagrange
-basis functions for all \(n + 2\) points.
+While the Lagrange form is straightforward to analyse, it is not ideal
+for numerical computation. Suppose that we have found the interpolating
+polynomial through \(n + 1\) points, and are now interested in
+including a new point in the interpolation. This requires us to
+recompute the Lagrange basis functions for all \(n + 2\) points.
 \subsubsection{Derivation}
 The Newton form of the interpolating polynomial is given by:
 \begin{equation*}
@@ -512,7 +560,8 @@ The interpolation conditions:
     \vdots                        \\
     P_n\left( x_n \right) & = y_n
 \end{align*}
-give the following system of equations for coefficients \(a_0,\: a_1,\: \dots,\: a_n\):
+give the following system of equations for coefficients
+\(a_0,\: a_1,\: \dots,\: a_n\):
 \begin{align*}
     a_0                                                                                                                                                                                               & = y_0 \\
     a_0 + a_1 \left( x_1 - x_0 \right)                                                                                                                                                                & = y_1 \\
@@ -526,17 +575,21 @@ Solving for the first three of these coefficients gives:
     a_1 & = \frac{y_1 - y_0}{x_1 - x_0}                                                 \\
     a_2 & = \frac{\frac{y_2 - y_1}{x_2 - x_1} - \frac{y_1 - y_0}{x_1 - x_0}}{x_2 - x_0}
 \end{align*}
-To consisely represent these coefficients, we will need to define divided differences.
+To concisely represent these coefficients, we will need to define
+divided differences.
 \subsubsection{Divided Differences}
 \begin{definition}[Zeroth divided difference]
-    The zeroth divided difference of \(f\) with respect to \(x_i\) is denoted \(f\left[ x_i \right]\) and defined by:
+    The zeroth divided difference of \(f\) with respect to \(x_i\) is
+    denoted \(f\left[ x_i \right]\) and defined by:
     \begin{equation*}
         f\left[ x_i \right] = y_i
     \end{equation*}
 \end{definition}
 \begin{definition}[\(k\)th divided difference]
-    The \(k\)th divided difference of \(f\) with respect to \linebreak \(x_i,\: x_{i + 1},\: \dots,\: x_{i + k}\)
-    is denoted \(f\left[ x_i,\: x_{i + 1},\: \dots,\: x_{i + k} \right]\) and defined by:
+    The \(k\)th divided difference of \(f\) with respect to \linebreak
+    \(x_i,\: x_{i + 1},\: \dots,\: x_{i + k}\) is denoted
+    \(f\left[ x_i,\: x_{i + 1},\: \dots,\: x_{i + k} \right]\) and
+    defined by:
     \begin{equation*}
         f\left[ x_i,\: x_{i + 1},\: \dots,\: x_{i + k} \right] = \frac{f\left[ x_{i + 1},\: \dots,\: x_{i + k} \right] - f\left[ x_i,\: \dots,\: x_{i + k - 1} \right]}{x_{i + k} - x_i}
     \end{equation*}
@@ -559,20 +612,25 @@ Using this notation we can rewrite the coefficients of \(P_n\) as
 \end{align*}
 so that
 \begin{align*}
-    P_n\left( x \right) = \begin{aligned}[t]
-                               & f\left[ x_0 \right] + f\left[ x_0,\: x_1 \right] \left( x - x_0 \right) + f\left[ x_0,\: x_1,\: x_2 \right] \left( x - x_0 \right) \left( x - x_1 \right) + \cdots \\
-                               & + f\left[ x_0,\: x_1,\: x_2,\: \dots,\: x_n \right] \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_{n - 1} \right).
-                          \end{aligned}
+    P_n\left( x \right) =
+    \begin{aligned}[t]
+         & f\left[ x_0 \right] + f\left[ x_0,\: x_1 \right] \left( x - x_0 \right) + f\left[ x_0,\: x_1,\: x_2 \right] \left( x - x_0 \right) \left( x - x_1 \right) + \cdots \\
+         & + f\left[ x_0,\: x_1,\: x_2,\: \dots,\: x_n \right] \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_{n - 1} \right).
+    \end{aligned}
 \end{align*}
 \begin{definition}[Newton's divided difference form]
-    Given the abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the function values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined by
+    Given the abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the function
+    values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined
+    by
     \begin{equation*}
         P_n\left( x \right) = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)
     \end{equation*}
-    is called the \textbf{Newton divided difference form of the interpolating polynomial}.
+    is called the \textbf{Newton divided difference form of the
+        interpolating polynomial}.
 \end{definition}
 \subsection{Newton's Forward Difference Form}
-In the case where abscissas are equally spaced, the Newton divided difference form can be simplified.
+In the case where abscissas are equally spaced, the Newton divided
+difference form can be simplified.
 \begin{definition}[Forward difference operator]
     The \textbf{forward difference operator} \(\Delta\) is defined by:
     \begin{equation*}
@@ -593,7 +651,9 @@ In the case where abscissas are equally spaced, the Newton divided difference fo
     \end{equation*}
     where \(h = x_{i + 1} - x_i\) is the spacing between the abscissas.
 \end{theorem}
-Using the above theorem and making the substitution \(x = x_0 + sh\) (so that \(x_i = x_0 + ih\)) where \(s = \frac{x - x_0}{h}\), we can rewrite the Newton divided difference form as
+Using the above theorem and making the substitution \(x = x_0 + sh\)
+(so that \(x_i = x_0 + ih\)) where \(s = \frac{x - x_0}{h}\), we can
+rewrite the Newton divided difference form as
 \begin{align*}
     P_n\left( x \right) & = \sum_{k = 0}^n f\left[ x_0,\: x_1,\: \dots,\: x_k \right] \left( \prod_{i = 0}^{k - 1} \left( x - x_i \right) \right)                                                 \\
                         & = \sum_{k = 0}^n \frac{\Delta^k y_0}{k! h^k} \left( \prod_{i = 0}^{k - 1} \left( \left( x_0 + sh \right) - \left( x_0 + ih \right) \right) \right)                      \\
@@ -606,50 +666,71 @@ Using the above theorem and making the substitution \(x = x_0 + sh\) (so that \(
                         & = \sum_{k = 0}^n \binom{s}{k} \Delta^k y_0
 \end{align*}
 \begin{definition}[Newton's forward difference form]
-    Given equally spaced abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and the function values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial \(P_n\) defined by
+    Given equally spaced abscissas \(x_0,\: x_1,\: \dots,\: x_n\) and
+    the function values \(y_0,\: y_1,\: \dots,\: y_n\) the polynomial
+    \(P_n\) defined by
     \begin{equation*}
         P_n\left( x \right) = \sum_{k = 0}^n \binom{\frac{x - x_0}{h}}{k} \Delta^k y_0
     \end{equation*}
-    where \(s = \frac{x - x_0}{h}\) with spacing \(h = x_{i + 1} - x_i\), is called the \textbf{Newton forward difference form of the interpolating polynomial}.
+    where \(s = \frac{x - x_0}{h}\) with spacing
+    \(h = x_{i + 1} - x_i\), is called the \textbf{Newton forward
+        difference form of the interpolating polynomial}.
 \end{definition}
 \section{Root Finding}
-Given a function \(f\left( x \right)\), it is often useful to find the values of \(x\) for which \(f\left( x \right) = 0\).
-These values are called \textbf{roots} of that function. The process of finding roots is very straightforward
-for linear functions of the form \(f\left( x \right) = a x + b\), but becomes more complicated for nonlinear functions.
-In these instances, it is often not possible to find the roots analytically, and numerical methods must be used.
-
-These methods are called \textbf{root finding methods}.
+Given a function \(f\left( x \right)\), it is often useful to find the
+values of \(x\) for which \(f\left( x \right) = 0\). These values are
+called \textbf{roots} of that function. The process of finding roots is
+very straightforward for linear functions of the form \(f\left( x
+\right) = a x + b\), but becomes more complicated for nonlinear
+functions. In these instances, it is often not possible to find the
+roots analytically, and numerical methods must be used. These methods
+are called \textbf{root finding methods}.
 \subsection{Bisection Method}
-The bisection method is a simple method based on the intermediate value theorem.
+The bisection method is a simple method based on the intermediate value
+theorem.
 \begin{theorem}[Intermediate Value Theorem]
-    Let \(f\) be a continuous function on the interval \(\interval{a}{b}\),
-    and let \(k\) be any number between \(f\left( a \right)\) and \(f\left( b \right)\) inclusive.
-    Then, there exists a number \(c\) in \(\interval{a}{b}\) such that \(f\left( c \right) = k\).
+    Let \(f\) be a continuous function on the interval
+    \(\interval{a}{b}\), and let \(k\) be any number between
+    \(f\left( a \right)\) and \(f\left( b \right)\) inclusive. Then,
+    there exists a number \(c\) in \(\interval{a}{b}\) such that
+    \(f\left( c \right) = k\).
     \begin{equation*}
         f\left( a \right) \leq k \leq f\left( b \right) \iff \exists c \in \interval{a}{b} : f\left( c \right) = k.
     \end{equation*}
 \end{theorem}
 \begin{corollary}
-    Let \(f\) be a continuous function on the interval \(\interval{a}{b}\).
-    If \(f\left( a \right) f\left( b \right) < 0\) (\(f\left( a \right)\) and \(f\left( b \right)\) have opposite signs),
-    then there exists a number \(c\) in \(\interval{a}{b}\) such that \(f\left( c \right) = 0\).
+    Let \(f\) be a continuous function on the interval
+    \(\interval{a}{b}\). If \(f\left( a \right) f\left( b \right) < 0\)
+    (\(f\left( a \right)\) and \(f\left( b \right)\) have opposite
+    signs), then there exists a number \(c\) in \(\interval{a}{b}\) such
+    that \(f\left( c \right) = 0\).
     \begin{equation*}
         f\left( a \right) f\left( b \right) < 0 \iff \exists c \in \interval{a}{b} : f\left( c \right) = 0.
     \end{equation*}
 \end{corollary}
 The bisection method is based on the following algorithm:
 \begin{enumerate}
-    \item Find an interval \(\interval{a}{b}\) such that \(f\left( a \right) f\left( b \right) < 0\)\footnote{This procedure is known as \textbf{bracketing} the root.}.
-    \item Find the midpoint \(p\) of the interval \(\interval{a}{b}\) and evaluate \(f\left( p \right)\).
+    \item Find an interval \(\interval{a}{b}\) such that \(f\left( a
+          \right) f\left( b \right) < 0\)\footnote{This procedure is
+          known as \textbf{bracketing} the root.}.
+    \item Find the midpoint \(p\) of the interval \(\interval{a}{b}\)
+          and evaluate \(f\left( p \right)\).
           \begin{itemize}
-              \item If \(f\left( p \right) = 0\), then \(p\) is a root of \(f\).
-              \item Otherwise, the root lies in either \(\interval{a}{p}\) or \(\interval{p}{b}\).
+              \item If \(f\left( p \right) = 0\), then \(p\) is a root
+                    of \(f\).
+              \item Otherwise, the root lies in either
+                    \(\interval{a}{p}\) or \(\interval{p}{b}\).
                     \begin{itemize}
-                        \item If \(f\left( a \right) f\left( p \right) < 0\), then \(p\) becomes the new \(b\) and the root lies in \(\interval{a}{p}\).
-                        \item If \(f\left( p \right) f\left( b \right) < 0\), then \(p\) becomes the new \(a\) and the root lies in \(\interval{p}{b}\).
+                        \item If \(f\left( a \right) f\left( p \right)
+                              < 0\), then \(p\) becomes the new \(b\)
+                              and the root lies in \(\interval{a}{p}\).
+                        \item If \(f\left( p \right) f\left( b \right)
+                              < 0\), then \(p\) becomes the new \(a\)
+                              and the root lies in \(\interval{p}{b}\).
                     \end{itemize}
           \end{itemize}
-    \item Go to step 2 and repeat until a satisfactory approximation of the root is found.
+    \item Go to step 2 and repeat until a satisfactory approximation of
+          the root is found.
 \end{enumerate}
 This can be expressed in a table format:
 \begin{table}[H]
@@ -666,33 +747,40 @@ This can be expressed in a table format:
     % \caption{} % \label{}
 \end{table}
 \subsection{Fixed-Point Iteration}
-Fixed-point iteration is based on rewriting \(f\left( x \right) = 0\) as
+Fixed-point iteration is based on rewriting \(f\left( x \right) = 0\)
+as
 \begin{equation*}
     x = g\left( x \right)
 \end{equation*}
-The equation is solved if we can find a number \(p\) such that \(g\left( p \right) = p\),
-called the \textbf{fixed-point} of \(g\).
-
-Using an initial guess, \(x_0\), and computing \(x_2 = g\left( x_1 \right)\), \(x_3 = g\left( x_2 \right)\), and so on,
-we can approximate the fixed-point of \(g\). Under certain conditions, the \textbf{sequence}, \(\left\{ x_n \right\}\),
-will \textbf{converge} to the fixed-point of \(g\) and thus solve the equation \(f\left( x \right) = 0\).
+The equation is solved if we can find a number \(p\) such that
+\(g\left( p \right) = p\), called the \textbf{fixed-point} of \(g\).
+Using an initial guess, \(x_0\), and computing \(x_2 = g\left( x_1
+\right)\), \(x_3 = g\left( x_2 \right)\), and so on, we can approximate
+the fixed-point of \(g\). Under certain conditions, the
+\textbf{sequence}, \(\left\{ x_n \right\}\), will \textbf{converge} to
+the fixed-point of \(g\) and thus solve the equation \(f\left( x
+\right) = 0\).
 \begin{theorem}[Brouwer's fixed-point theorem]
-    Let \(g\) be a continuous function on \(\interval{a}{b}\) with \(g\left( x \right)\) in \(\interval{a}{b}\)
-    for all \(x\). Furthermore, let \(g\) be differentiable on \(\ointerval{a}{b}\) and let a positive constant
-    \(k < 1\) exist such that \(\abs*{g'\left( x \right)} \leq k\) for all \(x\) in \(\ointerval{a}{b}\).
-
-    Then, \(g\) has a unique fixed-point in \(\interval{a}{b}\), and the iteration \(x_{n+1} = g\left( x_n \right)\)
-    will converge to this point for all initial guesses \(x_0\) in \(\interval{a}{b}\).
+    Let \(g\) be a continuous function on \(\interval{a}{b}\) with
+    \(g\left( x \right)\) in \(\interval{a}{b}\) for all \(x\).
+    Furthermore, let \(g\) be differentiable on \(\ointerval{a}{b}\)
+    and let a positive constant \(k < 1\) exist such that
+    \(\abs*{g'\left( x \right)} \leq k\) for all \(x\) in
+    \(\ointerval{a}{b}\). Then, \(g\) has a unique fixed-point in
+    \(\interval{a}{b}\), and the iteration
+    \(x_{n+1} = g\left( x_n \right)\) will converge to this point for
+    all initial guesses \(x_0\) in \(\interval{a}{b}\).
     \begin{equation*}
         \left( g\left( x \right) \in \interval{a}{b} : \forall x \in \interval{a}{b} \right) \land \left( \exists k \in \R^+ : k < 1 : \abs*{g'\left( x \right)} \leq k : \forall x \in \ointerval{a}{b} \right) \implies \exists! p \in \interval{a}{b} : g\left( p \right) = p.
     \end{equation*}
 \end{theorem}
 \subsection{Newton's Method}
-Newton's method is one of the most widely used methods for solving nonlinear equations.
-It approximates the solution of \(f\left( x \right) = 0\) by finding the root of the tangent line to \(f\) at
-each iteration. The next iterate is then the intersection of the tangent line with the \(x\)-axis.
-
-The first degree Taylor polynomial of \(f\) at \(x_n\) gives us the tangent line to \(f\) at \(x_n\):
+Newton's method is one of the most widely used methods for solving
+nonlinear equations. It approximates the solution of \(f\left( x
+\right) = 0\) by finding the root of the tangent line to \(f\) at each
+iteration. The next iterate is then the intersection of the tangent
+line with the \(x\)-axis. The first degree Taylor polynomial of \(f\)
+at \(x_n\) gives us the tangent line to \(f\) at \(x_n\):
 \begin{equation*}
     f\left( x \right) \approx f\left( x_n \right) + f'\left( x_n \right) \left( x - x_n \right)
 \end{equation*}
@@ -709,10 +797,12 @@ This gives us the sequence:
 \end{equation*}
 for \(n \geq 0\).
 \subsection{Secant Method}
-While Newton's method converges rapidly, it requires the derivative of \(f\) to be known. The secant
-method approximates the derivative of \(f\) by using the slope of the secant line between two points,
-\(\left( x_{n - 1},\: f\left( x_{n - 1} \right)\right)\) and \(\left( x_n,\: f\left( x_n \right) \right)\).
-That is, \(f'\left( x_n \right)\) is approximated by
+While Newton's method converges rapidly, it requires the derivative of
+\(f\) to be known. The secant method approximates the derivative of
+\(f\) by using the slope of the secant line between two points,
+\(\left( x_{n - 1},\: f\left( x_{n - 1} \right)\right)\) and \(\left(
+x_n,\: f\left( x_n \right) \right)\). That is, \(f'\left( x_n \right)\)
+is approximated by
 \begin{equation*}
     f'\left( x_n \right) \approx \frac{f\left( x_n \right) - f\left( x_{n - 1} \right)}{x_n - x_{n - 1}}.
 \end{equation*}
@@ -720,33 +810,44 @@ This gives us the sequence
 \begin{equation*}
     x_{n + 1} = x_n - f\left( x_n \right) \frac{x_n - x_{n - 1}}{f\left( x_n \right) - f\left( x_{n - 1} \right)}
 \end{equation*}
-for \(n \geq 1\). Note that two initial values are required to start the iteration.
+for \(n \geq 1\). Note that two initial values are required to start the
+iteration.
 \subsection{Convergence of Fixed-Point Iteration}
-When the fixed-point iteration converges, the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+When the fixed-point iteration converges, the sequence it generates,
+\(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
 \begin{equation*}
     \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}
 \end{equation*}
-where \(p\) is the fixed-point of \(g\) and \(0 < \lambda < 1\). Therefore the \textbf{error} in the solution decreases
-by a factor of \(\lambda\) in the long run of each iteration.
+where \(p\) is the fixed-point of \(g\) and \(0 < \lambda < 1\).
+Therefore the \textbf{error} in the solution decreases by a factor of
+\(\lambda\) in the long run of each iteration.
 \subsection{Convergence of Newton's Method}
-When Newton's method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+When Newton's method converges to the root \(p\), the sequence it
+generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large
+\(n\))
 \begin{equation*}
     \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^2
 \end{equation*}
-for \(\lambda > 0\). This means that the number of correct digits approximately \textit{doubles} with each iteration.
+for \(\lambda > 0\). This means that the number of correct digits
+approximately \textit{doubles} with each iteration.
 \subsection{Convergence of the Secant Method}
-When the secant method converges to the root \(p\), the sequence it generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large \(n\))
+When the secant method converges to the root \(p\), the sequence it
+generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large
+\(n\))
 \begin{equation*}
     \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^r
 \end{equation*}
-for \(\lambda > 0\) and \(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio).
-Thus the secant method has a slower \textit{rate of convergence} than Newton's method.
+for \(\lambda > 0\) and
+\(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio). Thus
+the secant method has a slower \textit{rate of convergence} than
+Newton's method.
 \section{Numerical Differentiation}
 \subsection{First Derivative}
-Often no explicit derivative of a function \(f\) can be found, for example when given a table of
-values for \(f\left( x \right)\). In this case, the Taylor polynomial can be used.
-
-Provided the function \(f\) is sufficiently differentiable, we can express the Taylor polynomial of \(f\) at \(x_0\) as
+Often no explicit derivative of a function \(f\) can be found, for
+example when given a table of values for \(f\left( x \right)\). In this
+case, the Taylor polynomial can be used. Provided the function \(f\) is
+sufficiently differentiable, we can express the Taylor polynomial of
+\(f\) at \(x_0\) as
 \begin{equation*}
     f\left( x \right) = f\left( x_0 \right) + f'\left( x_0 \right) \left( x - x_0 \right) + \frac{f''\left( x_0 \right)}{2!} \left( x - x_0 \right)^2 + \cdots + \frac{f^{\left( n \right)}\left( x_0 \right)}{n!} \left( x - x_0 \right)^n + \frac{f^{\left( n + 1 \right)}\left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right)^{n + 1}.
 \end{equation*}
@@ -756,79 +857,106 @@ If we let \(h = x - x_0\), we can write this as
 \end{equation*}
 where \(c\) is between \(x_0\) and \(x_0 + h\).
 \subsubsection{First Order Approximations}
-Using the Taylor polynomial of degree 1, we can obtain a first order approximation for \(f'\left( x_0 \right)\).
-The formula
+Using the Taylor polynomial of degree 1, we can obtain a first order
+approximation for \(f'\left( x_0 \right)\). The formula
 \begin{equation*}
     f'\left( x_0 \right) = \frac{f\left( x_0 + h \right) - f\left( x_0 \right)}{h} - \frac{h}{2} f''\left( c \right)
 \end{equation*}
-is known as the \textbf{first order forward difference} for \(f'\left( x_0 \right)\). Replacing
-\(h\) with \(-h\) gives the \textbf{first order backward difference} for \(f'\left( x_0 \right)\). The
+is known as the \textbf{first order forward difference} for
+\(f'\left( x_0 \right)\). Replacing \(h\) with \(-h\) gives the
+\textbf{first order backward difference} for \(f'\left( x_0 \right)\).
+The
 \begin{equation*}
     f'\left( x_0 \right) = \frac{f\left( x_0 \right) - f\left( x_0 - h \right)}{h} + \frac{h}{2} f''\left( c \right).
 \end{equation*}
 In both cases, the error term is \(\mathcal{O}\left( h \right)\).
 \subsubsection{Second Order Approximations}
-Consider the Taylor polynomial of degree 2 for \(f\left( x_0 + h \right)\) and \(f\left( x_0 - h \right)\):
+Consider the Taylor polynomial of degree 2 for \(f\left( x_0 + h
+\right)\) and \(f\left( x_0 - h \right)\):
 \begin{align*}
     f\left( x_0 + h \right) & = f\left( x_0 \right) + h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) + \frac{h^3}{3!} f'''\left( c_1 \right) \\
     f\left( x_0 - h \right) & = f\left( x_0 \right) - h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) - \frac{h^3}{3!} f'''\left( c_2 \right)
 \end{align*}
-where \(c_1\) is between \(x_0\) and \(x_0 + h\), and \(c_2\) is between \(x_0 - h\) and \(x_0\).
-Subtracting the two equations gives
+where \(c_1\) is between \(x_0\) and \(x_0 + h\), and \(c_2\) is between
+\(x_0 - h\) and \(x_0\). Subtracting the two equations gives
 \begin{align*}
     f\left( x_0 + h \right) - f\left( x_0 - h \right) & = 2h f'\left( x_0 \right) + \frac{h^3}{3!} \left( f'''\left( c_1 \right) + f'''\left( c_2 \right) \right) \\
     f'\left( x_0 \right)                              & = \frac{f\left( x_0 + h \right) - f\left( x_0 - h \right)}{2h} - \frac{h^2}{6} f'''\left( c \right)
 \end{align*}
-where \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) + f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
-and \(c\) is between \(x_0 - h\) and \(x_0 + h\).
-This is known as the \textbf{second order central difference} approximation for \(f'\left( x_0 \right)\). The error term is \(\mathcal{O}\left( h^2 \right)\).
+where \(f'''\left( c \right) = \frac{f'''\left( c_1 \right) +
+f''\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate
+Value Theorem), and \(c\) is between \(x_0 - h\) and \(x_0 + h\). This
+is known as the \textbf{second order central difference} approximation
+for \(f'\left( x_0 \right)\). The error term is
+\(\mathcal{O}\left( h^2 \right)\).
 \subsection{Second Derivative}
-It is also possible to obtain a second order central difference approximation for the second derivative, \(f''\left( x_0 \right)\) using the Taylor polynomial of degree 3
-for \(f\left( x_0 + h \right)\) and \(f\left( x_0 - h \right)\):
+It is also possible to obtain a second order central difference
+approximation for the second derivative, \(f''\left( x_0 \right)\)
+using the Taylor polynomial of degree 3 for \(f\left( x_0 + h \right)\)
+and \(f\left( x_0 - h \right)\):
 \begin{align*}
     f\left( x_0 + h \right) & = f\left( x_0 \right) + h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) + \frac{h^3}{3!} f'''\left( x \right) + \frac{h^4}{4!} f^{\left( 4 \right)}\left( c_1 \right) \\
     f\left( x_0 - h \right) & = f\left( x_0 \right) - h f'\left( x_0 \right) + \frac{h^2}{2!} f''\left( x_0 \right) - \frac{h^3}{3!} f'''\left( x \right) + \frac{h^4}{4!} f^{\left( 4 \right)}\left( c_2 \right)
 \end{align*}
-where \(c_1\) and \(c_2\) are between \(x_0\) and \(x_0 + h\) and between \(x_0 - h\) and \(x_0\), respectively.
-Adding the two equations gives
+where \(c_1\) and \(c_2\) are between \(x_0\) and \(x_0 + h\) and
+between \(x_0 - h\) and \(x_0\), respectively. Adding the two equations
+gives
 \begin{align*}
     f\left( x_0 + h \right) + f\left( x_0 - h \right) & = 2f\left( x_0 \right) + h^2 f''\left( x_0 \right) + \frac{h^4}{4!} \left( f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right) \right) \\
     f''\left( x_0 \right)                             & = \frac{f\left( x_0 + h \right) - 2f\left( x_0 \right) + f\left( x_0 - h \right)}{h^2} - \frac{h^2}{12} f^{\left( 4 \right)}\left( c \right)
 \end{align*}
-where \(f^{\left( 4 \right)}\left( c \right) = \frac{f^{\left( 4 \right)}\left( c_1 \right) + f^{\left( 4 \right)}\left( c_2 \right)}{2}\), for \(c_1 \leq c \leq c_2\) (Intermediate Value Theorem),
-and \(c\) is between \(x_0 - h\) and \(x_0 + h\).
+where \(f^{\left( 4 \right)}\left( c \right) =
+\frac{f^{\left( 4 \right)}\left( c_1 \right) +
+f^{\left( 4 \right)}\left( c_2 \right)}{2}\), for
+\(c_1 \leq c \leq c_2\) (Intermediate Value Theorem), and \(c\) is
+between \(x_0 - h\) and \(x_0 + h\).
 \subsection{Instability}
-When performing numerical differentiation, it is important to realise that as \(h\) decreases, the first and second derivative formulas will require the
-subtraction of nearly equal values, which can lead to \textbf{numerical instability}. It is therefore important to choose a value of \(h\)
-so that it is not too large, which results in inaccuracies due to truncation error, or too small, which results in inaccuracies due to roundoff error.
+When performing numerical differentiation, it is important to realise
+that as \(h\) decreases, the first and second derivative formulas will
+require the subtraction of nearly equal values, which can lead to
+\textbf{numerical instability}. It is therefore important to choose a
+value of \(h\) so that it is not too large, which results in
+inaccuracies due to truncation error, or too small, which results in
+inaccuracies due to roundoff error.
 \section{Numerical Integration}
-Indefinite integration is defined as the anti-derivative of a function \(f\), denoted by \(F\left( x \right)\),
-such that
+Indefinite integration is defined as the anti-derivative of a function
+\(f\), denoted by \(F\left( x \right)\), such that
 \begin{equation*}
     F'\left( x \right) = f\left( x \right).
 \end{equation*}
-The definite integral of \(f\) over the interval \(\interval{a}{b}\) is defined as
+The definite integral of \(f\) over the interval \(\interval{a}{b}\) is
+defined as
 \begin{equation*}
     I = \int_a^b f\left( x \right) \odif{x}.
 \end{equation*}
-Numerical integration, also known as \textbf{quadrature}, is concerned with approximating the definite integral of a function \(f\) over a given interval \(\interval{a}{b}\).
-It approximates the integral \(\int_a^b f\left( x \right) \odif{x}\) by a weighted sum of function values.
+Numerical integration, also known as \textbf{quadrature}, is concerned
+with approximating the definite integral of a function \(f\) over a
+given interval \(\interval{a}{b}\). It approximates the integral
+\(\int_a^b f\left( x \right) \odif{x}\) by a weighted sum of function
+values.
 \begin{equation*}
     \int_a^b f\left( x \right) \odif{x} \approx \sum_{i = 0}^n w_i f\left( x_i \right)
 \end{equation*}
-where \(w_i\) are the weights and \(x_i\) are the abscissas. The primary rule for developing integral approximations is the interpolating polynomial.
+where \(w_i\) are the weights and \(x_i\) are the abscissas. The primary
+rule for developing integral approximations is the interpolating
+polynomial.
 \subsection{Trapezoidal Rule}
-Consider dividing the interval \(\interval{a}{b}\) into \(n\) subintervals, each of width \(h\). Then \(h = \frac{b - a}{n}\),
-and let \(x_i = a + ih\) for \(i = 0, 1, \ldots, n\), so that \(x_0 = a\) and \(x_n = b\).
-
-The \textbf{trapezoidal rule} uses the interpolating polynomial of degree 1 to approximate \(f\left( x \right)\) over each subinterval \(\interval{x_i}{x_{i + 1}}\).
-Consider the interpolating polynomial which passes through the points \(\interval{x_0}{y_0}\) and \(\interval{x_1}{y_1}\) where
-\(y_0 = f\left( x_0 \right)\) and \(y_1 = f\left( x_1 \right)\). The interpolating polynomial is
+Consider dividing the interval \(\interval{a}{b}\) into \(n\)
+subintervals, each of width \(h\). Then \(h = \frac{b - a}{n}\), and
+let \(x_i = a + ih\) for \(i = 0, 1, \ldots, n\), so that \(x_0 = a\)
+and \(x_n = b\). The \textbf{trapezoidal rule} uses the interpolating
+polynomial of degree 1 to approximate \(f\left( x \right)\) over each
+subinterval \(\interval{x_i}{x_{i + 1}}\). Consider the interpolating
+polynomial which passes through the points \(\interval{x_0}{y_0}\) and
+\(\interval{x_1}{y_1}\) where \(y_0 = f\left( x_0 \right)\) and \(y_1 =
+f\left( x_1 \right)\). The interpolating polynomial is
 \begin{equation*}
     P_1\left( x \right) = y_0 + s \Delta{y_0}
 \end{equation*}
-using the Newton forward difference form. Using the change of variables \(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of integration become \(\interval{0}{1}\).
-The integral of \(P_1\) over \(\interval{0}{1}\) is
+using the Newton forward difference form. Using the change of variables
+\(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of
+integration become \(\interval{0}{1}\). The integral of \(P_1\) over
+\(\interval{0}{1}\) is
 \begin{align*}
     \int_{x_0}^{x_1} f\left( x \right) \odif{x} & = \int_0^1 P_1\left( x \right) \odif{x}                               \\
                                                 & = \int_0^1 \left( y_0 + s \Delta{y_0} \right) h \odif{s}              \\
@@ -848,20 +976,29 @@ for all \(i = 1, 2, \ldots, n\). The trapezoidal rule is therefore
                                         & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 f\left( x_1 \right) + 2 f\left( x_2 \right) + \cdots + 2 f\left( x_{n - 1} \right) + f\left( x_n \right) \right]                                                                             \\
                                         & = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right]
 \end{align*}
-Therefore, for a twice continuously differentiable function \(f\) on \(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) and \(x_i = a + i h\), for \(i = 0, 1, \ldots, n\),
+Therefore, for a twice continuously differentiable function \(f\) on
+\(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) and \(x_i = a + i h\),
+for \(i = 0, 1, \ldots, n\),
 \begin{equation*}
     \int_a^b f\left( x \right) \odif{x} = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right) h^2}{12} f''\left( c \right)
 \end{equation*}
-where \(c\) is between \(a\) and \(b\). The error in the trapezoidal rule is \(\mathcal{O}\left( h^2 \right)\), and this method is exact for polynomials of degree one or less, as the error term is zero.
+where \(c\) is between \(a\) and \(b\). The error in the trapezoidal
+rule is \(\mathcal{O}\left( h^2 \right)\), and this method is exact for
+polynomials of degree one or less, as the error term is zero.
 \subsection{Simpson's Rule}
-The \textbf{Simpson's rule} uses the interpolating polynomial of degree 2 to approximate \(f\left( x \right)\) over each subinterval \(\interval{x_i}{x_{i + 2}}\).
-Consider the interpolating polynomial which passes through the points \(\interval{x_0}{y_0}\), \(\interval{x_1}{y_1}\), and \(\interval{x_2}{y_2}\) where
-\(y_i = f\left( x_i \right)\). The interpolating polynomial is
+The \textbf{Simpson's rule} uses the interpolating polynomial of degree
+2 to approximate \(f\left( x \right)\) over each subinterval
+\(\interval{x_i}{x_{i + 2}}\). Consider the interpolating polynomial
+which passes through the points \(\interval{x_0}{y_0}\),
+\(\interval{x_1}{y_1}\), and \(\interval{x_2}{y_2}\) where \(y_i =
+f\left( x_i \right)\). The interpolating polynomial is
 \begin{equation*}
     P_2\left( x \right) = y_0 + s \Delta{y_0} + \frac{s\left( s - 1 \right)}{2} \Delta^2{y_0}
 \end{equation*}
-using the Newton forward difference form. Using the change of variables \(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of integration become \(\interval{0}{2}\).
-The integral of \(P_2\) over \(\interval{0}{2}\) is
+using the Newton forward difference form. Using the change of variables
+\(x = x_0 + s h\), \(\odif{x} = h \odif{s}\), and the limits of
+integration become \(\interval{0}{2}\). The integral of \(P_2\) over
+\(\interval{0}{2}\) is
 \begin{align*}
     \int_{x_0}^{x_2} f\left( x \right) \odif{x} & = \int_0^2 P_2\left( x \right) \odif{x}                                                                                                                  \\
                                                 & = \int_0^2 \left( y_0 + s \Delta{y_0} + \frac{s\left( s - 1 \right)}{2} \Delta^2{y_0} \right) h \odif{s}                                                 \\
@@ -876,24 +1013,33 @@ It follows that:
 \end{equation*}
 for all \(i = 1, 2, \ldots, n/2\). Simpson's rule is therefore
 \begin{align*}
-    \int_a^b f\left( x \right) \odif{x} & = \int_{x_0}^{x_2} f\left( x \right) \odif{x} + \int_{x_2}^{x_4} f\left( x \right) \odif{x} + \cdots + \int_{x_{n - 2}}^{x_n} f\left( x \right) \odif{x}                                                         \\
-                                        & \approx \begin{aligned}[t]
-                                                       & \frac{h}{3} \left[ f\left( x_0 \right) + 4f\left( x_1 \right) + f\left( x_2 \right) \right] + \frac{h}{3} \left[ f\left( x_2 \right) + 4f\left( x_3 \right) + f\left( x_4 \right) \right] + \cdots \\
-                                                       & + \frac{h}{3} \left[ f\left( x_{n - 2} \right) + 4f\left( x_{n - 1} \right) + f\left( x_n \right) \right]
-                                                  \end{aligned} \\
-                                        & = \begin{aligned}[t]
-                                                 & \frac{h}{3} \left[ f\left( x_0 \right) + 4 \left( f\left( x_1 \right) + f\left( x_3 \right) + \cdots + f\left( x_{n - 1} \right) \right) \right. \\
-                                                 & + \left. 2 \left( f\left( x_2 \right) + f\left( x_4 \right) + \cdots + f\left( x_{n - 2} \right) \right) f\left( x_n \right) \right]
-                                            \end{aligned}                                              \\
+    \int_a^b f\left( x \right) \odif{x} & = \int_{x_0}^{x_2} f\left( x \right) \odif{x} + \int_{x_2}^{x_4} f\left( x \right) \odif{x} + \cdots + \int_{x_{n - 2}}^{x_n} f\left( x \right) \odif{x}                                   \\
+                                        & \approx
+    \begin{aligned}[t]
+         & \frac{h}{3} \left[ f\left( x_0 \right) + 4f\left( x_1 \right) + f\left( x_2 \right) \right] + \frac{h}{3} \left[ f\left( x_2 \right) + 4f\left( x_3 \right) + f\left( x_4 \right) \right] + \cdots \\
+         & + \frac{h}{3} \left[ f\left( x_{n - 2} \right) + 4f\left( x_{n - 1} \right) + f\left( x_n \right) \right]
+    \end{aligned}
+    \\
+                                        & =
+    \begin{aligned}[t]
+         & \frac{h}{3} \left[ f\left( x_0 \right) + 4 \left( f\left( x_1 \right) + f\left( x_3 \right) + \cdots + f\left( x_{n - 1} \right) \right) \right. \\
+         & + \left. 2 \left( f\left( x_2 \right) + f\left( x_4 \right) + \cdots + f\left( x_{n - 2} \right) \right) f\left( x_n \right) \right]
+    \end{aligned}
+    \\
                                         & = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{\frac{n}{2}} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{\frac{n}{2} - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right]
 \end{align*}
-Therefore, for a four times continuously differentiable function \(f\) on \(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) (with \(n\) even) and \(x_i = a + i h\), for \(i = 0, 1, \ldots, n\),
+Therefore, for a four times continuously differentiable function \(f\)
+on \(\interval{a}{b}\), with \(h = \frac{b - a}{n}\) (with \(n\) even)
+and \(x_i = a + i h\), for \(i = 0, 1, \ldots, n\),
 \begin{equation*}
     \int_a^b f\left( x \right) \odif{x} = \frac{h}{3} \left[ f\left( x_0 \right) + 4 \sum_{i = 1}^{\frac{n}{2}} f\left( x_{2i - 1} \right) + 2 \sum_{i = 1}^{\frac{n}{2} - 1} f\left( x_{2i} \right) + f\left( x_n \right) \right] - \frac{\left( b - a \right) h^4}{180} f^{\left( 4 \right)}\left( c \right)
 \end{equation*}
-where \(c\) is between \(a\) and \(b\). The error in Simpson's rule is \(\mathcal{O}\left( h^4 \right)\), and this method is exact for polynomials of degree three or less, as the error term is zero.
+where \(c\) is between \(a\) and \(b\). The error in Simpson's rule is
+\(\mathcal{O}\left( h^4 \right)\), and this method is exact for
+polynomials of degree three or less, as the error term is zero.
 \section{Linear Systems}
-Given a linear system with \(n\) knowns and \(n\) unknowns, we can represent this system using matrix notation:
+Given a linear system with \(n\) knowns and \(n\) unknowns, we can
+represent this system using matrix notation:
 \begin{align*}
     \begin{bmatrix*}
         a_{11} & a_{12} & \cdots & a_{1n} \\
@@ -913,12 +1059,15 @@ Given a linear system with \(n\) knowns and \(n\) unknowns, we can represent thi
         b_2 \\
         \vdots \\
         b_n
-    \end{bmatrix*}                       \\
+    \end{bmatrix*}
+    \\
     \symbf{A} \symbfit{x} & = \symbfit{b}
 \end{align*}
-where \(\symbf{A}\) is the \textbf{coefficient matrix},
-\(\symbfit{x}\) is the \textbf{solution vector}, and \(\symbfit{b}\) is the \textbf{right hand side vector}.
-Alternatively, this equation can be written using an \textbf{augmented matrix}, by augmenting \(\symbf{A}\) with \(\symbfit{b}\):
+where \(\symbf{A}\) is the \textbf{coefficient matrix}, \(\symbfit{x}\)
+is the \textbf{solution vector}, and \(\symbfit{b}\) is the
+\textbf{right hand side vector}. Alternatively, this equation can be
+written using an \textbf{augmented matrix}, by augmenting \(\symbf{A}\)
+with \(\symbfit{b}\):
 \begin{equation*}
     \begin{bmatrix}[cccc|c]
         a_{11} & a_{12} & \cdots & a_{1n} & b_1    \\
@@ -927,7 +1076,8 @@ Alternatively, this equation can be written using an \textbf{augmented matrix}, 
         a_{n1} & a_{n2} & \cdots & a_{nn} & b_n
     \end{bmatrix}
 \end{equation*}
-the vertical bar separates the coefficient matrix from the right hand side vector.
+the vertical bar separates the coefficient matrix from the right hand
+side vector.
 \subsection{Triangular Systems}
 A linear system that takes the form
 \begin{equation*}
@@ -938,7 +1088,8 @@ A linear system that takes the form
         0      & \cdots & 0      & a_{nn} & b_n
     \end{bmatrix}
 \end{equation*}
-is known as an \textbf{upper triangular system}. Similarly, a linear system that takes the form
+is known as an \textbf{upper triangular system}. Similarly, a linear
+system that takes the form
 \begin{equation*}
     \begin{bmatrix}[cccc|c]
         a_{11} & 0      & \cdots & 0      & b_1    \\
@@ -949,10 +1100,11 @@ is known as an \textbf{upper triangular system}. Similarly, a linear system that
 \end{equation*}
 is known as a \textbf{lower triangular system}.
 \subsection{Backward Substitution}
-When solving an upper triangular system, we can use \textbf{backward substitution} to solve for the unknowns.
-This method starts with the last unknown, \(x_n\), and solves for it using the last equation in the system.
-Then, we use the second to last equation to solve for \(x_{n - 1}\), and so on.
-This leads to the following algorithm:
+When solving an upper triangular system, we can use \textbf{backward
+substitution} to solve for the unknowns. This method starts with the
+last unknown, \(x_n\), and solves for it using the last equation in the
+system. Then, we use the second to last equation to solve for \(x_{n -
+1}\), and so on. This leads to the following algorithm:
 \begin{align*}
     x_n       & = \frac{b_n}{a_{nn}}                                                                         \\
     x_{n - 1} & = \frac{b_{n - 1} - a_{n - 1, n} x_n}{a_{n - 1, n - 1}}                                      \\
@@ -961,10 +1113,11 @@ This leads to the following algorithm:
               & = \frac{b_i - \sum_{j = i + 1}^n a_{ij} x_j}{a_{ii}}                                         \\
 \end{align*}
 \subsection{Forward Substitution}
-When solving a lower triangular system, we can use \textbf{forward substitution} to solve for the unknowns.
-This method starts with the first unknown, \(x_1\), and solves for it using the first equation in the system.
-Then, we use the second equation to solve for \(x_2\), and so on.
-This leads to the following algorithm:
+When solving a lower triangular system, we can use \textbf{forward
+substitution} to solve for the unknowns. This method starts with the
+first unknown, \(x_1\), and solves for it using the first equation in
+the system. Then, we use the second equation to solve for \(x_2\), and
+so on. This leads to the following algorithm:
 \begin{align*}
     x_1 & = \frac{b_1}{a_{11}}                                                                 \\
     x_2 & = \frac{b_2 - a_{21} x_1}{a_{22}}                                                    \\
@@ -973,7 +1126,9 @@ This leads to the following algorithm:
         & = \frac{b_i - \sum_{j = 1}^{i - 1} a_{ij} x_j}{a_{ii}}                               \\
 \end{align*}
 \subsection{LU Decomposition}
-The \textbf{LU decomposition} is a method for factoring a square matrix into a lower triangular matrix \(\symbf{L}\) and an upper triangular matrix \(\symbf{U}\):
+The \textbf{LU decomposition} is a method for factoring a square matrix
+into a lower triangular matrix \(\symbf{L}\) and an upper triangular
+matrix \(\symbf{U}\):
 \begin{equation*}
     \symbf{A} = \symbf{L} \symbf{U}
 \end{equation*}
@@ -983,16 +1138,19 @@ to solve the linear system:
     \symbf{L} \symbf{U} \symbfit{x} & = \symbfit{b}                                                         \\
     \symbf{L} \symbfit{z}           & = \symbfit{b} &  & \left( \symbf{U} \symbfit{x} = \symbfit{z} \right)
 \end{align*}
-where \(\symbfit{z}\) can be solved using forward substitution, and then \(\symbfit{x}\) can be solved using backward substitution.
-The matrices \(\symbf{L}\) and \(\symbf{U}\) can be found by considering the following:
+where \(\symbfit{z}\) can be solved using forward substitution, and then
+\(\symbfit{x}\) can be solved using backward substitution. The matrices
+\(\symbf{L}\) and \(\symbf{U}\) can be found by considering the
+following:
 \begin{align*}
-    \symbf{A}                            & = \symbf{L} \symbf{U} \\
+    \symbf{A} & = \symbf{L} \symbf{U} \\
     \begin{bmatrix*}
         a_{11} & a_{12} & \cdots & a_{1n} \\
         a_{21} & a_{22} & \cdots & a_{2n} \\
         \vdots & \vdots & \ddots & \vdots \\
         a_{n1} & a_{n2} & \cdots & a_{nn}
-    \end{bmatrix*} & =
+    \end{bmatrix*}
+              & =
     \begin{bmatrix*}
         1 & 0      & \cdots & 0      \\
         \ell_{21} & 1 & \ddots & \vdots      \\
@@ -1013,33 +1171,39 @@ If we perform this product, we get the following:
         a_{21} & a_{22} & \cdots & a_{2n} \\
         \vdots & \vdots & \ddots & \vdots \\
         a_{n1} & a_{n2} & \cdots & a_{nn}
-    \end{bmatrix*} & = \begin{bmatrix*}
-                           u_{11}        & u_{12} & \cdots & u_{1n} \\
-                           \ell_{21} u_{11} & \ell_{21} u_{12} + u_{22} & \cdots & \ell_{21} u_{1n} + u_{2n} \\
-                           \vdots        & \vdots & \ddots & \vdots \\
-                           \ell_{n1} u_{11} & \ell_{n1} u_{12} + \ell_{n2} u_{22} & \cdots & \ell_{n1} u_{1n} + \ell_{n2} u_{2n} + \cdots + u_{nn}
-                       \end{bmatrix*}
+    \end{bmatrix*}
+     & =
+    \begin{bmatrix*}
+        u_{11}        & u_{12} & \cdots & u_{1n} \\
+        \ell_{21} u_{11} & \ell_{21} u_{12} + u_{22} & \cdots & \ell_{21} u_{1n} + u_{2n} \\
+        \vdots        & \vdots & \ddots & \vdots \\
+        \ell_{n1} u_{11} & \ell_{n1} u_{12} + \ell_{n2} u_{22} & \cdots & \ell_{n1} u_{1n} + \ell_{n2} u_{2n} + \cdots + u_{nn}
+    \end{bmatrix*}
 \end{align*}
-which allows us to solve for \(u_{ij}\) and \(\ell_{ij}\). This can be done by
-considering the first row, then the first column, then the second row, then the second column, and so on.
-
-In general, the equations to consider are, for \(\ell_{ij}\)
+which allows us to solve for \(u_{ij}\) and \(\ell_{ij}\). This can be
+done by considering the first row, then the first column, then the
+second row, then the second column, and so on. In general, the equations
+to consider are, for \(\ell_{ij}\)
 \begin{equation*}
-    \ell_{ij} = \begin{cases}
+    \ell_{ij} =
+    \begin{cases}
         \frac{a_{ij} - \sum_{k = 1}^{j - 1} \ell_{ik} u_{kj}}{u_{jj}} & \text{if \(i > j\)} \\
-        1                                                          & \text{if \(i = j\)} \\
-        0                                                          & \text{if \(i < j\)} \\
+        1                                                             & \text{if \(i = j\)} \\
+        0                                                             & \text{if \(i < j\)} \\
     \end{cases}
 \end{equation*}
 and for \(u_{ij}\)
 \begin{equation*}
-    u_{ij} = \begin{cases}
+    u_{ij} =
+    \begin{cases}
         a_{ij} - \sum_{k = 1}^{i - 1} \ell_{ik} u_{kj} & \text{if \(i \leq j\)} \\
-        0                                           & \text{if \(i > j\)}
+        0                                              & \text{if \(i > j\)}
     \end{cases}
 \end{equation*}
 \subsection{Cholesky Decomposition}
-The \textbf{Cholesky decomposition} is a method for factoring a symmetric, positive definite matrix into a lower triangular matrix \(\symbf{L}\) and its transpose:
+The \textbf{Cholesky decomposition} is a method for factoring a
+symmetric, positive definite matrix into a lower triangular matrix
+\(\symbf{L}\) and its transpose:
 \begin{equation*}
     \symbf{A} = \symbf{L} \symbf{L}^T
 \end{equation*}
@@ -1049,16 +1213,18 @@ to solve the linear system:
     \symbf{L} \symbf{L}^\top \symbfit{x} & = \symbfit{b}                                                              \\
     \symbf{L} \symbfit{z}                & = \symbfit{b} &  & \left( \symbf{L}^\top \symbfit{x} = \symbfit{z} \right)
 \end{align*}
-where \(\symbfit{z}\) can be solved using forward substitution, and then \(\symbfit{x}\) can be solved using backward substitution.
-The matrix \(\symbf{L}\) can be found by considering the following:
+where \(\symbfit{z}\) can be solved using forward substitution, and then
+\(\symbfit{x}\) can be solved using backward substitution. The matrix
+\(\symbf{L}\) can be found by considering the following:
 \begin{align*}
-    \symbf{A}                            & = \symbf{L} \symbf{L}^\top \\
+    \symbf{A} & = \symbf{L} \symbf{L}^\top \\
     \begin{bmatrix*}
         a_{11} & a_{12} & \cdots & a_{1n} \\
         a_{21} & a_{22} & \cdots & a_{2n} \\
         \vdots & \vdots & \ddots & \vdots \\
         a_{n1} & a_{n2} & \cdots & a_{nn}
-    \end{bmatrix*} & =
+    \end{bmatrix*}
+              & =
     \begin{bmatrix*}
         \ell_{11} & 0      & \cdots & 0      \\
         \ell_{21} & \ell_{22} & \ddots & \vdots      \\
@@ -1079,20 +1245,23 @@ If we perform this product, we get the following:
         a_{21} & a_{22} & \cdots & a_{2n} \\
         \vdots & \vdots & \ddots & \vdots \\
         a_{n1} & a_{n2} & \cdots & a_{nn}
-    \end{bmatrix*} & = \begin{bmatrix*}
-                           \ell_{11}^2        & \ell_{11} \ell_{21} & \cdots & \ell_{11} \ell_{n1} \\
-                           \ell_{21} \ell_{11} & \ell_{21}^2 + \ell_{22}^2 & \cdots & \ell_{21} \ell_{n1} + \ell_{22} \ell_{n2} \\
-                           \vdots        & \vdots & \ddots & \vdots \\
-                           \ell_{n1} \ell_{11} & \ell_{n1} \ell_{21} + \ell_{n2} \ell_{22} & \cdots & \ell_{n1}^2 + \ell_{n2}^2 + \cdots + \ell_{nn}^2
-                       \end{bmatrix*}
+    \end{bmatrix*}
+     & =
+    \begin{bmatrix*}
+        \ell_{11}^2        & \ell_{11} \ell_{21} & \cdots & \ell_{11} \ell_{n1} \\
+        \ell_{21} \ell_{11} & \ell_{21}^2 + \ell_{22}^2 & \cdots & \ell_{21} \ell_{n1} + \ell_{22} \ell_{n2} \\
+        \vdots        & \vdots & \ddots & \vdots \\
+        \ell_{n1} \ell_{11} & \ell_{n1} \ell_{21} + \ell_{n2} \ell_{22} & \cdots & \ell_{n1}^2 + \ell_{n2}^2 + \cdots + \ell_{nn}^2
+    \end{bmatrix*}
 \end{align*}
-which allows us to solve for \(\ell_{ij}\). This can be done by solving each column of \(\symbf{L}\).
-In general, the equations are
+which allows us to solve for \(\ell_{ij}\). This can be done by solving
+each column of \(\symbf{L}\). In general, the equations are
 \begin{equation*}
-    \ell_{ij} = \begin{cases}
+    \ell_{ij} =
+    \begin{cases}
         \frac{1}{\ell_{jj}} \left( a_{ij} - \sum_{k = 1}^{j - 1} \ell_{ik} \ell_{jk} \right) & \text{if \(i > j\)} \\
-        \sqrt{a_{jj} - \sum_{k = 1}^{j - 1} \ell_{jk}^2}                               & \text{if \(i = j\)} \\
-        0                                                                           & \text{if \(i < j\)} \\
+        \sqrt{a_{jj} - \sum_{k = 1}^{j - 1} \ell_{jk}^2}                                     & \text{if \(i = j\)} \\
+        0                                                                                    & \text{if \(i < j\)} \\
     \end{cases}
 \end{equation*}
 \end{document}
