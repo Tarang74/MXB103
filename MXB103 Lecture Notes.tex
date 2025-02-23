@@ -148,7 +148,7 @@ If we wish to represent a real number\footnote{\(x\) must satisfy
 \right)}\).} \(x\) that is not exactly representable in \(\mathbb{F}\),
 we can \textbf{round} the number to the nearest \textit{representable}
 number. The error committed by this process is known as the
-\textbf{roundoff error}.
+\textbf{round-off error}.
 \subsubsection{Converting between Floating Point Number Systems}
 Consider \(fl : \R \to \mathbb{F}\left( \beta,\: k,\: m,\: M \right)\),
 defined as function which maps real numbers \(x\) to the nearest
@@ -168,8 +168,8 @@ is bounded according to
 \begin{equation*}
     \frac{\abs*{x - fl\left( x \right)}}{\abs*{x}} \leq \frac{1}{2} \beta^{1 - k}.
 \end{equation*}
-\begin{definition}[Unit roundoff]
-    The \textbf{unit roundoff} or \textbf{machine precision} \(u\) of a
+\begin{definition}[Unit round-off]
+    The \textbf{unit round-off} or \textbf{machine precision} \(u\) of a
     floating point number system
     \(\mathbb{F}\left( \beta,\: k,\: m,\: M \right)\) is given by
     \begin{equation*}
@@ -184,9 +184,9 @@ on \(\mathbb{F}\left( 2,\: 53,\: -1022,\: 1023 \right)\). The basic
 properties of this format are summarised in the following table.
 \begin{table}[H]
     \centering
-    \begin{tabular}{l | c} 
+    \begin{tabular}{l | c}
         \toprule
-        Unit roundoff                          & \(u = 1.11 \times 10^{-16}\)                      \\
+        Unit round-off                          & \(u = 1.11 \times 10^{-16}\)                      \\
         Largest representable positive number  & \(1.80 \times 10^{308}\)                          \\
         Smallest representable positive number & \(2.23 \times 10^{-308}\)                         \\
         Special values                         & \(\pm 0\), \(\pm \infty\), \mintinline{text}!NaN! \\
@@ -195,8 +195,8 @@ properties of this format are summarised in the following table.
     % \caption{} % \label{}
 \end{table}
 \subsection{Catastrophic Cancellation}
-When working with floating point arithmetic, roundoff is a common
-source of error. Certain operations may bring roundoff errors that are
+When working with floating point arithmetic, round-off is a common
+source of error. Certain operations may bring round-off errors that are
 too large to be easily corrected. \textbf{Catastrophic cancellation} or
 \textbf{cancellation error} is the error that occurs in the floating
 point subtraction of two numbers that are very close to each other,
@@ -276,13 +276,13 @@ remainder term gives us a \textit{bound} on the size of this truncation
 error.
 \section{Ordinary Differential Equations}
 For certain classes of ordinary differential equations (ODEs), we can
-obtain analytical closed-form solutions using known techniques. However
+obtain analytical closed-form solutions using known techniques. However,
 for most cases we will need to use numerical techniques to obtain
 approximate solutions.
 \subsection{Initial Value Problems}
 While solutions with arbitrary constants, such as \(y = C e^{t}\) are
 acceptable for theoretical analysis, we cannot have such variables when
-determining an approximate solution in the real world. Hence we require
+determining an approximate solution in the real world. Hence, we require
 \textbf{initial conditions} to obtain a definitive solution. An ODE
 combined with an initial condition is called an \textbf{initial value
 problem} (IVP).
@@ -292,7 +292,7 @@ Consider the initial value problem,
     y\left( a \right)          & = \alpha                                                              \\
     \odv{y\left( t \right)}{t} & = f\left( t,\: y\left( t \right) \right), \quad \quad a \leq t \leq b
 \end{align*}
-Divide the interval \(\interval{a}{b}\) into \(n\) subintervals, each
+Divide the interval \(\interval{a}{b}\) into \(n\) sub-intervals, each
 with width \(h = \left( b - a \right) / n\). Then define
 \(t_i = a + i h\), for \(i = 0,\: 1,\: \ldots,\: n\), so that
 \(t_0 = a\) and \(t_n = b\). If we then compute
@@ -300,7 +300,7 @@ with width \(h = \left( b - a \right) / n\). Then define
 \(w_i \approx y_i\) for all \(i = 0,\: 1,\: \ldots,\: n\).
 \subsection{Euler's Method}
 Euler's method, or the first order Taylor method, uses a Taylor
-polynomial approximation of \(y\) over each subinterval. Assuming \(y\)
+polynomial approximation of \(y\) over each sub-interval. Assuming \(y\)
 is twice differentiable,
 \begin{equation*}
     y\left( t_i + h \right) = y\left( t_i \right) + h y'\left( t_i \right) + \mathcal{O}\left( h^2 \right).
@@ -431,7 +431,7 @@ The following theorem addresses the existence and uniqueness of
 interpolating polynomials, given distinct \(x\)-values, or
 \textbf{abscissas}.
 \begin{theorem}
-    Let the abscissas \(x_0\), \(x_1\), \dots, \(x_n\) be distinct and
+    Let the abscissas \(x_0\), \(x_1\), \dots, \(x_n\) be distinct, and
     the function values \(y_0\), \(y_1\), \dots, \(y_n\) be given. Then
     there exists a \textbf{unique} interpolating polynomial \(P_n\) of
     degree (at most) \(n\), such that \(P_n\left( x_i \right) = y_i\)
@@ -487,11 +487,11 @@ point for which it is the coefficient of.
 For three data points, consider the reverse problem:
 \begin{itemize}
     \item The coefficient of \(y_0\) is \textbf{1} when \(x = x_0\),
-          \textbf{0} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+          \textbf{0} when \(x = x_1\), and \textbf{0} when \(x = x_2\)
     \item The coefficient of \(y_1\) is \textbf{0} when \(x = x_0\),
-          \textbf{1} when \(x = x_1\), and \textbf{0} when \(x = x_2\).
+          \textbf{1} when \(x = x_1\), and \textbf{0} when \(x = x_2\)
     \item The coefficient of \(y_2\) is \textbf{0} when \(x = x_0\),
-          \textbf{0} when \(x = x_1\), and \textbf{1} when \(x = x_2\).
+          \textbf{0} when \(x = x_1\), and \textbf{1} when \(x = x_2\)
 \end{itemize}
 then solve for the Lagrange basis functions:
 \begin{align*}
@@ -533,7 +533,7 @@ Note that \(L_{n,\: i}\left( x \right)\) is equal to \textbf{1} when \(x = x_i\)
     \(P_n\left( x \right)\). Then for all \(x \in \interval{a}{b}\)
     there exists a \(c \in \interval{a}{b}\) such that
     \begin{equation*}
-        f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right).
+        f\left( x \right) = P_n\left( x \right) + \frac{f^{\left( n + 1 \right)} \left( c \right)}{\left( n + 1 \right)!} \left( x - x_0 \right) \left( x - x_1 \right) \cdots \left( x - x_n \right)
     \end{equation*}
     where the term
     \begin{equation*}
@@ -838,7 +838,7 @@ generates, \(\left\{ x_n \right\}\), satisfies (for sufficiently large
     \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^r
 \end{equation*}
 for \(\lambda > 0\) and
-\(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio). Thus
+\(r = \left( 1 + \sqrt{5} \right)/2 \approx 1.618\) (Golden ratio). Thus,
 the secant method has a slower \textit{rate of convergence} than
 Newton's method.
 \section{Numerical Differentiation}
@@ -917,9 +917,9 @@ require the subtraction of nearly equal values, which can lead to
 \textbf{numerical instability}. It is therefore important to choose a
 value of \(h\) so that it is not too large, which results in
 inaccuracies due to truncation error, or too small, which results in
-inaccuracies due to roundoff error.
+inaccuracies due to round-off error.
 \section{Numerical Integration}
-Indefinite integration is defined as the anti-derivative of a function
+Indefinite integration is defined as the antiderivative of a function
 \(f\), denoted by \(F\left( x \right)\), such that
 \begin{equation*}
     F'\left( x \right) = f\left( x \right).
@@ -942,11 +942,11 @@ rule for developing integral approximations is the interpolating
 polynomial.
 \subsection{Trapezoidal Rule}
 Consider dividing the interval \(\interval{a}{b}\) into \(n\)
-subintervals, each of width \(h\). Then \(h = \frac{b - a}{n}\), and
+sub-intervals, each of width \(h\). Then \(h = \frac{b - a}{n}\), and
 let \(x_i = a + ih\) for \(i = 0, 1, \ldots, n\), so that \(x_0 = a\)
 and \(x_n = b\). The \textbf{trapezoidal rule} uses the interpolating
 polynomial of degree 1 to approximate \(f\left( x \right)\) over each
-subinterval \(\interval{x_i}{x_{i + 1}}\). Consider the interpolating
+sub-interval \(\interval{x_i}{x_{i + 1}}\). Consider the interpolating
 polynomial which passes through the points \(\interval{x_0}{y_0}\) and
 \(\interval{x_1}{y_1}\) where \(y_0 = f\left( x_0 \right)\) and \(y_1 =
 f\left( x_1 \right)\). The interpolating polynomial is
@@ -987,7 +987,7 @@ rule is \(\mathcal{O}\left( h^2 \right)\), and this method is exact for
 polynomials of degree one or less, as the error term is zero.
 \subsection{Simpson's Rule}
 The \textbf{Simpson's rule} uses the interpolating polynomial of degree
-2 to approximate \(f\left( x \right)\) over each subinterval
+2 to approximate \(f\left( x \right)\) over each sub-interval
 \(\interval{x_i}{x_{i + 2}}\). Consider the interpolating polynomial
 which passes through the points \(\interval{x_0}{y_0}\),
 \(\interval{x_1}{y_1}\), and \(\interval{x_2}{y_2}\) where \(y_i =

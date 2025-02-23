@@ -90,15 +90,15 @@ margin = 10mm
         \item Express \(x\) in scientific form.
         \item Verify that \(m \leq e \leq M\):
               \begin{itemize}
-                  \item if \(e > M\), then \(x = \infty\).
-                  \item if \(e < m\), then \(x = 0\).
+                  \item if \(e > M\), then \(x = \infty\),
+                  \item if \(e < m\), then \(x = 0\),
                   \item else, round to \(k\) digits.
               \end{itemize}
     \end{enumerate}
     \begin{equation*}
-        \frac{\abs*{fl\left( x \right) - x}}{\abs*{x}} \leq u = \frac{1}{2} \beta^{1 - k}.
+        \frac{\abs*{fl\left( x \right) - x}}{\abs*{x}} \leq u = \frac{1}{2} \beta^{1 - k}
     \end{equation*}
-    where \(u\) is the \textbf{unit roundoff}  of \(\mathbb{F}\).
+    where \(u\) is the \textbf{unit round-off} of \(\mathbb{F}\).
     \subsection{Catastrophic Cancellation}
     The error when subtracting similar floating
     point numbers, where at least one is not exactly representable.
@@ -126,7 +126,7 @@ margin = 10mm
     \section{Ordinary Differential Equations}
     \(\odv{y}{t} = f\left( t,\: y \right)\) with \(y\left( a \right) = \alpha\) on \(a \leq t \leq b\).
 
-    Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
+    Divide \(\interval{a}{b}\) into \(n\) sub-intervals of width \(h = \left( b - a \right) / n\).
     Let \(t_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\).
     Then \(y_i = y\left( t_i \right)\) approximates \(y\) at \(t = t_i\), with \(y_0 = \alpha\).
     \subsection{Euler's Method (First Order Taylor)}
@@ -262,7 +262,7 @@ margin = 10mm
     with two initial values for \(n \geq 1\).
 \end{multicols}
 \begin{minipage}[t]{62.39259259mm}
-    \subsection{Convergence of Rootfinding Methods}
+    \subsection{Convergence of Root-finding Methods}
     A convergent \(\left\{ x_n \right\}\) satisfies (for large \(n\))
     \begin{equation*}
         \abs*{x_{n + 1} - p} \approx \lambda \abs*{x_n - p}^r
@@ -310,10 +310,10 @@ margin = 10mm
     \end{equation*}
     for weights \(w_i\) and abscissas \(x_i\).
 
-    Divide \(\interval{a}{b}\) into \(n\) subintervals of width \(h = \left( b - a \right) / n\).
+    Divide \(\interval{a}{b}\) into \(n\) sub-intervals of width \(h = \left( b - a \right) / n\).
     Let \(x_i = a + i h\) for \(i = 0,\: 1,\: \ldots,\: n\), so that \(x_0 = a\) and \(x_n = b\).
     \subsection{Trapezoidal Rule (Second Order)}
-    Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{i - 1}}{x_i}\) with a degree 1 interpolant:
+    Approximate \(f\left( x \right)\) over each sub-interval \(\interval{x_{i - 1}}{x_i}\) with a degree 1 interpolant:
     \begin{align*}
         P_{1,\: i}\left( x \right) = y_{i - 1} + s \Delta{y_{i - 1}} = y_{i - 1} + s \left( y_i - y_{i - 1} \right)
     \end{align*}
@@ -326,7 +326,7 @@ margin = 10mm
         = \frac{h}{2} \left[ f\left( x_0 \right) + 2 \sum_{i = 1}^{n - 1} f\left( x_i \right) + f\left( x_n \right) \right] -\frac{\left( b - a \right)h^2}{12} f''\left( c \right)
     \end{multline*}
     \subsection{Simpson's Rule (Fourth Order)}
-    Approximate \(f\left( x \right)\) over each subinterval \(\interval{x_{2i - 2}}{x_{2i}}\) with a degree 2 interpolant:
+    Approximate \(f\left( x \right)\) over each sub-interval \(\interval{x_{2i - 2}}{x_{2i}}\) with a degree 2 interpolant:
     \begin{align*}
         P_{2,\: i}\left( x \right) & = y_{2i - 2} + s \Delta{y_{2i - 2}} + \frac{s\left( s - 1 \right)}{2} \Delta^2 y_{2i - 2}                                               \\
                                    & = y_{2i - 2} + s \left( y_{2i} - y_{2i - 1} \right) + \frac{s\left( s - 1 \right)}{2} \left( y_{2i} - 2 y_{2i - 1} + y_{2i - 2} \right)
